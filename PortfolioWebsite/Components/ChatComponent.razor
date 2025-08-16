@@ -1,0 +1,134 @@
+@using PortfolioWebsite.Models
+@using PortfolioWebsite.Services
+@inject ChatService ChatService
+
+<MudContainer Class="chat-container">
+    <MudPaper Elevation="3" Class="chat-paper">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <MudText Typo="Typo.h6" Color="Color.Primary">
+                AI Assistant
+            </MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.Clear" 
+                          Color="Color.Primary" 
+                          Size="Size.Small"
+                          OnClick="ClearChat" />
+        </div>
+        
+        <!-- Chat Messages -->
+        <div class="chat-messages" @ref="_messagesContainer">
+            @if (!ChatService.Messages.Any())
+            {
+                <div class="welcome-message">
+                    <MudIcon Icon="@Icons.Material.Filled.Chat" Color="Color.Primary" Size="Size.Large" />
+                    <MudText Typo="Typo.h6" Class="mt-2">Hello! I'm your AI assistant.</MudText>
+                    <MudText Typo="Typo.body2" Class="text-center">
+                        Ask me anything about my skills, projects, or experience!
+                    </MudText>
+                </div>
+            }
+            else
+            {
+                @foreach (var message in ChatService.Messages)
+                {
+                    <div class="message @(message.IsUser ? "user-message" : "ai-message")">
+                        <div class="message-content">
+                            <MudText Typo="Typo.body1">@message.Content</MudText>
+                            <MudText Typo="Typo.caption" Class="message-time">
+                                @message.Timestamp.ToString("HH:mm")
+                            </MudText>
+                        </div>
+                    </div>
+                }
+            }
+            
+            @if (_isTyping)
+            {
+                <div class="message ai-message">
+                    <div class="message-content">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="chat-input">
+            <MudTextField @bind-Value="_messageInput"
+                         Label="Type your message..."
+                         Variant="Variant.Outlined"
+                         Disabled="@_isTyping"
+                                                   OnKeyDown="@HandleKeyPress"
+                         Class="flex-grow-1 mr-2" />
+            
+            <MudIconButton Icon="@Icons.Material.Filled.Send"
+                          Color="Color.Primary"
+                          Disabled="@(string.IsNullOrWhiteSpace(_messageInput) || _isTyping)"
+                          OnClick="SendMessage" />
+        </div>
+    </MudPaper>
+</MudContainer>
+
+@code {
+    private string _messageInput = string.Empty;
+    private bool _isTyping = false;
+    private ElementReference _messagesContainer;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ScrollToBottom();
+        }
+    }
+
+    private async Task SendMessage()
+    {
+        if (string.IsNullOrWhiteSpace(_messageInput) || _isTyping)
+            return;
+
+        var message = _messageInput;
+        _messageInput = string.Empty;
+        _isTyping = true;
+        
+        StateHasChanged();
+        await ScrollToBottom();
+
+        try
+        {
+            await ChatService.SendMessageAsync(message);
+        }
+        finally
+        {
+            _isTyping = false;
+            StateHasChanged();
+            await ScrollToBottom();
+        }
+    }
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !e.ShiftKey)
+        {
+            await SendMessage();
+        }
+    }
+
+    private void ClearChat()
+    {
+        ChatService.ClearMessages();
+        StateHasChanged();
+    }
+
+    private async Task ScrollToBottom()
+    {
+        await Task.Delay(100); // Small delay to ensure content is rendered
+        // In a real implementation, you would scroll the messages container to bottom
+    }
+}
+
+

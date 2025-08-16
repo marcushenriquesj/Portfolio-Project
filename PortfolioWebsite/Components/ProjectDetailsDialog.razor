@@ -1,0 +1,75 @@
+@using PortfolioWebsite.Models
+
+<MudDialog>
+    <DialogContent>
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudCardMedia Image="@Project.ImageUrl" Height="250" />
+                </MudItem>
+                
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-2">
+                        @Project.Title
+                    </MudText>
+                    
+                    <MudChip Color="Color.Info" Size="Size.Small" Class="mb-3">
+                        @Project.Category
+                    </MudChip>
+                    
+                    <MudText Typo="Typo.body1" Class="mb-4">
+                        @Project.Description
+                    </MudText>
+                    
+                    <MudText Typo="Typo.h6" Class="mb-2">Technologies Used:</MudText>
+                    <div class="technologies-list mb-4">
+                        @foreach (var tech in Project.Technologies)
+                        {
+                            <MudChip Color="Color.Primary" Size="Size.Small" Class="mr-1 mb-1">
+                                @tech
+                            </MudChip>
+                        }
+                    </div>
+                    
+                    <div class="project-links">
+                        @if (!string.IsNullOrEmpty(Project.LiveDemoUrl))
+                        {
+                            <MudButton Variant="Variant.Filled" 
+                                      Color="Color.Primary" 
+                                      Href="@Project.LiveDemoUrl"
+                                      Target="_blank"
+                                      StartIcon="@Icons.Material.Filled.PlayArrow"
+                                      Class="mr-2">
+                                Live Demo
+                            </MudButton>
+                        }
+                        
+                        @if (!string.IsNullOrEmpty(Project.GitHubUrl))
+                        {
+                            <MudButton Variant="Variant.Outlined" 
+                                      Color="Color.Primary" 
+                                      Href="@Project.GitHubUrl"
+                                      Target="_blank"
+                                      StartIcon="@Icons.Material.Filled.Code">
+                                View Code
+                            </MudButton>
+                        }
+                    </div>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+    
+    [Parameter] public Project Project { get; set; } = new();
+
+    private void Cancel() => MudDialog.Cancel();
+}
+
+

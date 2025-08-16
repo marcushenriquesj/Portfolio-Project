@@ -1,0 +1,166 @@
+@using PortfolioWebsite.Models
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="section-container" id="contact">
+    <MudText Typo="Typo.h3" Class="section-title text-center mb-6">
+        Get In Touch
+    </MudText>
+    
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <MudPaper Elevation="3" Class="contact-info-card pa-6">
+                <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
+                    Contact Information
+                </MudText>
+                
+                <div class="contact-info-list">
+                    <div class="contact-info-item">
+                        <MudIcon Icon="@Icons.Material.Filled.Email" Color="Color.Primary" Size="Size.Large" />
+                        <div class="contact-details">
+                            <MudText Typo="Typo.h6">Email</MudText>
+                            <MudText Typo="Typo.body1">@PortfolioData.Email</MudText>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <MudIcon Icon="@Icons.Material.Filled.Phone" Color="Color.Primary" Size="Size.Large" />
+                        <div class="contact-details">
+                            <MudText Typo="Typo.h6">Phone</MudText>
+                            <MudText Typo="Typo.body1">@PortfolioData.Phone</MudText>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Primary" Size="Size.Large" />
+                        <div class="contact-details">
+                            <MudText Typo="Typo.h6">Location</MudText>
+                            <MudText Typo="Typo.body1">@PortfolioData.Location</MudText>
+                        </div>
+                    </div>
+                </div>
+                
+                <MudDivider Class="my-4" />
+                
+                <MudText Typo="Typo.h6" Class="mb-3">Follow Me</MudText>
+                <div class="social-links">
+                    @if (PortfolioData.SocialLinks.Count > 0)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Code" 
+                                      Color="Color.Primary" 
+                                      Href="@PortfolioData.SocialLinks[0]" 
+                                      Target="_blank" 
+                                      Class="mr-2" />
+                    }
+                    @if (PortfolioData.SocialLinks.Count > 1)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Business" 
+                                      Color="Color.Primary" 
+                                      Href="@PortfolioData.SocialLinks[1]" 
+                                      Target="_blank" 
+                                      Class="mr-2" />
+                    }
+                    @if (PortfolioData.SocialLinks.Count > 2)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Share" 
+                                      Color="Color.Primary" 
+                                      Href="@PortfolioData.SocialLinks[2]" 
+                                      Target="_blank" />
+                    }
+                </div>
+            </MudPaper>
+        </MudItem>
+        
+        <MudItem xs="12" md="6">
+            <MudPaper Elevation="3" Class="contact-form-card pa-6">
+                <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
+                    Send Message
+                </MudText>
+                
+                <EditForm Model="@_contactInfo" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    
+                    <MudTextField @bind-Value="_contactInfo.Name"
+                                 Label="Name"
+                                 Variant="Variant.Outlined"
+                                 Required
+                                 RequiredError="Name is required"
+                                 Class="mb-3" />
+                    
+                    <MudTextField @bind-Value="_contactInfo.Email"
+                                 Label="Email"
+                                 Variant="Variant.Outlined"
+                                 Required
+                                 RequiredError="Email is required"
+                                 InputType="InputType.Email"
+                                 Class="mb-3" />
+                    
+                    <MudTextField @bind-Value="_contactInfo.Subject"
+                                 Label="Subject"
+                                 Variant="Variant.Outlined"
+                                 Required
+                                 RequiredError="Subject is required"
+                                 Class="mb-3" />
+                    
+                    <MudTextField @bind-Value="_contactInfo.Message"
+                                 Label="Message"
+                                 Variant="Variant.Outlined"
+                                 Required
+                                 RequiredError="Message is required"
+                                 Lines="4"
+                                 Class="mb-4" />
+                    
+                    <MudButton Variant="Variant.Filled"
+                              Color="Color.Primary"
+                              ButtonType="ButtonType.Submit"
+                              Disabled="@_isSubmitting"
+                              StartIcon="@(_isSubmitting ? Icons.Material.Filled.HourglassEmpty : Icons.Material.Filled.Send)"
+                              Class="w-100">
+                        @if (_isSubmitting)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                            <span>Sending...</span>
+                        }
+                        else
+                        {
+                            <span>Send Message</span>
+                        }
+                    </MudButton>
+                </EditForm>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    [Parameter] public PortfolioData PortfolioData { get; set; } = new();
+    
+    [Inject] private ISnackbar Snackbar { get; set; } = default!;
+    
+    private ContactInfo _contactInfo = new();
+    private bool _isSubmitting = false;
+
+    private async Task HandleValidSubmit()
+    {
+        _isSubmitting = true;
+        
+        try
+        {
+            // Simulate form submission
+            await Task.Delay(2000);
+            
+            Snackbar.Add("Message sent successfully! I'll get back to you soon.", Severity.Success);
+            
+            // Reset form
+            _contactInfo = new ContactInfo();
+        }
+        catch (Exception)
+        {
+            Snackbar.Add("Failed to send message. Please try again.", Severity.Error);
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}
+
+

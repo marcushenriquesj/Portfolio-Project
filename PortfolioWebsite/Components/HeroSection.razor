@@ -1,0 +1,83 @@
+@using PortfolioWebsite.Models
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="hero-section" id="hero">
+    <MudGrid>
+        <MudItem xs="12" md="6" Class="d-flex align-center">
+            <div class="hero-content">
+                <MudText Typo="Typo.h3" Class="hero-greeting mb-2">
+                    Hello, I'm
+                </MudText>
+                <MudText Typo="Typo.h2" Color="Color.Primary" Class="hero-name mb-3">
+                    @PortfolioData.Name
+                </MudText>
+                <MudText Typo="Typo.h5" Class="hero-title mb-4">
+                    @PortfolioData.Title
+                </MudText>
+                <MudText Typo="Typo.body1" Class="hero-subtitle mb-6">
+                    @PortfolioData.Subtitle
+                </MudText>
+                
+                <div class="hero-actions">
+                    <MudButton Variant="Variant.Filled" 
+                              Color="Color.Primary" 
+                              Size="Size.Large" 
+                              Class="mr-3"
+                              OnClick="@(() => Navigation.NavigateTo("/contact"))">
+                        Get In Touch
+                    </MudButton>
+                    <MudButton Variant="Variant.Outlined" 
+                              Color="Color.Primary" 
+                              Size="Size.Large"
+                              OnClick="@(() => Navigation.NavigateTo("/projects"))">
+                        View Projects
+                    </MudButton>
+                </div>
+
+                <div class="hero-social mt-6">
+                    @if (PortfolioData.SocialLinks.Count > 0)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Code" 
+                                      Color="Color.Primary" 
+                                      Href="@PortfolioData.SocialLinks[0]" 
+                                      Target="_blank" 
+                                      Class="mr-2" />
+                    }
+                    @if (PortfolioData.SocialLinks.Count > 1)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Business" 
+                                      Color="Color.Primary" 
+                                      Href="@PortfolioData.SocialLinks[1]" 
+                                      Target="_blank" 
+                                      Class="mr-2" />
+                    }
+                    @if (PortfolioData.SocialLinks.Count > 2)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Share" 
+                                      Color="Color.Primary" 
+                                      Href="@PortfolioData.SocialLinks[2]" 
+                                      Target="_blank" />
+                    }
+                </div>
+            </div>
+        </MudItem>
+        
+        <MudItem xs="12" md="6" Class="d-flex align-center justify-center">
+            <div class="hero-image-container">
+                <MudPaper Elevation="8" Class="hero-image pa-4">
+                    <MudIcon Icon="@Icons.Material.Filled.Person" 
+                            Size="Size.Large" 
+                            Color="Color.Primary" 
+                            Style="font-size: 200px;" />
+                </MudPaper>
+            </div>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    [Parameter] public PortfolioData PortfolioData { get; set; } = new();
+
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+}
+
+

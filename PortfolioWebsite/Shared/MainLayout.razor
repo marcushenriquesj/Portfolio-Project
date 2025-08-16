@@ -1,0 +1,77 @@
+@using PortfolioWebsite.Services
+@using PortfolioWebsite.Models
+@inherits LayoutComponentBase
+@inject ThemeService ThemeService
+
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="@_theme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1" Color="Color.Primary">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h6" Class="ml-3">@_portfolioData.Name</MudText>
+        <MudSpacer />
+        
+        <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@ToggleTheme" />
+        <MudIconButton Icon="@Icons.Material.Filled.Chat" Color="Color.Inherit" OnClick="@OpenChat" />
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+
+    <MudDrawer Anchor="Anchor.Right" @bind-Open="_chatOpen" Elevation="2" Width="400px">
+        <ChatComponent />
+    </MudDrawer>
+</MudLayout>
+
+@code {
+    private bool _drawerOpen = true;
+    private bool _chatOpen = false;
+    private bool _isDarkMode;
+    private MudTheme _theme = new();
+    private PortfolioData _portfolioData = new();
+
+    [Inject] private PortfolioDataService PortfolioDataService { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        _portfolioData = PortfolioDataService.GetPortfolioData();
+        _isDarkMode = ThemeService.IsDarkMode;
+        _theme = ThemeService.GetCurrentTheme();
+        
+        ThemeService.OnThemeChanged += OnThemeChanged;
+    }
+
+    private void OnThemeChanged()
+    {
+        _isDarkMode = ThemeService.IsDarkMode;
+        _theme = ThemeService.GetCurrentTheme();
+        StateHasChanged();
+    }
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private async Task ToggleTheme()
+    {
+        await ThemeService.ToggleThemeAsync();
+    }
+
+    private void OpenChat()
+    {
+        _chatOpen = !_chatOpen;
+    }
+
+    public void Dispose()
+    {
+        ThemeService.OnThemeChanged -= OnThemeChanged;
+    }
+}

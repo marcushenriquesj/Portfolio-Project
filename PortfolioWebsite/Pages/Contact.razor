@@ -1,0 +1,22 @@
+@page "/contact"
+@using PortfolioWebsite.Services
+@using PortfolioWebsite.Models
+@inject PortfolioDataService PortfolioDataService
+
+<PageTitle>Contact - @_portfolioData.Name</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
+    <BreadcrumbNav CurrentPage="Contact" />
+    <div class="portfolio-container">
+        <ContactSection PortfolioData="@_portfolioData" />
+    </div>
+</MudContainer>
+
+@code {
+    private PortfolioData _portfolioData = new();
+
+    protected override void OnInitialized()
+    {
+        _portfolioData = PortfolioDataService.GetPortfolioData();
+    }
+}

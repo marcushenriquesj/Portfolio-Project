@@ -1,0 +1,137 @@
+@using PortfolioWebsite.Models
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="section-container" id="projects">
+    <MudText Typo="Typo.h3" Class="section-title text-center mb-6">
+        Featured Projects
+    </MudText>
+    
+    <MudGrid>
+        @foreach (var project in Projects)
+        {
+            <MudItem xs="12" md="6" lg="4">
+                <MudCard Class="project-card" Elevation="3">
+                    <MudCardMedia Image="@project.ImageUrl" Height="200" />
+                    
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Color="Color.Primary" Class="mb-2">
+                            @project.Title
+                        </MudText>
+                        
+                        <MudText Typo="Typo.body2" Class="mb-3">
+                            @project.Description
+                        </MudText>
+                        
+                        <div class="project-technologies mb-3">
+                            @foreach (var tech in project.Technologies.Take(3))
+                            {
+                                <MudChip Color="Color.Primary" Size="Size.Small" Class="mr-1 mb-1">
+                                    @tech
+                                </MudChip>
+                            }
+                            @if (project.Technologies.Count > 3)
+                            {
+                                <MudChip Color="Color.Secondary" Size="Size.Small">
+                                    +@(project.Technologies.Count - 3) more
+                                </MudChip>
+                            }
+                        </div>
+                        
+                        <MudChip Color="Color.Info" Size="Size.Small" Class="mb-3">
+                            @project.Category
+                        </MudChip>
+                    </MudCardContent>
+                    
+                    <MudCardActions>
+                        @if (!string.IsNullOrEmpty(project.LiveDemoUrl))
+                        {
+                            <MudButton Variant="Variant.Filled" 
+                                      Color="Color.Primary" 
+                                      Size="Size.Small"
+                                      Href="@project.LiveDemoUrl"
+                                      Target="_blank"
+                                      StartIcon="@Icons.Material.Filled.PlayArrow">
+                                Live Demo
+                            </MudButton>
+                        }
+                        
+                        @if (!string.IsNullOrEmpty(project.GitHubUrl))
+                        {
+                            <MudButton Variant="Variant.Outlined" 
+                                      Color="Color.Primary" 
+                                      Size="Size.Small"
+                                      Href="@project.GitHubUrl"
+                                      Target="_blank"
+                                      StartIcon="@Icons.Material.Filled.Code">
+                                View Code
+                            </MudButton>
+                        }
+                        
+                        <MudSpacer />
+                        
+                        <MudIconButton Icon="@Icons.Material.Filled.Info" 
+                                      Color="Color.Primary" 
+                                      Size="Size.Small"
+                                      OnClick="@(() => ShowProjectDetails(project))" />
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+    
+    <!-- Project Categories Filter -->
+    <MudContainer Class="mt-6">
+        <MudText Typo="Typo.h6" Class="mb-3 text-center">Filter by Category</MudText>
+        <div class="filter-container">
+            <MudChip Color="@(_selectedCategory == "All" ? Color.Primary : Color.Default)"
+                    OnClick="@(() => FilterProjects("All"))"
+                    Class="mr-2 mb-2">
+                All
+            </MudChip>
+            
+            @foreach (var category in Projects.Select(p => p.Category).Distinct())
+            {
+                <MudChip Color="@(_selectedCategory == category ? Color.Primary : Color.Default)"
+                        OnClick="@(() => FilterProjects(category))"
+                        Class="mr-2 mb-2">
+                    @category
+                </MudChip>
+            }
+        </div>
+    </MudContainer>
+</MudContainer>
+
+@code {
+    [Parameter] public List<Project> Projects { get; set; } = new();
+    
+    [Inject] private IDialogService DialogService { get; set; } = default!;
+    
+    private string _selectedCategory = "All";
+    private List<Project> _filteredProjects = new();
+
+    protected override void OnInitialized()
+    {
+        _filteredProjects = Projects;
+    }
+
+    private void FilterProjects(string category)
+    {
+        _selectedCategory = category;
+        _filteredProjects = category == "All" 
+            ? Projects 
+            : Projects.Where(p => p.Category == category).ToList();
+        StateHasChanged();
+    }
+
+    private async Task ShowProjectDetails(Project project)
+    {
+        var parameters = new DialogParameters
+        {
+            ["Project"] = project
+        };
+        
+        var dialog = await DialogService.ShowAsync<ProjectDetailsDialog>("Project Details", parameters);
+        var result = await dialog.Result;
+    }
+}
+
+

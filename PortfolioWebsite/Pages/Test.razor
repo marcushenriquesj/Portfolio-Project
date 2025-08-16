@@ -1,0 +1,26 @@
+@page "/test"
+
+<PageTitle>Test Page</PageTitle>
+
+<div style="padding: 20px; font-family: Arial, sans-serif;">
+    <h1>Test Page</h1>
+    <p>If you can see this, the basic Blazor application is working!</p>
+    
+    <button onclick="alert('JavaScript is working!')" style="padding: 10px; margin: 10px;">
+        Test JavaScript
+    </button>
+    
+    <div style="background-color: #f0f0f0; padding: 10px; margin: 10px; border-radius: 5px;">
+        <h3>Current Time: @DateTime.Now.ToString()</h3>
+    </div>
+    
+    <a href="/" style="color: blue; text-decoration: underline;">Go to Home</a>
+</div>
+
+@code {
+    // Simple test to ensure C# code is working
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("Test page initialized");
+    }
+}

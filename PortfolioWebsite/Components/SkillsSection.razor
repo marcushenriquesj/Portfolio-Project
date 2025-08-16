@@ -1,0 +1,94 @@
+@using PortfolioWebsite.Models
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="section-container" id="skills">
+    <MudText Typo="Typo.h3" Class="section-title text-center mb-6">
+        Skills & Expertise
+    </MudText>
+    
+    <MudGrid>
+        @foreach (var category in Skills.GroupBy(s => s.Category))
+        {
+            <MudItem xs="12" md="6" lg="4">
+                <MudPaper Elevation="3" Class="skills-card pa-4">
+                    <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 text-center">
+                        @category.Key
+                    </MudText>
+                    
+                    @foreach (var skill in category)
+                    {
+                        <div class="skill-item mb-4">
+                            <div class="skill-header">
+                                <MudIcon Icon="@skill.Icon" Color="Color.Primary" Class="mr-2" />
+                                <MudText Typo="Typo.body1" Class="skill-name">
+                                    @skill.Name
+                                </MudText>
+                                <MudText Typo="Typo.body2" Class="skill-percentage">
+                                    @skill.Proficiency%
+                                </MudText>
+                            </div>
+                            
+                            <MudProgressLinear Value="@skill.Proficiency" 
+                                             Color="Color.Primary" 
+                                             Class="mt-2"
+                                             Style="height: 8px; border-radius: 4px;" />
+                        </div>
+                    }
+                </MudPaper>
+            </MudItem>
+        }
+    </MudGrid>
+    
+    <!-- Skills Chart -->
+    <MudItem xs="12" Class="mt-8">
+        <MudPaper Elevation="3" Class="pa-6">
+            <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 text-center">
+                Skills Overview
+            </MudText>
+            
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <div class="chart-container">
+                        <canvas id="skillsChart" width="400" height="300"></canvas>
+                    </div>
+                </MudItem>
+                
+                <MudItem xs="12" md="6">
+                    <div class="skills-summary">
+                        <MudText Typo="Typo.h6" Class="mb-3">Top Skills</MudText>
+                        @foreach (var skill in Skills.OrderByDescending(s => s.Proficiency).Take(5))
+                        {
+                            <div class="top-skill-item">
+                                <MudIcon Icon="@skill.Icon" Color="Color.Primary" Class="mr-2" />
+                                <MudText Typo="Typo.body1">@skill.Name</MudText>
+                                <MudChip Color="Color.Primary" Size="Size.Small" Class="ml-auto">
+                                    @skill.Proficiency%
+                                </MudChip>
+                            </div>
+                        }
+                    </div>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </MudItem>
+</MudContainer>
+
+@code {
+    [Parameter] public List<Skill> Skills { get; set; } = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await CreateSkillsChart();
+        }
+    }
+
+    private async Task CreateSkillsChart()
+    {
+        // This would typically use a charting library like Chart.js
+        // For now, we'll create a simple visualization
+        await Task.Delay(100); // Simulate chart creation
+    }
+}
+
+
