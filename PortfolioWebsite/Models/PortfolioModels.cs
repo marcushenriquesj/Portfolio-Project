@@ -48,7 +48,7 @@ public class ChatMessage
 
 public class PortfolioData
 {
-    public string Name { get; set; } = "John Doe";
+    public string Name { get; set; } = "Marcus Henriques";
     public string Title { get; set; } = "Full Stack Developer";
     public string Subtitle { get; set; } = "Passionate about creating innovative web solutions";
     public string About { get; set; } = "I'm a dedicated full-stack developer with expertise in modern web technologies. I love building scalable applications and solving complex problems.";

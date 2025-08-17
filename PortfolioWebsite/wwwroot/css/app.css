@@ -6,6 +6,65 @@ html, body {
     scroll-behavior: smooth;
 }
 
+/* Animated Background Container */
+.animated-background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.animated-background-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Ensure content layers properly above background */
+.mud-layout {
+    position: relative;
+    z-index: 1;
+}
+
+.mud-main-content {
+    position: relative;
+    z-index: 1;
+}
+
+.mud-appbar {
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(25, 118, 210, 0.9) !important;
+}
+
+.mud-theme-dark .mud-appbar {
+    background: rgba(26, 26, 26, 0.9) !important;
+}
+
+.mud-drawer {
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.mud-paper {
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.9) !important;
+}
+
+.mud-theme-dark .mud-paper {
+    background: rgba(30, 30, 30, 0.9) !important;
+}
+
 /* Loading Animation */
 .loading-container {
     display: flex;

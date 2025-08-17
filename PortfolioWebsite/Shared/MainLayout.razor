@@ -2,10 +2,14 @@
 @using PortfolioWebsite.Models
 @inherits LayoutComponentBase
 @inject ThemeService ThemeService
+@inject IJSRuntime JSRuntime
 
 <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="@_theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
+
+<!-- Animated Background -->
+<AnimatedBackground @ref="AnimatedBackgroundRef" DarkMode="@_isDarkMode" />
 
 <MudLayout>
     <MudAppBar Elevation="1" Color="Color.Primary">
@@ -36,6 +40,7 @@
     private bool _isDarkMode;
     private MudTheme _theme = new();
     private PortfolioData _portfolioData = new();
+    private AnimatedBackground AnimatedBackgroundRef;
 
     [Inject] private PortfolioDataService PortfolioDataService { get; set; } = default!;
 
@@ -63,6 +68,12 @@
     private async Task ToggleTheme()
     {
         await ThemeService.ToggleThemeAsync();
+        
+        // Trigger ripple effect on theme toggle
+        if (AnimatedBackgroundRef != null)
+        {
+            await AnimatedBackgroundRef.TriggerRipple(0.5, 0.5);
+        }
     }
 
     private void OpenChat()
