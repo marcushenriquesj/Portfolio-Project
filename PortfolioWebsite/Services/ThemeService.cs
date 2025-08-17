@@ -6,7 +6,7 @@ namespace PortfolioWebsite.Services;
 public class ThemeService
 {
     private readonly IJSRuntime _jsRuntime;
-    private bool _isDarkMode = false;
+    private bool _isDarkMode = true;
 
     public event Action? OnThemeChanged;
 
@@ -39,8 +39,8 @@ public class ThemeService
         }
         catch
         {
-            // Default to light theme if localStorage is not available
-            _isDarkMode = false;
+            // Default to dark theme if localStorage is not available
+            _isDarkMode = true;
         }
     }
 
@@ -83,17 +83,17 @@ public class ThemeService
         {
             Palette = new PaletteDark()
             {
-                Primary = "#90caf9",
-                Secondary = "#f48fb1",
-                AppbarBackground = "#1a1a1a",
-                Background = "#121212",
-                Surface = "#1e1e1e",
-                DrawerBackground = "#1e1e1e",
+                Primary = "#4CAF50",
+                Secondary = "#FFC107",
+                AppbarBackground = "#1A1A1A",
+                Background = "#1A1A1A",
+                Surface = "#2D2D2D",
+                DrawerBackground = "#2D2D2D",
                 DrawerText = "rgba(255,255,255, 0.87)",
-                Success = "#66bb6a",
-                Error = "#ef5350",
-                Warning = "#ffa726",
-                Info = "#42a5f5"
+                Success = "#4CAF50",
+                Error = "#f44336",
+                Warning = "#FFC107",
+                Info = "#2196f3"
             }
         };
     }

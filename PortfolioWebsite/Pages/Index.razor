@@ -2,74 +2,37 @@
 @using PortfolioWebsite.Services
 @using PortfolioWebsite.Models
 @inject PortfolioDataService PortfolioDataService
+@inject NavigationManager Navigation
 
 <PageTitle>@_portfolioData.Name - Portfolio</PageTitle>
 
-<div class="portfolio-container">
-    <!-- Hero Section -->
-    <HeroSection PortfolioData="@_portfolioData" />
-    
-    <!-- Quick Navigation -->
-    <MudContainer MaxWidth="MaxWidth.Large" Class="mt-8">
-        <MudText Typo="Typo.h4" Class="text-center mb-6">Explore My Portfolio</MudText>
-        <MudGrid>
-            <MudItem xs="12" sm="6" md="4">
-                <MudCard Class="navigation-card" Elevation="3" Style="cursor: pointer;" OnClick="@(() => Navigation.NavigateTo("/about"))">
-                    <MudCardContent Class="text-center pa-6">
-                        <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Primary" Size="Size.Large" />
-                        <MudText Typo="Typo.h6" Class="mt-3">About Me</MudText>
-                        <MudText Typo="Typo.body2">Learn more about my background and expertise</MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-            
-            <MudItem xs="12" sm="6" md="4">
-                <MudCard Class="navigation-card" Elevation="3" Style="cursor: pointer;" OnClick="@(() => Navigation.NavigateTo("/skills"))">
-                    <MudCardContent Class="text-center pa-6">
-                        <MudIcon Icon="@Icons.Material.Filled.Psychology" Color="Color.Primary" Size="Size.Large" />
-                        <MudText Typo="Typo.h6" Class="mt-3">Skills</MudText>
-                        <MudText Typo="Typo.body2">View my technical skills and expertise</MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-            
-            <MudItem xs="12" sm="6" md="4">
-                <MudCard Class="navigation-card" Elevation="3" Style="cursor: pointer;" OnClick="@(() => Navigation.NavigateTo("/projects"))">
-                    <MudCardContent Class="text-center pa-6">
-                        <MudIcon Icon="@Icons.Material.Filled.Work" Color="Color.Primary" Size="Size.Large" />
-                        <MudText Typo="Typo.h6" Class="mt-3">Projects</MudText>
-                        <MudText Typo="Typo.body2">Explore my featured projects and work</MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-            
-            <MudItem xs="12" sm="6" md="4">
-                <MudCard Class="navigation-card" Elevation="3" Style="cursor: pointer;" OnClick="@(() => Navigation.NavigateTo("/experience"))">
-                    <MudCardContent Class="text-center pa-6">
-                        <MudIcon Icon="@Icons.Material.Filled.Timeline" Color="Color.Primary" Size="Size.Large" />
-                        <MudText Typo="Typo.h6" Class="mt-3">Experience</MudText>
-                        <MudText Typo="Typo.body2">See my professional experience and achievements</MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-            
-            <MudItem xs="12" sm="6" md="4">
-                <MudCard Class="navigation-card" Elevation="3" Style="cursor: pointer;" OnClick="@(() => Navigation.NavigateTo("/contact"))">
-                    <MudCardContent Class="text-center pa-6">
-                        <MudIcon Icon="@Icons.Material.Filled.ContactMail" Color="Color.Primary" Size="Size.Large" />
-                        <MudText Typo="Typo.h6" Class="mt-3">Contact</MudText>
-                        <MudText Typo="Typo.body2">Get in touch with me</MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
+<!-- Navigation Header -->
+<div class="nav-header">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <span class="nav-name">@_portfolioData.Name</span>
+            <span class="nav-separator">/</span>
+            <span class="nav-portfolio">PORTFOLIO</span>
+            <div class="nav-logo">
+                <div class="logo-circle">
+                    <div class="logo-pattern"></div>
+                </div>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="" class="nav-link-text">ABOUT</a>
+            <a href="experience" class="nav-link-text">RESUME</a>
+            <a href="projects" class="nav-link-text">PROJECTS</a>
+            <a href="contact" class="nav-link-text">CONTACT</a>
+        </div>
+    </div>
 </div>
+
+<!-- Hero Section - Full Screen -->
+<HeroSection PortfolioData="@_portfolioData" />
 
 @code {
     private PortfolioData _portfolioData = new();
-
-    [Inject] private NavigationManager Navigation { get; set; } = default!;
 
     protected override void OnInitialized()
     {

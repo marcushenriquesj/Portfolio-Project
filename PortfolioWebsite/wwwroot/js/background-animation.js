@@ -1,43 +1,81 @@
-// TV Static Background Animation with Wave Patterns and Ripple Effects
-// Enhanced with collision avoidance and dot ripple effects
-// Based on bahamas10/tvstatic and wave-ripple math tutorials
+// Fluid TV Static Background Animation with Smooth Wave Patterns
+// Enhanced with acceleration-based physics and gradient colors
+// Based on fluid dynamics and natural wave simulation
 
 class BackgroundAnimation {
-    constructor(canvas) {
+    constructor(canvas, isDarkMode = false) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.width = canvas.width;
         this.height = canvas.height;
-        this.isDarkMode = false;
+        this.isDarkMode = isDarkMode;
         this.time = 0;
         this.animationId = null;
         
-        // TV Static dots configuration - UNIFORM SIZE
+        // Fluid dots configuration
         this.dots = [];
-        this.dotCount = 1500; // Reduced for better collision detection performance
-        this.dotRadius = 1.5; // Uniform size for all dots
-        this.minDistance = 4; // Minimum distance between dots
-        this.collisionForce = 0.3; // Strength of collision avoidance
-        this.maxDots = 1500; // Maximum number of dots to maintain performance
+        this.dotCount = 2500; // Increased for more density
+        this.minDistance = 2; // Closer spacing for better coverage
+        this.maxDots = 3500; // Increased max dots
+        this.maxSpeed = 0.6; // Slower for smoother movement
         
-        // Wave configuration
+        // Dot size variation
+        this.minDotRadius = 0.8; // Minimum dot size
+        this.maxDotRadius = 2.5; // Maximum dot size
+        
+        // Diagonal wave configuration - ADJUSTED FOR SQUIGGLY WAVES
+        this.waveAmplitude = 35; // Reduced amplitude for softer waves
+        this.waveWavelength = 300; // Increased wavelength for gentler waves
+        this.waveFrequency = 1.5; // Reduced frequency for softer movement
+        this.waveSpeed = 0.5; // Slower speed for gentler waves
+        this.waveInfluence = 1.2; // Reduced influence for softer effect
+        
+        // Fluid dynamics configuration - ADJUSTED TO PREVENT BLOBBING
+        this.acceleration = 0.2; // Gentler acceleration
+        this.damping = 0.99; // More damping for stability
+        this.cohesionRadius = 40; // Smaller radius to prevent large clusters
+        this.cohesionForce = 0.005; // Much weaker cohesion
+        this.separationForce = 0.15; // Stronger separation to prevent clustering
+        this.alignmentForce = 0.01; // Weaker alignment
+        this.dispersionForce = 0.02; // New force to spread dots apart
+        
+        // Enhanced wave configuration
         this.waves = [
-            { amplitude: 0.2, frequency: 0.3, speed: 0.2, phase: 0 },
-            { amplitude: 0.15, frequency: 0.5, speed: 0.3, phase: Math.PI / 3 },
-            { amplitude: 0.1, frequency: 0.7, speed: 0.15, phase: Math.PI / 2 }
+            { amplitude: 0.12, frequency: 0.001, speed: 0.08, phase: 0 },
+            { amplitude: 0.08, frequency: 0.002, speed: 0.12, phase: Math.PI / 3 },
+            { amplitude: 0.06, frequency: 0.0008, speed: 0.06, phase: Math.PI / 2 },
+            { amplitude: 0.1, frequency: 0.003, speed: 0.1, phase: Math.PI / 4 }
         ];
         
-        // Ripple configuration - DOTS MOVING AWAY FROM CLICK
-        this.rippleRadius = 150; // Radius of ripple effect on dots
-        this.rippleStrength = 3.0; // How strongly dots are pushed away
+        // Ripple configuration
+        this.rippleRadius = 100;
+        this.rippleStrength = 1.5;
         
-        // Dot spawning configuration
-        this.spawnCount = 15; // Number of dots to spawn on button click
-        this.spawnSpeed = 2.0; // Initial speed of spawned dots
+        // Dot spawning configuration - SPORADIC PATTERNS
+        this.spawnCount = 80; // Reduced for performance
+        this.spawnSpeed = 25; // Reduced speed
+        this.spawnRadius = 60; // Smaller spawn area
+        this.spawnPatterns = ['explosion', 'spiral', 'random', 'wave']; // Different spawn patterns
         
-        // Noise configuration
-        this.noiseScale = 0.015;
+        // Enhanced noise configuration
+        this.noiseScale = 0.006;
         this.noiseOffset = 0;
+        
+        // Color gradient configuration
+        this.colorPalettes = {
+            light: [
+                { r: 100, g: 150, b: 255, a: 0.6 }, // Softer blue
+                { r: 150, g: 200, b: 255, a: 0.5 }, // Light blue
+                { r: 200, g: 220, b: 255, a: 0.4 }, // Very light blue
+                { r: 120, g: 180, b: 240, a: 0.7 }  // Medium blue
+            ],
+            dark: [
+                { r: 80, g: 120, b: 255, a: 0.8 },  // Bright blue
+                { r: 120, g: 160, b: 255, a: 0.7 }, // Medium bright blue
+                { r: 160, g: 200, b: 255, a: 0.6 }, // Light bright blue
+                { r: 100, g: 140, b: 255, a: 0.9 }  // Intense blue
+            ]
+        };
         
         // Initialize permutation table for Perlin noise
         this.p = new Array(512);
@@ -65,15 +103,21 @@ class BackgroundAnimation {
                 x = Math.random() * this.width;
                 y = Math.random() * this.height;
                 attempts++;
-            } while (this.isTooCloseToExisting(x, y) && attempts < 30);
+            } while (this.isTooCloseToExisting(x, y) && attempts < 20);
             
             this.dots.push({
                 x: x,
                 y: y,
-                vx: (Math.random() - 0.5) * 0.8,
-                vy: (Math.random() - 0.5) * 0.8,
-                opacity: Math.random() * 0.8 + 0.2,
-                phase: Math.random() * Math.PI * 2
+                vx: (Math.random() - 0.5) * 0.4, // Even slower initial velocity
+                vy: (Math.random() - 0.5) * 0.4,
+                ax: 0, // Acceleration
+                ay: 0,
+                opacity: Math.random() * 0.5 + 0.3, // Lower opacity for subtlety
+                phase: Math.random() * Math.PI * 2,
+                colorIndex: Math.floor(Math.random() * 4), // For gradient variation
+                radius: Math.random() * (this.maxDotRadius - this.minDotRadius) + this.minDotRadius, // Varying sizes
+                originalX: x, // Store original position for wave effect
+                originalY: y
             });
         }
     }
@@ -122,20 +166,71 @@ class BackgroundAnimation {
     }
     
     spawnDots(spawnX, spawnY) {
-        // Spawn new dots at the specified location
+        // Choose a random spawn pattern
+        const pattern = this.spawnPatterns[Math.floor(Math.random() * this.spawnPatterns.length)];
+        
         for (let i = 0; i < this.spawnCount; i++) {
-            // Random angle for spreading out
-            const angle = Math.random() * Math.PI * 2;
-            const speed = Math.random() * this.spawnSpeed + 0.5;
+            let x, y, vx, vy;
             
-            // Create new dot at spawn location
+            switch (pattern) {
+                case 'explosion':
+                    // Explosion pattern - dots spawn in random directions from center
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * this.spawnRadius * 0.3;
+                    x = spawnX + Math.cos(angle) * distance;
+                    y = spawnY + Math.sin(angle) * distance;
+                    const speed = Math.random() * this.spawnSpeed + 5;
+                    vx = Math.cos(angle) * speed;
+                    vy = Math.sin(angle) * speed;
+                    break;
+                    
+                case 'spiral':
+                    // Spiral pattern - dots spawn in a spiral formation
+                    const spiralAngle = (i / this.spawnCount) * Math.PI * 6 + Math.random() * 0.3;
+                    const spiralRadius = (i / this.spawnCount) * this.spawnRadius * 0.4;
+                    x = spawnX + Math.cos(spiralAngle) * spiralRadius;
+                    y = spawnY + Math.sin(spiralAngle) * spiralRadius;
+                    const spiralSpeed = Math.random() * this.spawnSpeed + 8;
+                    vx = Math.cos(spiralAngle) * spiralSpeed;
+                    vy = Math.sin(spiralAngle) * spiralSpeed;
+                    break;
+                    
+                case 'random':
+                    // Random pattern - dots spawn in random positions within radius
+                    const randomAngle = Math.random() * Math.PI * 2;
+                    const randomDistance = Math.random() * this.spawnRadius;
+                    x = spawnX + Math.cos(randomAngle) * randomDistance;
+                    y = spawnY + Math.sin(randomAngle) * randomDistance;
+                    const randomSpeed = Math.random() * this.spawnSpeed + 3;
+                    vx = (Math.random() - 0.5) * randomSpeed;
+                    vy = (Math.random() - 0.5) * randomSpeed;
+                    break;
+                    
+                case 'wave':
+                    // Wave pattern - dots spawn in a wave-like formation
+                    const waveAngle = (i / this.spawnCount) * Math.PI * 2;
+                    const waveDistance = this.spawnRadius * 0.3 + Math.sin(waveAngle * 2) * this.spawnRadius * 0.15;
+                    x = spawnX + Math.cos(waveAngle) * waveDistance;
+                    y = spawnY + Math.sin(waveAngle) * waveDistance;
+                    const waveSpeed = Math.random() * this.spawnSpeed + 4;
+                    vx = Math.cos(waveAngle) * waveSpeed;
+                    vy = Math.sin(waveAngle) * waveSpeed;
+                    break;
+            }
+            
             const newDot = {
-                x: spawnX,
-                y: spawnY,
-                vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed,
-                opacity: Math.random() * 0.8 + 0.2,
-                phase: Math.random() * Math.PI * 2
+                x: x,
+                y: y,
+                vx: vx,
+                vy: vy,
+                ax: 0,
+                ay: 0,
+                opacity: Math.random() * 0.5 + 0.3,
+                phase: Math.random() * Math.PI * 2,
+                colorIndex: Math.floor(Math.random() * 4),
+                radius: Math.random() * (this.maxDotRadius - this.minDotRadius) + this.minDotRadius,
+                originalX: x,
+                originalY: y
             };
             
             this.dots.push(newDot);
@@ -156,7 +251,7 @@ class BackgroundAnimation {
         this.initializeDots();
     }
     
-    // Perlin noise implementation for natural wave patterns
+    // Enhanced Perlin noise for smoother wave patterns
     noise(x, y) {
         const X = Math.floor(x) & 255;
         const Y = Math.floor(y) & 255;
@@ -204,16 +299,58 @@ class BackgroundAnimation {
                 // Calculate force based on distance (stronger when closer)
                 const force = (this.rippleRadius - distance) / this.rippleRadius;
                 
-                // Apply velocity change to push dot away
-                dot.vx += Math.cos(angle) * force * this.rippleStrength;
-                dot.vy += Math.sin(angle) * force * this.rippleStrength;
+                // Apply force as acceleration for smoother movement
+                dot.ax += Math.cos(angle) * force * this.rippleStrength * 0.3;
+                dot.ay += Math.sin(angle) * force * this.rippleStrength * 0.3;
             }
         });
     }
     
+    // Calculate diagonal wave effect with Perlin noise for non-linear movement
+    calculateWaveEffect(dot) {
+        // Create a squiggly, non-linear wave field using enhanced Perlin noise
+        // Multiple noise layers for organic, flowing movement
+        
+        // Primary wave direction (diagonal) - softer base
+        const diagonalPosition = (dot.originalX + dot.originalY) / this.waveWavelength;
+        const wavePhase = this.time * this.waveSpeed;
+        const baseWave = Math.sin(2 * Math.PI * (diagonalPosition - wavePhase));
+        
+        // Enhanced Perlin noise for squiggly distortion
+        const noiseScale = 0.01; // Increased scale for more squiggly effect
+        const noiseX = this.noise(dot.originalX * noiseScale + this.time * 0.15, dot.originalY * noiseScale) * 0.8;
+        const noiseY = this.noise(dot.originalX * noiseScale, dot.originalY * noiseScale + this.time * 0.2) * 0.8;
+        
+        // Secondary noise layer for additional squiggly variation
+        const secondaryNoiseX = this.noise(dot.originalX * 0.02 + this.time * 0.08, dot.originalY * 0.02) * 0.5;
+        const secondaryNoiseY = this.noise(dot.originalX * 0.02, dot.originalY * 0.02 + this.time * 0.12) * 0.5;
+        
+        // Tertiary noise for fine squiggly details
+        const tertiaryNoiseX = this.noise(dot.originalX * 0.03 + this.time * 0.05, dot.originalY * 0.03) * 0.3;
+        const tertiaryNoiseY = this.noise(dot.originalX * 0.03, dot.originalY * 0.03 + this.time * 0.08) * 0.3;
+        
+        // Combine base wave with multiple noise layers for squiggly movement
+        const waveValue = baseWave * 0.5 + noiseX * 0.3 + secondaryNoiseX * 0.15 + tertiaryNoiseX * 0.05;
+        const waveValueY = baseWave * 0.4 + noiseY * 0.35 + secondaryNoiseY * 0.2 + tertiaryNoiseY * 0.05;
+        
+        // Calculate wave influence with softer intensity
+        const waveInfluenceX = this.waveAmplitude * waveValue * this.waveInfluence;
+        const waveInfluenceY = this.waveAmplitude * waveValueY * this.waveInfluence;
+        
+        // Add additional squiggly variation based on position
+        const positionNoiseX = this.noise(dot.originalX * 0.005 + this.time * 0.1, dot.originalY * 0.005) * 0.4;
+        const positionNoiseY = this.noise(dot.originalX * 0.005, dot.originalY * 0.005 + this.time * 0.15) * 0.4;
+        
+        // Final squiggly displacement combining all noise layers
+        const finalDisplacementX = waveInfluenceX + positionNoiseX * this.waveAmplitude * 0.3;
+        const finalDisplacementY = waveInfluenceY + positionNoiseY * this.waveAmplitude * 0.3;
+        
+        return { dx: finalDisplacementX, dy: finalDisplacementY };
+    }
+    
     animate() {
-        this.time += 0.016; // ~60 FPS
-        this.noiseOffset += 0.01;
+        this.time += 0.016;
+        this.noiseOffset += 0.003; // Even slower noise change
         
         // Clear canvas completely - NO TRAILS
         this.ctx.clearRect(0, 0, this.width, this.height);
@@ -227,74 +364,154 @@ class BackgroundAnimation {
     
     updateDots() {
         this.dots.forEach(dot => {
-            // Add wave motion using Perlin noise
-            const noiseX = this.noise(dot.x * this.noiseScale + this.noiseOffset, dot.y * this.noiseScale) * 0.5;
-            const noiseY = this.noise(dot.x * this.noiseScale, dot.y * this.noiseScale + this.noiseOffset) * 0.5;
+            // Reset acceleration
+            dot.ax = 0;
+            dot.ay = 0;
             
-            // Add wave patterns
+            // Apply fluid dynamics forces
+            this.applyFluidForces(dot);
+            
+            // Apply wave motion with smoother noise
+            const noiseX = this.noise(dot.x * this.noiseScale + this.noiseOffset, dot.y * this.noiseScale) * 0.2;
+            const noiseY = this.noise(dot.x * this.noiseScale, dot.y * this.noiseScale + this.noiseOffset) * 0.2;
+            
+            // Apply wave patterns with reduced amplitude
             let waveX = 0, waveY = 0;
             this.waves.forEach(wave => {
                 waveX += Math.sin(this.time * wave.speed + dot.x * wave.frequency + wave.phase) * wave.amplitude;
                 waveY += Math.cos(this.time * wave.speed + dot.y * wave.frequency + wave.phase) * wave.amplitude;
             });
             
-            // Calculate collision avoidance
-            let collisionX = 0, collisionY = 0;
-            this.dots.forEach(other => {
-                if (other === dot) return;
-                
-                const dx = dot.x - other.x;
-                const dy = dot.y - other.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                // If dots are too close, push them apart
-                if (distance < this.minDistance && distance > 0) {
-                    const force = (this.minDistance - distance) / distance;
-                    collisionX += dx * force;
-                    collisionY += dy * force;
-                }
-            });
+            // Apply forces as acceleration
+            dot.ax += noiseX + waveX;
+            dot.ay += noiseY + waveY;
             
-            // Update velocity with collision avoidance
-            dot.vx += noiseX + waveX + collisionX * this.collisionForce;
-            dot.vy += noiseY + waveY + collisionY * this.collisionForce;
+            // Update velocity with acceleration
+            dot.vx += dot.ax * this.acceleration;
+            dot.vy += dot.ay * this.acceleration;
             
-            // Limit speed for uniform motion
+            // Apply damping for natural deceleration
+            dot.vx *= this.damping;
+            dot.vy *= this.damping;
+            
+            // Limit speed for smooth movement
             const speed = Math.sqrt(dot.vx * dot.vx + dot.vy * dot.vy);
-            if (speed > 1.0) {
-                dot.vx = (dot.vx / speed) * 1.0;
-                dot.vy = (dot.vy / speed) * 1.0;
+            if (speed > this.maxSpeed) {
+                dot.vx = (dot.vx / speed) * this.maxSpeed;
+                dot.vy = (dot.vy / speed) * this.maxSpeed;
             }
             
-            // Update position
-            dot.x += dot.vx;
-            dot.y += dot.vy;
+            // Update original position (for wave calculation)
+            dot.originalX += dot.vx;
+            dot.originalY += dot.vy;
             
-            // Wrap around edges
-            if (dot.x < 0) dot.x = this.width;
-            if (dot.x > this.width) dot.x = 0;
-            if (dot.y < 0) dot.y = this.height;
-            if (dot.y > this.height) dot.y = 0;
+            // Calculate wave effect
+            const waveEffect = this.calculateWaveEffect(dot);
+            
+            // Apply wave displacement to visual position
+            dot.x = dot.originalX + waveEffect.dx;
+            dot.y = dot.originalY + waveEffect.dy;
+            
+            // Wrap around edges with smooth transition
+            if (dot.originalX < -10) dot.originalX = this.width + 10;
+            if (dot.originalX > this.width + 10) dot.originalX = -10;
+            if (dot.originalY < -10) dot.originalY = this.height + 10;
+            if (dot.originalY > this.height + 10) dot.originalY = -10;
         });
     }
     
-    drawDots() {
-        this.dots.forEach(dot => {
-            // Calculate color based on theme - UNIFORM SIZE
-            let color;
-            if (this.isDarkMode) {
-                // Dark mode: brighter, more contrast
-                const intensity = Math.random() * 0.6 + 0.4;
-                color = `rgba(${Math.floor(200 * intensity)}, ${Math.floor(220 * intensity)}, ${Math.floor(255 * intensity)}, ${dot.opacity})`;
-            } else {
-                // Light mode: softer, muted tones
-                const intensity = Math.random() * 0.4 + 0.2;
-                color = `rgba(${Math.floor(100 * intensity)}, ${Math.floor(150 * intensity)}, ${Math.floor(200 * intensity)}, ${dot.opacity * 0.6})`;
+    applyFluidForces(dot) {
+        let cohesionX = 0, cohesionY = 0;
+        let separationX = 0, separationY = 0;
+        let alignmentX = 0, alignmentY = 0;
+        let dispersionX = 0, dispersionY = 0;
+        let neighborCount = 0;
+        
+        this.dots.forEach(other => {
+            if (other === dot) return;
+            
+            const dx = dot.originalX - other.originalX; // Use original positions for physics
+            const dy = dot.originalY - other.originalY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < this.cohesionRadius && distance > 0) {
+                neighborCount++;
+                
+                // Cohesion: move toward center of neighbors (very weak)
+                cohesionX += other.originalX;
+                cohesionY += other.originalY;
+                
+                // Alignment: align with neighbor velocities (very weak)
+                alignmentX += other.vx;
+                alignmentY += other.vy;
+                
+                // Separation: avoid crowding (stronger)
+                if (distance < this.minDistance * 2) {
+                    const force = (this.minDistance * 2 - distance) / distance;
+                    separationX += dx * force;
+                    separationY += dy * force;
+                }
             }
             
-            this.ctx.fillStyle = color;
+            // Dispersion: push dots apart to prevent clustering
+            if (distance < 50 && distance > 0) {
+                const force = (50 - distance) / 50;
+                dispersionX += dx * force;
+                dispersionY += dy * force;
+            }
+        });
+        
+        if (neighborCount > 0) {
+            // Apply very weak cohesion force
+            cohesionX /= neighborCount;
+            cohesionY /= neighborCount;
+            const cohesionDx = cohesionX - dot.originalX;
+            const cohesionDy = cohesionY - dot.originalY;
+            dot.ax += cohesionDx * this.cohesionForce;
+            dot.ay += cohesionDy * this.cohesionForce;
+            
+            // Apply very weak alignment force
+            alignmentX /= neighborCount;
+            alignmentY /= neighborCount;
+            dot.ax += alignmentX * this.alignmentForce;
+            dot.ay += alignmentY * this.alignmentForce;
+        }
+        
+        // Apply separation force
+        dot.ax += separationX * this.separationForce;
+        dot.ay += separationY * this.separationForce;
+        
+        // Apply dispersion force
+        dot.ax += dispersionX * this.dispersionForce;
+        dot.ay += dispersionY * this.dispersionForce;
+    }
+    
+    drawDots() {
+        const palette = this.isDarkMode ? this.colorPalettes.dark : this.colorPalettes.light;
+        
+        this.dots.forEach(dot => {
+            const color = palette[dot.colorIndex];
+            const opacity = color.a * dot.opacity;
+            
+            // Create gradient for each dot using its individual radius
+            const gradient = this.ctx.createRadialGradient(
+                dot.x, dot.y, 0,
+                dot.x, dot.y, dot.radius * 1.5
+            );
+            
+            if (this.isDarkMode) {
+                gradient.addColorStop(0, `rgba(${color.r + 30}, ${color.g + 30}, ${color.b + 30}, ${opacity})`);
+                gradient.addColorStop(0.6, `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity * 0.7})`);
+                gradient.addColorStop(1, `rgba(${color.r - 15}, ${color.g - 15}, ${color.b - 15}, 0)`);
+            } else {
+                gradient.addColorStop(0, `rgba(${color.r + 20}, ${color.g + 20}, ${color.b + 20}, ${opacity})`);
+                gradient.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity * 0.6})`);
+                gradient.addColorStop(1, `rgba(${color.r - 10}, ${color.g - 10}, ${color.b - 10}, 0)`);
+            }
+            
+            this.ctx.fillStyle = gradient;
             this.ctx.beginPath();
-            this.ctx.arc(dot.x, dot.y, this.dotRadius, 0, Math.PI * 2); // Use uniform radius
+            this.ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
             this.ctx.fill();
         });
     }
@@ -310,9 +527,8 @@ class BackgroundAnimation {
 const backgroundAnimations = new Map();
 
 // Blazor interop functions
-window.initializeBackgroundAnimation = function(canvas) {
-    console.log('🎬 Initializing background animation');
-    const animation = new BackgroundAnimation(canvas);
+window.initializeBackground = function(canvas, isDarkMode) {
+    const animation = new BackgroundAnimation(canvas, isDarkMode);
     backgroundAnimations.set(canvas, animation);
 };
 
@@ -323,11 +539,9 @@ window.updateBackgroundTheme = function(canvas, isDarkMode) {
     }
 };
 
-window.triggerRipple = function(canvas, x, y) {
+window.triggerBackgroundRipple = function(canvas, x, y) {
     const animation = backgroundAnimations.get(canvas);
     if (animation) {
         animation.triggerDotRipple(x, y);
     }
 };
-
-console.log('🎯 Background animation script loaded');

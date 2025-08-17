@@ -1,78 +1,94 @@
 @using PortfolioWebsite.Models
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="hero-section" id="hero">
-    <MudGrid>
-        <MudItem xs="12" md="6" Class="d-flex align-center">
-            <div class="hero-content">
-                <MudText Typo="Typo.h3" Class="hero-greeting mb-2">
-                    Hello, I'm
-                </MudText>
-                <MudText Typo="Typo.h2" Color="Color.Primary" Class="hero-name mb-3">
-                    @PortfolioData.Name
-                </MudText>
-                <MudText Typo="Typo.h5" Class="hero-title mb-4">
-                    @PortfolioData.Title
-                </MudText>
-                <MudText Typo="Typo.body1" Class="hero-subtitle mb-6">
-                    @PortfolioData.Subtitle
-                </MudText>
-                
-                <div class="hero-actions">
-                    <MudButton Variant="Variant.Filled" 
-                              Color="Color.Primary" 
-                              Size="Size.Large" 
-                              Class="mr-3"
-                              OnClick="@(() => Navigation.NavigateTo("/contact"))">
-                        Get In Touch
-                    </MudButton>
-                    <MudButton Variant="Variant.Outlined" 
-                              Color="Color.Primary" 
-                              Size="Size.Large"
-                              OnClick="@(() => Navigation.NavigateTo("/projects"))">
-                        View Projects
-                    </MudButton>
+<div class="hero-section" id="hero">
+    <div class="hero-container">
+        <MudGrid>
+            <!-- Left Column - Text Content -->
+            <MudItem xs="12" md="6" Class="d-flex align-center">
+                <div class="hero-content">
+                    <MudText Typo="Typo.body2" Class="hero-intro mb-2">
+                        - Introducing
+                    </MudText>
+                    <MudText Typo="Typo.h2" Class="hero-greeting mb-3">
+                        Hello I'm @PortfolioData.Name
+                    </MudText>
+                    <MudText Typo="Typo.body1" Class="hero-subtitle mb-6">
+                        Since beginning my journey as a freelance designer nearby 7 years ago, I've done remote work for agencies, consulted for startup, and collaborated with talented people to create digital products.
+                    </MudText>
+                    
+                    <div class="hero-actions">
+                        <MudButton Variant="Variant.Filled" 
+                                  Color="Color.Warning" 
+                                  Size="Size.Large" 
+                                  Class="contact-btn"
+                                  OnClick="@(() => Navigation.NavigateTo("/contact"))">
+                            Contact Me
+                        </MudButton>
+                    </div>
                 </div>
-
-                <div class="hero-social mt-6">
-                    @if (PortfolioData.SocialLinks.Count > 0)
-                    {
-                        <MudIconButton Icon="@Icons.Material.Filled.Code" 
-                                      Color="Color.Primary" 
-                                      Href="@PortfolioData.SocialLinks[0]" 
-                                      Target="_blank" 
-                                      Class="mr-2" />
-                    }
-                    @if (PortfolioData.SocialLinks.Count > 1)
-                    {
-                        <MudIconButton Icon="@Icons.Material.Filled.Business" 
-                                      Color="Color.Primary" 
-                                      Href="@PortfolioData.SocialLinks[1]" 
-                                      Target="_blank" 
-                                      Class="mr-2" />
-                    }
-                    @if (PortfolioData.SocialLinks.Count > 2)
-                    {
-                        <MudIconButton Icon="@Icons.Material.Filled.Share" 
-                                      Color="Color.Primary" 
-                                      Href="@PortfolioData.SocialLinks[2]" 
-                                      Target="_blank" />
-                    }
+            </MudItem>
+            
+            <!-- Right Column - Avatar and Skills -->
+            <MudItem xs="12" md="6" Class="d-flex align-center justify-center">
+                <div class="hero-avatar-container">
+                    <div class="skills-background">
+                        <div class="skill-node" style="top: 10%; left: 10%;">
+                            <span>Id</span>
+                        </div>
+                        <div class="skill-node" style="top: 10%; right: 10%;">
+                            <span>Ps</span>
+                        </div>
+                        <div class="skill-node" style="bottom: 10%; left: 10%;">
+                            <span>Ai</span>
+                        </div>
+                        <div class="skill-node" style="bottom: 10%; right: 10%;">
+                            <span>Xd</span>
+                        </div>
+                    </div>
+                    <div class="avatar-container">
+                        <img src="/images/my avatar.png" alt="@PortfolioData.Name" class="hero-avatar" />
+                    </div>
                 </div>
-            </div>
-        </MudItem>
+            </MudItem>
+        </MudGrid>
         
-        <MudItem xs="12" md="6" Class="d-flex align-center justify-center">
-            <div class="hero-image-container">
-                <MudPaper Elevation="8" Class="hero-image pa-4">
-                    <MudIcon Icon="@Icons.Material.Filled.Person" 
-                            Size="Size.Large" 
-                            Color="Color.Primary" 
-                            Style="font-size: 200px;" />
-                </MudPaper>
-            </div>
-        </MudItem>
-    </MudGrid>
-</MudContainer>
+        <!-- Skills Section -->
+        <MudGrid Class="mt-16">
+            <MudItem xs="12" md="8">
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Success" />
+                        </div>
+                        <div class="skill-content">
+                            <MudText Typo="Typo.h6" Class="skill-title">Product Design</MudText>
+                            <MudText Typo="Typo.body2" Class="skill-description">The technological revolution is changing aspect</MudText>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <MudIcon Icon="@Icons.Material.Filled.Brush" Color="Color.Success" />
+                        </div>
+                        <div class="skill-content">
+                            <MudText Typo="Typo.h6" Class="skill-title">Logo Design</MudText>
+                            <MudText Typo="Typo.body2" Class="skill-description">The technological revolution is changing</MudText>
+                        </div>
+                    </div>
+                </div>
+            </MudItem>
+            <MudItem xs="12" md="4" Class="d-flex align-center">
+                <div class="skills-cta">
+                    <MudText Typo="Typo.body2" Class="skills-intro mb-2">
+                        - My Skills
+                    </MudText>
+                    <MudText Typo="Typo.h4" Class="skills-title">
+                        Why Hire Me For Next Project?
+                    </MudText>
+                </div>
+            </MudItem>
+        </MudGrid>
+    </div>
+</div>
 
 @code {
     [Parameter] public PortfolioData PortfolioData { get; set; } = new();

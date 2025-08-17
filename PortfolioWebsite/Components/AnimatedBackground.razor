@@ -1,24 +1,25 @@
+@using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 
-<div class="animated-background-container">
-    <canvas @ref="CanvasRef" id="background-canvas" width="1920" height="1080"></canvas>
+<div class="animated-background-container @(DarkMode ? "dark-mode" : "light-mode")">
+    <canvas @ref="CanvasRef" id="animated-background-canvas" width="1920" height="1080"></canvas>
 </div>
 
 @code {
     private ElementReference CanvasRef;
     private bool IsDarkMode = false;
     private bool IsInitialized = false;
-
+    
     [Parameter] public bool DarkMode { get; set; } = false;
-
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await InitializeCanvas();
+            await InitializeBackground();
         }
     }
-
+    
     protected override async Task OnParametersSetAsync()
     {
         if (IsInitialized && DarkMode != IsDarkMode)
@@ -27,33 +28,48 @@
             await UpdateTheme();
         }
     }
-
-    private async Task InitializeCanvas()
+    
+    private async Task InitializeBackground()
     {
         try
         {
-            await JSRuntime.InvokeVoidAsync("initializeBackgroundAnimation", CanvasRef);
+            await JSRuntime.InvokeVoidAsync("initializeBackground", CanvasRef, IsDarkMode);
             IsInitialized = true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine($"Error initializing canvas: {ex.Message}");
+            // Background animation failed to initialize - this is non-critical
+            // The application will continue to function without the background
         }
     }
-
+    
     private async Task UpdateTheme()
     {
         if (IsInitialized)
         {
-            await JSRuntime.InvokeVoidAsync("updateBackgroundTheme", CanvasRef, IsDarkMode);
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("updateBackgroundTheme", CanvasRef, IsDarkMode);
+            }
+            catch (Exception)
+            {
+                // Theme update failed - this is non-critical
+            }
         }
     }
-
+    
     public async Task TriggerRipple(double x, double y)
     {
         if (IsInitialized)
         {
-            await JSRuntime.InvokeVoidAsync("triggerRipple", CanvasRef, x, y);
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("triggerBackgroundRipple", CanvasRef, x, y);
+            }
+            catch (Exception)
+            {
+                // Ripple effect failed - this is non-critical
+            }
         }
     }
 }

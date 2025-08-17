@@ -80,14 +80,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGFjdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Pages/Debug.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGVidWcucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Pages/Experience.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZXJpZW5jZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -102,14 +94,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Pages/Skills.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2tpbGxzLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Pages/Test.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVzdC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Pages/Weather.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Shared/MainLayout.razor]
