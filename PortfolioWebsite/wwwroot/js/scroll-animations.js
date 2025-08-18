@@ -25,8 +25,8 @@ function initializeScrollSpy(dotNetHelper) {
     const sections = ['about-me', 'my-story', 'random-facts', 'how-i-work'];
     
     const observerOptions = {
-        threshold: 0.3,
-        rootMargin: '-100px 0px -100px 0px'
+        threshold: 0.4, // Increased threshold to be less sensitive
+        rootMargin: '-30% 0px -30% 0px' // Smaller trigger zone to reduce conflicts
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -58,61 +58,81 @@ function scrollToSection(sectionId) {
         console.log('Element found:', element);
         
         if (element) {
-            const offset = 50; // Offset for sticky sidebar
+            const viewportHeight = window.innerHeight;
+            const elementHeight = element.offsetHeight;
+            const navHeight = 80; // Height of fixed navigation
+            const offset = navHeight + 20; // Account for nav height plus some padding
             
-            // Method 1: Using offsetTop
+            // Calculate position to center the section in the viewport
             const offsetTop = element.offsetTop;
-            console.log('Element offsetTop:', offsetTop);
+            const targetPosition = Math.max(0, offsetTop - (viewportHeight / 2) + (elementHeight / 2) - offset);
             
-            // Method 2: Using getBoundingClientRect + scrollY
-            const rect = element.getBoundingClientRect();
-            const scrollY = window.scrollY || window.pageYOffset;
-            const rectTop = rect.top + scrollY;
-            console.log('Element rect.top:', rect.top, 'scrollY:', scrollY, 'rectTop:', rectTop);
+            console.log('Element offsetTop:', offsetTop);
+            console.log('Viewport height:', viewportHeight);
+            console.log('Element height:', elementHeight);
+            console.log('Target scroll position (centered):', targetPosition);
+            console.log('Current scroll position:', window.scrollY || window.pageYOffset);
             
             // Check if we can actually scroll
             const documentHeight = document.documentElement.scrollHeight;
-            const viewportHeight = window.innerHeight;
             console.log('Document height:', documentHeight, 'Viewport height:', viewportHeight);
             console.log('Can scroll:', documentHeight > viewportHeight);
             
-            // Use offsetTop method as primary, with fallback
-            const targetPosition = offsetTop - offset;
-            console.log('Target scroll position:', targetPosition);
-            console.log('Current scroll position:', window.scrollY || window.pageYOffset);
-            
-            // Try multiple scroll methods
+            // Try multiple scroll methods with smoother behavior
             try {
-                // Method 1: window.scrollTo
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+                // Method 1: window.scrollTo with custom easing
+                const startPosition = window.scrollY || window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                const duration = Math.min(Math.abs(distance) * 0.8, 1200); // Dynamic duration based on distance
+                const startTime = performance.now();
                 
-                // Method 2: If that doesn't work, try scrollIntoView
+                function smoothScroll(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Easing function for smoother animation
+                    const easeInOutCubic = progress => {
+                        return progress < 0.5 
+                            ? 4 * progress * progress * progress 
+                            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                    };
+                    
+                    const easedProgress = easeInOutCubic(progress);
+                    const currentPosition = startPosition + (distance * easedProgress);
+                    
+                    window.scrollTo(0, currentPosition);
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(smoothScroll);
+                    }
+                };
+                
+                requestAnimationFrame(smoothScroll);
+                
+                // Method 2: Fallback to native smooth scroll if custom animation fails
                 setTimeout(() => {
                     const currentScroll = window.scrollY || window.pageYOffset;
-                    console.log('Scroll position after scrollTo:', currentScroll);
+                    console.log('Scroll position after custom animation:', currentScroll);
                     
-                    if (Math.abs(currentScroll - targetPosition) > 10) {
-                        console.log('scrollTo failed, trying scrollIntoView...');
+                    if (Math.abs(currentScroll - targetPosition) > 20) {
+                        console.log('Custom animation failed, trying native smooth scroll...');
                         element.scrollIntoView({
                             behavior: 'smooth',
-                            block: 'start'
+                            block: 'center'
                         });
                         
-                        // Method 3: If that doesn't work, try manual scroll
+                        // Method 3: Final fallback to manual scroll
                         setTimeout(() => {
                             const newScroll = window.scrollY || window.pageYOffset;
                             console.log('Scroll position after scrollIntoView:', newScroll);
                             
-                            if (Math.abs(newScroll - targetPosition) > 10) {
-                                console.log('scrollIntoView failed, trying manual scroll...');
+                            if (Math.abs(newScroll - targetPosition) > 20) {
+                                console.log('scrollIntoView failed, using manual scroll...');
                                 window.scrollTo(0, targetPosition);
                             }
-                        }, 100);
+                        }, 200);
                     }
-                }, 100);
+                }, duration + 100);
                 
             } catch (error) {
                 console.error('Scroll error:', error);

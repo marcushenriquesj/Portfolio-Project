@@ -1,10 +1,17 @@
 /* Global Styles */
-html, body {
-    font-family: 'Roboto', sans-serif;
+* {
     margin: 0;
     padding: 0;
-    height: 100%;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #1a1a1a;
+    color: white;
+    line-height: 1.6;
     overflow-x: hidden;
+    padding-top: 80px; /* Add padding for fixed navigation */
 }
 
 #app {
@@ -72,14 +79,11 @@ html, body {
     pointer-events: none;
 }
 
-/* Main Content Area */
+/* Main content wrapper */
 .main-content {
+    min-height: calc(100vh - 80px); /* Account for fixed nav height */
     position: relative;
     z-index: 1;
-    min-height: 100vh;
-    padding-top: 0;
-    padding-bottom: 0;
-    background: transparent;
 }
 
 /* MudBlazor Overrides */

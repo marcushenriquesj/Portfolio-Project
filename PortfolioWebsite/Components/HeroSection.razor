@@ -13,7 +13,7 @@
                         Hello I'm @PortfolioData.Name
                     </MudText>
                     <MudText Typo="Typo.body1" Class="hero-subtitle mb-6">
-                        Since beginning my journey as a freelance designer nearby 7 years ago, I've done remote work for agencies, consulted for startup, and collaborated with talented people to create digital products.
+                       Architecting scalable systems and building responsive applications with C#, Blazor & Azure.
                     </MudText>
                     
                     <div class="hero-actions">
@@ -24,6 +24,13 @@
                                   OnClick="@(() => Navigation.NavigateTo("/contact"))">
                             Contact Me
                         </MudButton>
+                        <MudButton Variant="Variant.Outlined" 
+                                  Color="Color.Primary" 
+                                  Size="Size.Large" 
+                                  Class="about-btn"
+                                  OnClick="@(() => Navigation.NavigateTo("/about"))">
+                            About Me
+                        </MudButton>
                     </div>
                 </div>
             </MudItem>
@@ -32,16 +39,16 @@
             <MudItem xs="12" md="6" Class="d-flex align-center justify-center">
                 <div class="hero-avatar-container">
                     <div class="skills-background">
-                        <div class="skill-node" style="top: 10%; left: 10%;">
+                        <div class="skill-node" style="top: 20%; left: 20%;">
                             <span>Id</span>
                         </div>
-                        <div class="skill-node" style="top: 10%; right: 10%;">
+                        <div class="skill-node" style="top: 20%; right: 20%;">
                             <span>Ps</span>
                         </div>
-                        <div class="skill-node" style="bottom: 10%; left: 10%;">
+                        <div class="skill-node" style="bottom: 45%; left: 8%;">
                             <span>Ai</span>
                         </div>
-                        <div class="skill-node" style="bottom: 10%; right: 10%;">
+                        <div class="skill-node" style="bottom: 45%; right: 8%;">
                             <span>Xd</span>
                         </div>
                     </div>
@@ -54,46 +61,168 @@
         
         <!-- Skills Section -->
         <MudGrid Class="mt-16">
-            <MudItem xs="12" md="8">
-                <div class="skills-grid">
-                    <div class="skill-card">
-                        <div class="skill-icon">
-                            <MudIcon Icon="@Icons.Material.Filled.Settings" Color="Color.Success" />
-                        </div>
-                        <div class="skill-content">
-                            <MudText Typo="Typo.h6" Class="skill-title">Product Design</MudText>
-                            <MudText Typo="Typo.body2" Class="skill-description">The technological revolution is changing aspect</MudText>
-                        </div>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">
-                            <MudIcon Icon="@Icons.Material.Filled.Brush" Color="Color.Success" />
-                        </div>
-                        <div class="skill-content">
-                            <MudText Typo="Typo.h6" Class="skill-title">Logo Design</MudText>
-                            <MudText Typo="Typo.body2" Class="skill-description">The technological revolution is changing</MudText>
-                        </div>
-                    </div>
-                </div>
-            </MudItem>
             <MudItem xs="12" md="4" Class="d-flex align-center">
                 <div class="skills-cta">
                     <MudText Typo="Typo.body2" Class="skills-intro mb-2">
                         - My Skills
                     </MudText>
                     <MudText Typo="Typo.h4" Class="skills-title">
-                        Why Hire Me For Next Project?
+                        What I Bring to Your Team
                     </MudText>
+                </div>
+            </MudItem>
+            <MudItem xs="12" md="8">
+                <div class="skills-grid">
+                    <div class="skill-card" @onclick="() => ShowSkillDetails(0)">
+                        <div class="skill-icon">
+                            <MudIcon Icon="@Icons.Material.Filled.Code" Color="Color.Success" />
+                        </div>
+                        <div class="skill-content">
+                            <MudText Typo="Typo.h6" Class="skill-title">Full-Stack Development</MudText>
+                            <MudText Typo="Typo.body2" Class="skill-description">Enterprise applications with C#, Blazor & Azure</MudText>
+                        </div>
+                    </div>
+                    <div class="skill-card" @onclick="() => ShowSkillDetails(1)">
+                        <div class="skill-icon">
+                            <MudIcon Icon="@Icons.Material.Filled.Cloud" Color="Color.Success" />
+                        </div>
+                        <div class="skill-content">
+                            <MudText Typo="Typo.h6" Class="skill-title">Cloud Architecture</MudText>
+                            <MudText Typo="Typo.body2" Class="skill-description">Scalable solutions using Azure DevOps & microservices</MudText>
+                        </div>
+                    </div>
+                    <div class="skill-card" @onclick="() => ShowSkillDetails(2)">
+                        <div class="skill-icon">
+                            <MudIcon Icon="@Icons.Material.Filled.Storage" Color="Color.Success" />
+                        </div>
+                        <div class="skill-content">
+                            <MudText Typo="Typo.h6" Class="skill-title">Database Engineering</MudText>
+                            <MudText Typo="Typo.body2" Class="skill-description">Optimized SQL Server & Entity Framework implementations</MudText>
+                        </div>
+                    </div>
+                    <div class="skill-card" @onclick="() => ShowSkillDetails(3)">
+                        <div class="skill-icon">
+                            <MudIcon Icon="@Icons.Material.Filled.Group" Color="Color.Success" />
+                        </div>
+                        <div class="skill-content">
+                            <MudText Typo="Typo.h6" Class="skill-title">Team Leadership</MudText>
+                            <MudText Typo="Typo.body2" Class="skill-description">Mentoring developers & driving coding standards</MudText>
+                        </div>
+                    </div>
                 </div>
             </MudItem>
         </MudGrid>
     </div>
 </div>
 
+<!-- Skill Details Dialog -->
+<SkillDetailsDialog @bind-IsVisible="isSkillDialogVisible"
+                   SkillTitle="@currentSkill.Title"
+                   SkillIcon="@currentSkill.Icon"
+                   SkillOverview="@currentSkill.Overview"
+                   SkillDetails="@currentSkill.Details"
+                   Experience="@currentSkill.Experience" />
+
 @code {
     [Parameter] public PortfolioData PortfolioData { get; set; } = new();
 
     [Inject] private NavigationManager Navigation { get; set; } = default!;
+
+    private bool isSkillDialogVisible = false;
+    private SkillData currentSkill = new();
+
+    private readonly List<SkillData> skillsData = new()
+    {
+        new SkillData
+        {
+            Title = "Full-Stack Development",
+            Icon = Icons.Material.Filled.Code,
+            Overview = "Comprehensive expertise in building enterprise-grade applications from frontend to backend, with a focus on modern web technologies and scalable architecture.",
+            Details = new List<string>
+            {
+                "C# .NET Core & Framework development",
+                "Blazor WebAssembly & Server applications",
+                "React.js & modern JavaScript frameworks",
+                "RESTful APIs & Web Services",
+                "Responsive web design & UI/UX",
+                "Performance optimization & debugging",
+                "Version control with Git & Azure DevOps",
+                "Agile development methodologies"
+            },
+            Experience = "Led development of multiple enterprise applications serving 10,000+ users, implemented CI/CD pipelines reducing deployment time, and mentored junior developers in full-stack best practices."
+        },
+        new SkillData
+        {
+            Title = "Cloud Architecture",
+            Icon = Icons.Material.Filled.Cloud,
+            Overview = "Design and implementation of scalable cloud-native solutions using Microsoft Azure, with expertise in microservices architecture and DevOps practices.",
+            Details = new List<string>
+            {
+                "Azure App Services & Functions",
+                "Azure SQL Database & Cosmos DB",
+                "Azure DevOps CI/CD pipelines",
+                "Microservices architecture design",
+                "Containerization with Docker",
+                "Azure Active Directory & security",
+                "Cloud monitoring & logging",
+                "Infrastructure as Code (ARM templates)"
+            },
+            Experience = "Architected and deployed cloud solutions for 5+ enterprise clients, implemented microservices reducing system downtime by 80%, and established automated deployment processes saving 40+ hours per release cycle."
+        },
+        new SkillData
+        {
+            Title = "Database Engineering",
+            Icon = Icons.Material.Filled.Storage,
+            Overview = "Expert-level database design, optimization, and management with focus on SQL Server and Entity Framework, ensuring data integrity and performance.",
+            Details = new List<string>
+            {
+                "SQL Server design & optimization",
+                "Entity Framework Core",
+                "Database performance tuning",
+                "Stored procedures & functions",
+                "Data migration & ETL processes",
+                "Database security & access control",
+                "Backup & disaster recovery"
+            },
+            Experience = "Optimized database queries improving performance by 300%, designed schemas for applications handling 1B+ records, and implemented data migration strategies for legacy system modernization."
+        },
+        new SkillData
+        {
+            Title = "Team Leadership",
+            Icon = Icons.Material.Filled.Group,
+            Overview = "Proven leadership in technical teams, driving coding standards, mentoring developers, and delivering high-quality software solutions through collaborative development.",
+            Details = new List<string>
+            {
+                "Technical team leadership (3-5 overseas developers)",
+                "Code review & quality assurance",
+                "Mentoring junior & mid-level developers",
+                "Agile/Scrum methodology implementation",
+                "Technical documentation & standards",
+                "Project planning & estimation",
+                "Stakeholder communication",
+                "Performance management & feedback"
+            },
+            Experience = "Led development teams of 3-5 overseas engineers across 3 major projects, established coding standards reducing bugs by 45%, and mentored 4+ developers who advanced positions."
+        }
+    };
+
+    private void ShowSkillDetails(int skillIndex)
+    {
+        if (skillIndex >= 0 && skillIndex < skillsData.Count)
+        {
+            currentSkill = skillsData[skillIndex];
+            isSkillDialogVisible = true;
+        }
+    }
+
+    public class SkillData
+    {
+        public string Title { get; set; } = "";
+        public string Icon { get; set; } = "";
+        public string Overview { get; set; } = "";
+        public List<string> Details { get; set; } = new();
+        public string Experience { get; set; } = "";
+    }
 }
 
 
