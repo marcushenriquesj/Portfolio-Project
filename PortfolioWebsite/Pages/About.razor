@@ -173,8 +173,15 @@
     protected override async Task OnInitializedAsync()
     {
         _portfolioData = PortfolioDataService.GetPortfolioData();
-        await InitializeScrollAnimations();
-        await InitializeScrollSpy();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await InitializeScrollAnimations();
+            await InitializeScrollSpy();
+        }
     }
 
     private async Task InitializeScrollAnimations()
@@ -189,9 +196,11 @@
 
     private async Task ScrollToSection(string sectionId)
     {
+        Console.WriteLine($"ScrollToSection called with sectionId: {sectionId}");
         _activeSection = sectionId;
         StateHasChanged();
         await JSRuntime.InvokeVoidAsync("scrollToSection", sectionId);
+        Console.WriteLine($"JavaScript scrollToSection call completed for: {sectionId}");
     }
 
     private async Task ScrollToAboutMe()
