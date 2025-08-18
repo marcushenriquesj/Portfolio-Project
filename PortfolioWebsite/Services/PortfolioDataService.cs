@@ -8,18 +8,17 @@ public class PortfolioDataService
     {
         return new PortfolioData
         {
-            Name = "John Doe",
-            Title = "Full Stack Developer",
+            Name = "Marcus Henriques",
+            Title = "Full-Stack Developer",
             Subtitle = "Passionate about creating innovative web solutions",
-            About = "I'm a dedicated full-stack developer with 5+ years of experience in modern web technologies. I specialize in building scalable applications using .NET, React, and cloud technologies. I love solving complex problems and creating user-friendly experiences.",
-            Email = "john.doe@example.com",
-            Phone = "+1 (555) 123-4567",
+            About = "I’m Marcus Henriques, a Full-Stack Software Engineer with expertise in building scalable, secure, and efficient solutions. With a focus on modern technologies like C# .NET 8.0, Azure, Blazor, and SQL, I deliver impactful software from front to back. Passionate about clean design, robust systems, and collaborative problem-solving, I strive to create software that drives success.",
+            Email = "MarcusjHenriques@Gmail.com",
+            Phone = "+1 (516) 253-8334",
             Location = "New York, NY",
             SocialLinks = new List<string>
             {
-                "https://github.com/johndoe",
-                "https://linkedin.com/in/johndoe",
-                "https://twitter.com/johndoe"
+                "https://https://github.com/marcushenriquesj",
+                "https://www.linkedin.com/in/marcusj-henriques/"
             },
             Skills = GetSkills(),
             Projects = GetProjects(),
@@ -31,14 +30,13 @@ public class PortfolioDataService
     {
         return new List<Skill>
         {
-            new() { Name = "C#", Proficiency = 95, Category = "Backend", Icon = "mdi-language-csharp", Color = "#178600" },
-            new() { Name = ".NET", Proficiency = 90, Category = "Backend", Icon = "mdi-dot-net", Color = "#512BD4" },
-            new() { Name = "Blazor", Proficiency = 85, Category = "Frontend", Icon = "mdi-microsoft", Color = "#512BD4" },
+            new() { Name = "C#", Proficiency = 100, Category = "Backend", Icon = "mdi-language-csharp", Color = "#178600" },
+            new() { Name = ".NET", Proficiency = 95, Category = "Backend", Icon = "mdi-dot-net", Color = "#512BD4" },
+            new() { Name = "Blazor", Proficiency = 90, Category = "Frontend", Icon = "mdi-microsoft", Color = "#512BD4" },
             new() { Name = "JavaScript", Proficiency = 80, Category = "Frontend", Icon = "mdi-language-javascript", Color = "#F7DF1E" },
-            new() { Name = "React", Proficiency = 75, Category = "Frontend", Icon = "mdi-react", Color = "#61DAFB" },
             new() { Name = "TypeScript", Proficiency = 70, Category = "Frontend", Icon = "mdi-language-typescript", Color = "#3178C6" },
-            new() { Name = "SQL Server", Proficiency = 85, Category = "Database", Icon = "mdi-database", Color = "#CC2927" },
-            new() { Name = "Azure", Proficiency = 75, Category = "Cloud", Icon = "mdi-microsoft-azure", Color = "#0089D6" },
+            new() { Name = "SQL Server", Proficiency = 90, Category = "Database", Icon = "mdi-database", Color = "#CC2927" },
+            new() { Name = "Azure", Proficiency = 80, Category = "Cloud", Icon = "mdi-microsoft-azure", Color = "#0089D6" },
             new() { Name = "Docker", Proficiency = 70, Category = "DevOps", Icon = "mdi-docker", Color = "#2496ED" },
             new() { Name = "Git", Proficiency = 90, Category = "Tools", Icon = "mdi-git", Color = "#F05032" }
         };

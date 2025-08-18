@@ -2,21 +2,222 @@
 @using PortfolioWebsite.Services
 @using PortfolioWebsite.Models
 @inject PortfolioDataService PortfolioDataService
+@inject IJSRuntime JSRuntime
 
-<PageTitle>About - @_portfolioData.Name</PageTitle>
+<PageTitle>About @_portfolioData.Name</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
-    <BreadcrumbNav CurrentPage="About" />
-    <div class="portfolio-container">
-        <AboutSection PortfolioData="@_portfolioData" />
+<div class="about-page">
+    <!-- Fixed Left Navigation -->
+    <div class="about-sidebar">
+        <div class="sidebar-content">
+            <div class="intro-content">
+                <h1 class="intro-name">@_portfolioData.Name</h1>
+                <h2 class="intro-title">Full Stack Developer</h2>
+                <p class="intro-description">
+                    I build accessible, pixel-perfect digital experiences for the web.
+                </p>
+                
+                <!-- Navigation Menu -->
+                <nav class="about-nav">
+                    <a class="nav-item @(_activeSection == "about-me" ? "active" : "")" @onclick="() => ScrollToAboutMe()" @onclick:preventDefault="true">
+                        <span class="nav-line"></span>
+                        ABOUT
+                    </a>
+                    <a class="nav-item @(_activeSection == "my-story" ? "active" : "")" @onclick="() => ScrollToMyStory()" @onclick:preventDefault="true">
+                        <span class="nav-line"></span>
+                        MY STORY
+                    </a>
+                    <a class="nav-item @(_activeSection == "random-facts" ? "active" : "")" @onclick="() => ScrollToRandomFacts()" @onclick:preventDefault="true">
+                        <span class="nav-line"></span>
+                        RANDOM FACTS
+                    </a>
+                    <a class="nav-item @(_activeSection == "how-i-work" ? "active" : "")" @onclick="() => ScrollToHowIWork()" @onclick:preventDefault="true">
+                        <span class="nav-line"></span>
+                        HOW I WORK
+                    </a>
+                </nav>
+            </div>
+        </div>
     </div>
-</MudContainer>
+
+    <!-- Right Content Area -->
+    <div class="about-content-area">
+        <!-- About Me Section -->
+        <section class="about-section" id="about-me">
+            <div class="section-content">
+                <h2 class="section-title">About Me</h2>
+                <div class="content-text">
+                    <p>
+                        I'm a software engineer who loves building clean, scalable, and reliable applications. My experience spans across full-stack development, cloud technologies, 
+                        and system design, with a strong focus on C#, .NET, Blazor, Azure, and SQL. I enjoy being hands-on with code — whether it's designing a responsive frontend, 
+                        optimizing backend performance, or streamlining deployment pipelines.
+                    </p>
+                    <p>
+                        I've had the opportunity to work in both startup and enterprise environments, which taught me how to balance moving fast with writing maintainable, 
+                        production-ready software. I take pride in debugging tricky issues, improving performance, and delivering features that make a real impact.
+                    </p>
+                    <p>
+                        Right now, my focus is on sharpening my technical expertise and growing into more advanced senior engineer roles, while also exploring opportunities 
+                        for freelance work where I can help teams ship high-quality products. At the end of the day, I enjoy solving problems, learning new tools, 
+                        and building software that people can rely on.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Story Section - 4 Quadrants -->
+        <section class="story-section" id="my-story">
+            <div class="section-content">
+                <h2 class="section-title">My Story</h2>
+                <div class="story-quadrants">
+                    <div class="quadrant fade-in">
+                        <div class="quadrant-content">
+                            <h3>Early Beginnings</h3>
+                            <p>Started my journey in web development with a curiosity about how websites work. Built my first project using HTML and CSS, sparking a passion for creating digital experiences.</p>
+                        </div>
+                    </div>
+                    <div class="quadrant fade-in">
+                        <div class="quadrant-content">
+                            <h3>Learning & Growth</h3>
+                            <p>Dived deep into JavaScript, React, and modern frameworks. Worked on various projects that challenged my skills and expanded my understanding of web development.</p>
+                        </div>
+                    </div>
+                    <div class="quadrant fade-in">
+                        <div class="quadrant-content">
+                            <h3>Professional Experience</h3>
+                            <p>Joined teams at startups and agencies, working on real-world applications. Learned the importance of collaboration, code quality, and user-centered design.</p>
+                        </div>
+                    </div>
+                    <div class="quadrant fade-in">
+                        <div class="quadrant-content">
+                            <h3>Current Focus</h3>
+                            <p>Now specializing in full-stack development with .NET and modern web technologies. Building scalable solutions and mentoring others in their development journey.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Random Facts Section -->
+        <section class="facts-section" id="random-facts">
+            <div class="section-content">
+                <h2 class="section-title">Random Facts</h2>
+                <div class="facts-grid">
+                    <div class="fact-card fade-in">
+                        <MudIcon Icon="@Icons.Material.Filled.Coffee" Class="fact-icon" />
+                        <h3>Coffee Enthusiast</h3>
+                        <p>I can't start my day without a good cup of coffee. It's my daily ritual and source of inspiration.</p>
+                    </div>
+                    <div class="fact-card fade-in">
+                        <MudIcon Icon="@Icons.Material.Filled.MusicNote" Class="fact-icon" />
+                        <h3>Music Lover</h3>
+                        <p>I listen to music while coding - it helps me focus and get into the flow state.</p>
+                    </div>
+                    <div class="fact-card fade-in">
+                        <MudIcon Icon="@Icons.Material.Filled.Book" Class="fact-icon" />
+                        <h3>Book Collector</h3>
+                        <p>I have a growing collection of technical books and always try to read something new each month.</p>
+                    </div>
+                    <div class="fact-card fade-in">
+                        <MudIcon Icon="@Icons.Material.Filled.Pets" Class="fact-icon" />
+                        <h3>Pet Person</h3>
+                        <p>I have a cat that likes to sit on my keyboard while I'm trying to code. It's both annoying and adorable.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How I Work Section -->
+        <section class="work-section" id="how-i-work">
+            <div class="section-content">
+                <h2 class="section-title">How I Work</h2>
+                <div class="work-process">
+                    <div class="process-step slide-in-left">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Research & Planning</h3>
+                            <p>I start by understanding the requirements, researching best practices, and planning the architecture before writing any code.</p>
+                        </div>
+                    </div>
+                    <div class="process-step slide-in-right">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Design & Prototype</h3>
+                            <p>I create wireframes and prototypes to visualize the solution and get early feedback from stakeholders.</p>
+                        </div>
+                    </div>
+                    <div class="process-step slide-in-left">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Development & Testing</h3>
+                            <p>I write clean, testable code with comprehensive testing to ensure quality and reliability.</p>
+                        </div>
+                    </div>
+                    <div class="process-step slide-in-right">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Deploy & Iterate</h3>
+                            <p>I deploy the solution and continuously iterate based on user feedback and performance metrics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
 
 @code {
     private PortfolioData _portfolioData = new();
+    private string _activeSection = "about-me";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         _portfolioData = PortfolioDataService.GetPortfolioData();
+        await InitializeScrollAnimations();
+        await InitializeScrollSpy();
+    }
+
+    private async Task InitializeScrollAnimations()
+    {
+        await JSRuntime.InvokeVoidAsync("initializeScrollAnimations");
+    }
+
+    private async Task InitializeScrollSpy()
+    {
+        await JSRuntime.InvokeVoidAsync("initializeScrollSpy", DotNetObjectReference.Create(this));
+    }
+
+    private async Task ScrollToSection(string sectionId)
+    {
+        _activeSection = sectionId;
+        StateHasChanged();
+        await JSRuntime.InvokeVoidAsync("scrollToSection", sectionId);
+    }
+
+    private async Task ScrollToAboutMe()
+    {
+        await ScrollToSection("about-me");
+    }
+
+    private async Task ScrollToMyStory()
+    {
+        await ScrollToSection("my-story");
+    }
+
+    private async Task ScrollToRandomFacts()
+    {
+        await ScrollToSection("random-facts");
+    }
+
+    private async Task ScrollToHowIWork()
+    {
+        await ScrollToSection("how-i-work");
+    }
+
+    [JSInvokable]
+    public void OnSectionChange(string sectionId)
+    {
+        _activeSection = sectionId;
+        StateHasChanged();
     }
 }

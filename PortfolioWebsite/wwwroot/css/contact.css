@@ -1,0 +1,67 @@
+/* Contact Section */
+.contact-info-card,
+.contact-form-card {
+    height: 100%;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.contact-info-card:hover,
+.contact-form-card:hover {
+    transform: translateY(-5px);
+}
+
+.contact-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.contact-info-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(10px);
+}
+
+.contact-details {
+    flex: 1;
+}
+
+.social-links {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Contact Form */
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Responsive Design for Contact */
+@media (max-width: 960px) {
+    .contact-info-card {
+        margin-bottom: 2rem;
+    }
+}

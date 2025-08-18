@@ -1,0 +1,43 @@
+/* Projects Section */
+.project-card {
+    height: 100%;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.project-technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Project Cards */
+.project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Design for Projects */
+@media (max-width: 960px) {
+    .project-card {
+        margin-bottom: 2rem;
+    }
+}

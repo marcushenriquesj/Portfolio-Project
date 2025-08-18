@@ -28,20 +28,12 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/AboutSection.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBYm91dFNlY3Rpb24ucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/AnimatedBackground.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBbmltYXRlZEJhY2tncm91bmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/BreadcrumbNav.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCcmVhZGNydW1iTmF2LnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/ChatComponent.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDaGF0Q29tcG9uZW50LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/ContactSection.razor]
@@ -68,10 +60,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQcm9qZWN0c1NlY3Rpb24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/SkillsSection.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTa2lsbHNTZWN0aW9uLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Pages/About.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWJvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -92,16 +80,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvamVjdHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Pages/Skills.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2tpbGxzLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Shared/NavMenu.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/_Imports.razor]

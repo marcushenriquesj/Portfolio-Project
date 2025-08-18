@@ -11,6 +11,27 @@
 <!-- Animated Background -->
 <AnimatedBackground @ref="AnimatedBackgroundRef" DarkMode="@_isDarkMode" />
 
+<!-- Global Navigation Header -->
+<div class="nav-header">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="">
+                <span class="nav-name">@_portfolioData.Name</span>
+                <span class="nav-separator">/</span>
+                <span class="nav-portfolio">PORTFOLIO</span>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="about" class="nav-link-text">ABOUT</a>
+            <a href="experience" class="nav-link-text">EXPERIENCE</a>
+            <a href="projects" class="nav-link-text">PROJECTS</a>
+            <a href="contact" class="nav-link-text">CONTACT</a>
+        </div>
+        
+    </div>
+</div>
+
+
 <!-- Main Content Area -->
 <main class="main-content">
     @Body

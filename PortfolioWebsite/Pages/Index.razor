@@ -2,31 +2,8 @@
 @using PortfolioWebsite.Services
 @using PortfolioWebsite.Models
 @inject PortfolioDataService PortfolioDataService
-@inject NavigationManager Navigation
 
 <PageTitle>@_portfolioData.Name - Portfolio</PageTitle>
-
-<!-- Navigation Header -->
-<div class="nav-header">
-    <div class="nav-container">
-        <div class="nav-brand">
-            <span class="nav-name">@_portfolioData.Name</span>
-            <span class="nav-separator">/</span>
-            <span class="nav-portfolio">PORTFOLIO</span>
-            <div class="nav-logo">
-                <div class="logo-circle">
-                    <div class="logo-pattern"></div>
-                </div>
-            </div>
-        </div>
-        <div class="nav-links">
-            <a href="" class="nav-link-text">ABOUT</a>
-            <a href="experience" class="nav-link-text">RESUME</a>
-            <a href="projects" class="nav-link-text">PROJECTS</a>
-            <a href="contact" class="nav-link-text">CONTACT</a>
-        </div>
-    </div>
-</div>
 
 <!-- Hero Section - Full Screen -->
 <HeroSection PortfolioData="@_portfolioData" />
