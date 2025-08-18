@@ -14,10 +14,10 @@ class BackgroundAnimation {
         
         // Fluid dots configuration
         this.dots = [];
-        this.dotCount = 2500; // Increased for more density
-        this.minDistance = 2; // Closer spacing for better coverage
-        this.maxDots = 3500; // Increased max dots
-        this.maxSpeed = 0.6; // Slower for smoother movement
+        this.dotCount = 1500; // Increased for more density
+        this.minDistance = 4; // Closer spacing for better coverage
+        this.maxDots = 2000; // Increased max dots
+        this.maxSpeed = 0.2; // Slower for smoother movement
         
         // Dot size variation
         this.minDotRadius = 0.8; // Minimum dot size
@@ -26,8 +26,8 @@ class BackgroundAnimation {
         // Diagonal wave configuration - ADJUSTED FOR SQUIGGLY WAVES
         this.waveAmplitude = 35; // Reduced amplitude for softer waves
         this.waveWavelength = 300; // Increased wavelength for gentler waves
-        this.waveFrequency = 1.5; // Reduced frequency for softer movement
-        this.waveSpeed = 0.5; // Slower speed for gentler waves
+        this.waveFrequency = 2.5; // Reduced frequency for softer movement
+        this.waveSpeed = 0.25; // Slower speed for gentler waves
         this.waveInfluence = 1.2; // Reduced influence for softer effect
         
         // Fluid dynamics configuration - ADJUSTED TO PREVENT BLOBBING
@@ -46,16 +46,6 @@ class BackgroundAnimation {
             { amplitude: 0.06, frequency: 0.0008, speed: 0.06, phase: Math.PI / 2 },
             { amplitude: 0.1, frequency: 0.003, speed: 0.1, phase: Math.PI / 4 }
         ];
-        
-        // Ripple configuration
-        this.rippleRadius = 100;
-        this.rippleStrength = 1.5;
-        
-        // Dot spawning configuration - SPORADIC PATTERNS
-        this.spawnCount = 80; // Reduced for performance
-        this.spawnSpeed = 25; // Reduced speed
-        this.spawnRadius = 60; // Smaller spawn area
-        this.spawnPatterns = ['explosion', 'spiral', 'random', 'wave']; // Different spawn patterns
         
         // Enhanced noise configuration
         this.noiseScale = 0.006;
@@ -139,108 +129,6 @@ class BackgroundAnimation {
         window.addEventListener('resize', () => {
             this.resize();
         });
-        
-        // Listen for click events on UI elements (buttons, cards, etc.)
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.mud-button, .mud-card, .mud-paper, .navigation-card')) {
-                // Get the click position relative to the canvas
-                const rect = this.canvas.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const clickY = e.clientY - rect.top;
-                
-                // Spawn new dots at the click location
-                this.spawnDots(clickX, clickY);
-                
-                // Also trigger the ripple effect
-                this.triggerDotRipple(clickX, clickY);
-            }
-        });
-        
-        // Listen for clicks anywhere on the canvas for dot ripple effect
-        this.canvas.addEventListener('click', (e) => {
-            const rect = this.canvas.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const clickY = e.clientY - rect.top;
-            this.triggerDotRipple(clickX, clickY);
-        });
-    }
-    
-    spawnDots(spawnX, spawnY) {
-        // Choose a random spawn pattern
-        const pattern = this.spawnPatterns[Math.floor(Math.random() * this.spawnPatterns.length)];
-        
-        for (let i = 0; i < this.spawnCount; i++) {
-            let x, y, vx, vy;
-            
-            switch (pattern) {
-                case 'explosion':
-                    // Explosion pattern - dots spawn in random directions from center
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = Math.random() * this.spawnRadius * 0.3;
-                    x = spawnX + Math.cos(angle) * distance;
-                    y = spawnY + Math.sin(angle) * distance;
-                    const speed = Math.random() * this.spawnSpeed + 5;
-                    vx = Math.cos(angle) * speed;
-                    vy = Math.sin(angle) * speed;
-                    break;
-                    
-                case 'spiral':
-                    // Spiral pattern - dots spawn in a spiral formation
-                    const spiralAngle = (i / this.spawnCount) * Math.PI * 6 + Math.random() * 0.3;
-                    const spiralRadius = (i / this.spawnCount) * this.spawnRadius * 0.4;
-                    x = spawnX + Math.cos(spiralAngle) * spiralRadius;
-                    y = spawnY + Math.sin(spiralAngle) * spiralRadius;
-                    const spiralSpeed = Math.random() * this.spawnSpeed + 8;
-                    vx = Math.cos(spiralAngle) * spiralSpeed;
-                    vy = Math.sin(spiralAngle) * spiralSpeed;
-                    break;
-                    
-                case 'random':
-                    // Random pattern - dots spawn in random positions within radius
-                    const randomAngle = Math.random() * Math.PI * 2;
-                    const randomDistance = Math.random() * this.spawnRadius;
-                    x = spawnX + Math.cos(randomAngle) * randomDistance;
-                    y = spawnY + Math.sin(randomAngle) * randomDistance;
-                    const randomSpeed = Math.random() * this.spawnSpeed + 3;
-                    vx = (Math.random() - 0.5) * randomSpeed;
-                    vy = (Math.random() - 0.5) * randomSpeed;
-                    break;
-                    
-                case 'wave':
-                    // Wave pattern - dots spawn in a wave-like formation
-                    const waveAngle = (i / this.spawnCount) * Math.PI * 2;
-                    const waveDistance = this.spawnRadius * 0.3 + Math.sin(waveAngle * 2) * this.spawnRadius * 0.15;
-                    x = spawnX + Math.cos(waveAngle) * waveDistance;
-                    y = spawnY + Math.sin(waveAngle) * waveDistance;
-                    const waveSpeed = Math.random() * this.spawnSpeed + 4;
-                    vx = Math.cos(waveAngle) * waveSpeed;
-                    vy = Math.sin(waveAngle) * waveSpeed;
-                    break;
-            }
-            
-            const newDot = {
-                x: x,
-                y: y,
-                vx: vx,
-                vy: vy,
-                ax: 0,
-                ay: 0,
-                opacity: Math.random() * 0.5 + 0.3,
-                phase: Math.random() * Math.PI * 2,
-                colorIndex: Math.floor(Math.random() * 4),
-                radius: Math.random() * (this.maxDotRadius - this.minDotRadius) + this.minDotRadius,
-                originalX: x,
-                originalY: y
-            };
-            
-            this.dots.push(newDot);
-        }
-        
-        // Remove oldest dots if we exceed the maximum
-        if (this.dots.length > this.maxDots) {
-            const excess = this.dots.length - this.maxDots;
-            this.dots.splice(0, excess);
-        }
     }
     
     resize() {
@@ -282,28 +170,6 @@ class BackgroundAnimation {
     
     updateTheme(isDarkMode) {
         this.isDarkMode = isDarkMode;
-    }
-    
-    triggerDotRipple(clickX, clickY) {
-        // Apply ripple effect to dots - make them move away from click point
-        this.dots.forEach(dot => {
-            const dx = dot.x - clickX;
-            const dy = dot.y - clickY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            // If dot is within ripple radius, push it away
-            if (distance < this.rippleRadius && distance > 0) {
-                // Calculate angle from click point to dot
-                const angle = Math.atan2(dy, dx);
-                
-                // Calculate force based on distance (stronger when closer)
-                const force = (this.rippleRadius - distance) / this.rippleRadius;
-                
-                // Apply force as acceleration for smoother movement
-                dot.ax += Math.cos(angle) * force * this.rippleStrength * 0.3;
-                dot.ay += Math.sin(angle) * force * this.rippleStrength * 0.3;
-            }
-        });
     }
     
     // Calculate diagonal wave effect with Perlin noise for non-linear movement
@@ -536,12 +402,5 @@ window.updateBackgroundTheme = function(canvas, isDarkMode) {
     const animation = backgroundAnimations.get(canvas);
     if (animation) {
         animation.updateTheme(isDarkMode);
-    }
-};
-
-window.triggerBackgroundRipple = function(canvas, x, y) {
-    const animation = backgroundAnimations.get(canvas);
-    if (animation) {
-        animation.triggerDotRipple(x, y);
     }
 };
