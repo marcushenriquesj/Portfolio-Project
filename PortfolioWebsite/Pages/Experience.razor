@@ -1,22 +1,7 @@
 @page "/experience"
-@using PortfolioWebsite.Services
-@using PortfolioWebsite.Models
-@inject PortfolioDataService PortfolioDataService
 
-<PageTitle>Experience - @_portfolioData.Name</PageTitle>
+<PageTitle>Experience - Marcus Henriques</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
-    <BreadcrumbNav CurrentPage="Experience" />
-    <div class="portfolio-container">
-        <ExperienceSection Experience="@_portfolioData.Experience" />
-    </div>
-</MudContainer>
-
-@code {
-    private PortfolioData _portfolioData = new();
-
-    protected override void OnInitialized()
-    {
-        _portfolioData = PortfolioDataService.GetPortfolioData();
-    }
-}
+<div class="page-container">
+    <ExperienceSection />
+</div>

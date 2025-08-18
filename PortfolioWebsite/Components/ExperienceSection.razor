@@ -1,117 +1,167 @@
 @using PortfolioWebsite.Models
+@inject PortfolioDataService PortfolioDataService
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="section-container" id="experience">
-    <MudText Typo="Typo.h3" Class="section-title text-center mb-6">
-        Work Experience
-    </MudText>
-    
-    <div class="timeline-container">
-        @for (int i = 0; i < Experience.Count; i++)
-        {
-            var exp = Experience[i];
-            var isEven = i % 2 == 0;
-            
-            <div class="timeline-item @(isEven ? "left" : "right")">
+<div class="experience-page">
+    <div class="experience-container">
+        <div class="timeline-header">
+            <h1 class="timeline-title">Work Experience</h1>
+            <div class="timeline-underline"></div>
+        </div>
+        
+        <div class="timeline-container">
+            <!-- Compyl -->
+            <div class="timeline-item">
+                <div class="timeline-marker">
+                    <div class="marker-dot"></div>
+                    <div class="marker-line"></div>
+                </div>
                 <div class="timeline-content">
-                    <MudPaper Elevation="3" Class="experience-card pa-4">
+                    <div class="experience-card">
                         <div class="experience-header">
-                            <MudIcon Icon="@exp.Icon" Color="Color.Primary" Size="Size.Large" Class="mr-3" />
-                            <div class="experience-info">
-                                <MudText Typo="Typo.h6" Color="Color.Primary" Class="mb-1">
-                                    @exp.Title
-                                </MudText>
-                                <MudText Typo="Typo.body1" Class="mb-1">
-                                    @exp.Company
-                                </MudText>
-                                <MudChip Color="Color.Secondary" Size="Size.Small">
-                                    @exp.Period
-                                </MudChip>
+                            <div class="company-info">
+                                <h3 class="company-name">Compyl</h3>
+                                <span class="job-title">Senior Software Engineer</span>
+                                <span class="duration">April 2025 - August 2025</span>
+                            </div>
+                            <div class="company-logo">
+                                <MudIcon Icon="@Icons.Material.Filled.Business" Class="company-icon" />
                             </div>
                         </div>
-                        
-                        <MudDivider Class="my-3" />
-                        
-                        <MudText Typo="Typo.body2" Class="mb-3">
-                            @exp.Description
-                        </MudText>
-                        
-                        @if (exp.Achievements.Any())
-                        {
-                            <MudText Typo="Typo.h6" Class="mb-2">Key Achievements:</MudText>
+                        <div class="experience-details">
                             <ul class="achievements-list">
-                                @foreach (var achievement in exp.Achievements)
-                                {
-                                    <li>
-                                        <MudText Typo="Typo.body2">@achievement</MudText>
-                                    </li>
-                                }
+                                <li>Developed and enhanced frontend components using .NET technologies (Razor, Blazor, ASP.NET Core) and JavaScript frameworks</li>
+                                <li>Diagnosed and resolved bugs across UI and backend integrations—improved user experience and system reliability</li>
+                                <li>Actively engaged in architecture and structural discussions, influencing frontend module design and scalability</li>
+                                <li>Reviewed code and ensured quality by conducting peer reviews, writing unit tests, and maintaining documentation</li>
                             </ul>
-                        }
-                        
-                        <MudButton Variant="Variant.Text" 
-                                  Color="Color.Primary" 
-                                  Size="Size.Small"
-                                  OnClick="@(() => ShowExperienceDetails(exp))"
-                                  Class="mt-2">
-                            View Details
-                        </MudButton>
-                    </MudPaper>
+                        </div>
+                    </div>
                 </div>
             </div>
-        }
+
+            <!-- Schroders PLC -->
+            <div class="timeline-item">
+                <div class="timeline-marker">
+                    <div class="marker-dot"></div>
+                    <div class="marker-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="experience-card">
+                        <div class="experience-header">
+                            <div class="company-info">
+                                <h3 class="company-name">Schroders PLC</h3>
+                                <span class="job-title">Full-Stack Software Engineer</span>
+                                <span class="duration">July 2023 - April 2025</span>
+                            </div>
+                            <div class="company-logo">
+                                <MudIcon Icon="@Icons.Material.Filled.AccountBalance" Class="company-icon" />
+                            </div>
+                        </div>
+                        <div class="experience-details">
+                            <ul class="achievements-list">
+                                <li>Architect and maintain enterprise-level RESTful APIs with C# .NET 8.0, Blazor, and Azure Functions</li>
+                                <li>Led the development of responsive UIs for critical applications using Blazor, Razor, JavaScript, HTML, and CSS</li>
+                                <li>Engineer scalable databases with SQL and Entity Framework, optimizing performance through advanced schema design</li>
+                                <li>Utilize Azure cloud services, including Key Vault, Data Factory, and serverless Azure Functions</li>
+                                <li>Drive CI/CD automation with Azure DevOps, deploying containerized microservices via Kubernetes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acutis Diagnostics -->
+            <div class="timeline-item">
+                <div class="timeline-marker">
+                    <div class="marker-dot"></div>
+                    <div class="marker-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="experience-card">
+                        <div class="experience-header">
+                            <div class="company-info">
+                                <h3 class="company-name">Acutis Diagnostics</h3>
+                                <span class="job-title">Software Engineer</span>
+                                <span class="duration">November 2020 - May 2023</span>
+                            </div>
+                            <div class="company-logo">
+                                <MudIcon Icon="@Icons.Material.Filled.Science" Class="company-icon" />
+                            </div>
+                        </div>
+                        <div class="experience-details">
+                            <ul class="achievements-list">
+                                <li>Utilized Jira for Agile SCRUM/Sprint tracking and Confluence for comprehensive documentation and SOP management</li>
+                                <li>Implemented CI/CD pipelines and automated deployment workflows on Azure Cloud using Azure DevOps</li>
+                                <li>Developed and maintained back-end batch processes supporting data models via WebHooks, SOAP, and RESTful APIs</li>
+                                <li>Programmed in C# using Visual Studio IDE, creating Console, Blazor WASM, ASP.NET MVC, and ASP.NET Web API projects</li>
+                                <li>Executed complex SQL queries, stored procedures, views, and schemas using Microsoft SQL Server</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New York Institute of Technology -->
+            <div class="timeline-item">
+                <div class="timeline-marker">
+                    <div class="marker-dot"></div>
+                    <div class="marker-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="experience-card">
+                        <div class="experience-header">
+                            <div class="company-info">
+                                <h3 class="company-name">New York Institute of Technology</h3>
+                                <span class="job-title">Master of Science in Computer Science</span>
+                                <span class="duration">September 2020 - May 2022</span>
+                            </div>
+                            <div class="company-logo">
+                                <MudIcon Icon="@Icons.Material.Filled.School" Class="company-icon" />
+                            </div>
+                        </div>
+                        <div class="experience-details">
+                            <ul class="achievements-list">
+                                <li>Graduated with distinction, achieving a 3.8 GPA in advanced computer science curriculum</li>
+                                <li>Specialized in software engineering, algorithms, and data structures with hands-on project experience</li>
+                                <li>Completed comprehensive coursework in modern programming languages, software architecture, and system design</li>
+                                <li>Developed strong foundation in theoretical and practical aspects of computer science</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adelphi University -->
+            <div class="timeline-item">
+                <div class="timeline-marker">
+                    <div class="marker-dot"></div>
+                    <div class="marker-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="experience-card">
+                        <div class="experience-header">
+                            <div class="company-info">
+                                <h3 class="company-name">Adelphi University</h3>
+                                <span class="job-title">Bachelor of Science in Applied Physics</span>
+                                <span class="duration">September 2016 - December 2019</span>
+                            </div>
+                            <div class="company-logo">
+                                <MudIcon Icon="@Icons.Material.Filled.Science" Class="company-icon" />
+                            </div>
+                        </div>
+                        <div class="experience-details">
+                            <ul class="achievements-list">
+                                <li>Graduated with a 3.3 GPA, demonstrating strong analytical and problem-solving skills</li>
+                                <li>Studied applied physics with focus on practical applications and experimental methodologies</li>
+                                <li>Developed critical thinking and quantitative analysis abilities through rigorous coursework</li>
+                                <li>Gained foundational knowledge in scientific principles and research methodologies</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <!-- Experience Summary -->
-    <MudContainer Class="mt-8">
-        <MudPaper Elevation="3" Class="pa-6">
-            <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 text-center">
-                Experience Summary
-            </MudText>
-            
-            <MudGrid>
-                <MudItem xs="12" md="4">
-                    <div class="summary-item text-center">
-                        <MudIcon Icon="@Icons.Material.Filled.Work" Color="Color.Primary" Size="Size.Large" />
-                        <MudText Typo="Typo.h4" Class="mt-2">@Experience.Count</MudText>
-                        <MudText Typo="Typo.body1">Years of Experience</MudText>
-                    </div>
-                </MudItem>
-                
-                <MudItem xs="12" md="4">
-                    <div class="summary-item text-center">
-                        <MudIcon Icon="@Icons.Material.Filled.Business" Color="Color.Primary" Size="Size.Large" />
-                        <MudText Typo="Typo.h4" Class="mt-2">@Experience.Select(e => e.Company).Distinct().Count()</MudText>
-                        <MudText Typo="Typo.body1">Companies Worked</MudText>
-                    </div>
-                </MudItem>
-                
-                <MudItem xs="12" md="4">
-                    <div class="summary-item text-center">
-                        <MudIcon Icon="@Icons.Material.Filled.Star" Color="Color.Primary" Size="Size.Large" />
-                        <MudText Typo="Typo.h4" Class="mt-2">@Experience.Sum(e => e.Achievements.Count)</MudText>
-                        <MudText Typo="Typo.body1">Key Achievements</MudText>
-                    </div>
-                </MudItem>
-            </MudGrid>
-        </MudPaper>
-    </MudContainer>
-</MudContainer>
-
-@code {
-    [Parameter] public List<Experience> Experience { get; set; } = new();
-    
-    [Inject] private IDialogService DialogService { get; set; } = default!;
-
-    private async Task ShowExperienceDetails(Experience experience)
-    {
-        var parameters = new DialogParameters
-        {
-            ["Experience"] = experience
-        };
-        
-        var dialog = await DialogService.ShowAsync<ExperienceDetailsDialog>("Experience Details", parameters);
-        var result = await dialog.Result;
-    }
-}
+</div>
 
 
