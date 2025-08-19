@@ -13,9 +13,17 @@
     // Load configuration from settings.json
     async function loadConfiguration() {
         try {
-            const response = await fetch('/settings.json');
+            // Get the base path from the document base href
+            const basePath = document.querySelector('base')?.getAttribute('href') || '/';
+            const settingsPath = basePath + 'settings.json';
+            
+            console.log('🔍 Attempting to load settings from:', settingsPath);
+            const response = await fetch(settingsPath);
+            
             if (response.ok) {
                 const settings = await response.json();
+                console.log('📄 Settings loaded:', settings);
+                
                 if (settings.emailjs) {
                     EMAILJS_CONFIG = {
                         serviceId: settings.emailjs.serviceId || '',
@@ -24,7 +32,17 @@
                         recipientEmail: settings.contact?.recipientEmail || ''
                     };
                     console.log('✅ EmailJS configuration loaded from settings.json');
+                    console.log('🔧 Config:', {
+                        serviceId: EMAILJS_CONFIG.serviceId ? '***' : 'MISSING',
+                        templateId: EMAILJS_CONFIG.templateId ? '***' : 'MISSING',
+                        userId: EMAILJS_CONFIG.userId ? '***' : 'MISSING',
+                        recipientEmail: EMAILJS_CONFIG.recipientEmail ? '***' : 'MISSING'
+                    });
+                } else {
+                    console.warn('⚠️ No emailjs configuration found in settings.json');
                 }
+            } else {
+                console.warn('⚠️ Failed to load settings.json:', response.status, response.statusText);
             }
         } catch (error) {
             console.warn('⚠️ Could not load settings.json:', error);
@@ -33,14 +51,22 @@
 
     // Initialize EmailJS when the page loads
     document.addEventListener('DOMContentLoaded', async function() {
+        console.log('🚀 Initializing EmailJS service...');
+        
         // Load configuration first
         await loadConfiguration();
         
-        if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.userId) {
-            emailjs.init(EMAILJS_CONFIG.userId);
-            console.log('✅ EmailJS initialized successfully');
+        if (typeof emailjs !== 'undefined') {
+            console.log('✅ EmailJS library loaded');
+            
+            if (EMAILJS_CONFIG.userId) {
+                emailjs.init(EMAILJS_CONFIG.userId);
+                console.log('✅ EmailJS initialized successfully with user ID');
+            } else {
+                console.warn('⚠️ EmailJS user ID missing from configuration');
+            }
         } else {
-            console.warn('⚠️ EmailJS not loaded or missing configuration');
+            console.warn('⚠️ EmailJS library not loaded');
         }
     });
 
