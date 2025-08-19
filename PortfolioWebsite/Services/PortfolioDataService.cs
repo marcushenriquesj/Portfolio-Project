@@ -17,7 +17,7 @@ public class PortfolioDataService
             Location = "New York, NY",
             SocialLinks = new List<string>
             {
-                "https://https://github.com/marcushenriquesj",
+                "https://github.com/marcushenriquesj",
                 "https://www.linkedin.com/in/marcusj-henriques/"
             },
             Skills = GetSkills(),

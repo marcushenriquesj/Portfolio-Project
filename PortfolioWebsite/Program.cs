@@ -20,6 +20,7 @@ builder.Services.AddMudServices();
 // Register application services
 builder.Services.AddScoped<ChatService>();
 builder.Services.AddScoped<PortfolioDataService>();
+builder.Services.AddScoped<EmailService>();
 
 // Build and run the application
 await builder.Build().RunAsync();

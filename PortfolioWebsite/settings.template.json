@@ -1,0 +1,16 @@
+{
+  "emailjs": {
+    "serviceId": "{{EMAILJS_SERVICE_ID}}",
+    "templateId": "{{EMAILJS_TEMPLATE_ID}}",
+    "userId": "{{EMAILJS_USER_ID}}"
+  },
+  "contact": {
+    "recipientName": "Marcus Henriques",
+    "recipientEmail": "{{CONTACT_EMAIL}}"
+  },
+  "app": {
+    "name": "Marcus Henriques Portfolio",
+    "version": "{{APP_VERSION}}",
+    "environment": "{{ENVIRONMENT}}"
+  }
+}

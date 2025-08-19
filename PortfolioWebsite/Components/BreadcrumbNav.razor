@@ -2,39 +2,14 @@
 @using MudBlazor
 
 <MudBreadcrumbs MaxItems="5" ExpandFirst="true" Class="mb-4">
-    @foreach (var item in _breadcrumbItems)
-    {
-        <MudBreadcrumbItem Href="@item.Href" Disabled="@item.Disabled">
-            @item.Text
-        </MudBreadcrumbItem>
-    }
+    <MudBreadcrumbItem Href="/" Disabled="@(CurrentPage == "Home")">
+        Home
+    </MudBreadcrumbItem>
+    <MudBreadcrumbItem Href="" Disabled="true">
+        @CurrentPage
+    </MudBreadcrumbItem>
 </MudBreadcrumbs>
 
 @code {
     [Parameter] public string CurrentPage { get; set; } = string.Empty;
-    
-    private List<BreadcrumbItem> _breadcrumbItems = new();
-
-    protected override void OnParametersSet()
-    {
-        _breadcrumbItems = new List<BreadcrumbItem>
-        {
-            new BreadcrumbItem("Home", "/", disabled: CurrentPage == "Home"),
-            new BreadcrumbItem(CurrentPage, "", disabled: true)
-        };
-    }
-
-    public class BreadcrumbItem
-    {
-        public string Text { get; set; }
-        public string Href { get; set; }
-        public bool Disabled { get; set; }
-
-        public BreadcrumbItem(string text, string href, bool disabled = false)
-        {
-            Text = text;
-            Href = href;
-            Disabled = disabled;
-        }
-    }
 }

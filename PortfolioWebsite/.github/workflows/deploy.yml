@@ -1,37 +1,58 @@
-name: Deploy to GitHub Pages
+name: Deploy to Cloudflare Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      
+    - uses: actions/checkout@v4
+    
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x'
-        
+    
     - name: Restore dependencies
       run: dotnet restore
-      
+    
     - name: Build
       run: dotnet build --no-restore --configuration Release
-      
+    
     - name: Publish
-      run: dotnet publish --no-build --configuration Release --output ./publish
-      
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
+      run: dotnet publish -c Release -o ./dist
+    
+    - name: Generate settings.json
+      run: |
+        cat > dist/wwwroot/settings.json << EOF
+        {
+          "emailjs": {
+            "serviceId": "${{ secrets.EMAILJS_SERVICE_ID }}",
+            "templateId": "${{ secrets.EMAILJS_TEMPLATE_ID }}",
+            "userId": "${{ secrets.EMAILJS_USER_ID }}"
+          },
+          "contact": {
+            "recipientName": "Marcus Henriques",
+            "recipientEmail": "${{ secrets.CONTACT_EMAIL }}"
+          },
+          "app": {
+            "name": "Marcus Henriques Portfolio",
+            "version": "${{ github.sha }}",
+            "environment": "production"
+          }
+        }
+        EOF
+    
+    - name: Deploy to Cloudflare Pages
+      uses: cloudflare/pages-action@v1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./publish/wwwroot
-        force_orphan: true
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+        directory: dist
+        gitHubToken: ${{ secrets.GITHUB_TOKEN }}

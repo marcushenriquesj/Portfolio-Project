@@ -122,13 +122,13 @@
 }
 
 .about-content-area section {
-    margin-bottom: 8rem;
-    margin-top: 8rem;
+    margin-bottom: 4rem;
+    margin-top: 4rem;
     min-height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem;
+    padding: 2rem;
     border: 1px solid rgba(76, 175, 80, 0.15);
     border-radius: 24px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -242,6 +242,40 @@
     background-clip: text;
 }
 
+/* Tech Highlights */
+.tech-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+.tech-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 20px;
+    color: #E0E0E0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.tech-item:hover {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: rgba(76, 175, 80, 0.5);
+    transform: translateY(-2px);
+}
+
+.tech-icon {
+    color: #4CAF50 !important;
+    font-size: 1.2rem !important;
+}
+
 /* Story Quadrants */
 .story-quadrants {
     display: grid;
@@ -315,12 +349,29 @@
     font-weight: 400;
 }
 
+.quadrant-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.detail-item {
+    font-size: 0.85rem;
+    color: #4CAF50;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 8px;
+    display: inline-block;
+}
+
 .facts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
-    margin-top: 3rem;
-    max-width: 900px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+    max-width: 600px;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -329,14 +380,18 @@
 .fact-card {
     background: rgba(45, 45, 45, 0.4);
     backdrop-filter: blur(15px);
-    border-radius: 20px;
-    padding: 3rem 2.5rem;
+    border-radius: 16px;
+    padding: 1.5rem;
     text-align: center;
     border: 1px solid rgba(64, 64, 64, 0.3);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .fact-card::before {
@@ -363,9 +418,9 @@
 }
 
 .fact-icon {
-    font-size: 3.5rem !important;
+    font-size: 2.5rem !important;
     color: #4CAF50 !important;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     filter: drop-shadow(0 4px 8px rgba(76, 175, 80, 0.3));
     transition: all 0.3s ease;
 }
@@ -377,41 +432,65 @@
 
 .fact-card h3 {
     color: white;
-    font-size: 1.4rem;
-    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.02em;
 }
 
 .fact-card p {
     color: #B0B0B0;
-    line-height: 1.7;
-    font-size: 1.1rem;
+    line-height: 1.5;
+    font-size: 0.9rem;
     font-weight: 400;
+    margin-bottom: 0.75rem;
+}
+
+.fact-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.fact-tag {
+    font-size: 0.8rem;
+    color: #4CAF50;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(76, 175, 80, 0.2);
 }
 
 .work-process {
-    margin-top: 3rem;
-    max-width: 800px;
+    margin-top: 2rem;
+    max-width: 600px;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
 }
 
 .process-step {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 2.5rem;
-    margin-bottom: 3.5rem;
-    padding: 3rem;
+    gap: 1rem;
+    padding: 1.5rem;
     background: rgba(45, 45, 45, 0.4);
     backdrop-filter: blur(15px);
-    border-radius: 20px;
+    border-radius: 16px;
     border: 1px solid rgba(64, 64, 64, 0.3);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    min-height: 200px;
+    text-align: center;
 }
 
 .process-step::before {
@@ -439,15 +518,15 @@
 
 .step-number {
     flex-shrink: 0;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     background: linear-gradient(135deg, #4CAF50, #00CED1);
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 800;
     box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
     transition: all 0.3s ease;
@@ -460,17 +539,36 @@
 
 .step-content h3 {
     color: white;
-    font-size: 1.4rem;
-    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.02em;
 }
 
 .step-content p {
     color: #B0B0B0;
-    line-height: 1.7;
-    font-size: 1.1rem;
+    line-height: 1.5;
+    font-size: 0.9rem;
     font-weight: 400;
+    margin-bottom: 0.75rem;
+}
+
+.step-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.step-tag {
+    font-size: 0.8rem;
+    color: #4CAF50;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(76, 175, 80, 0.2);
 }
 
 /* Scroll Animation Classes */
@@ -698,16 +796,17 @@
     .facts-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+        max-width: 400px;
+    }
+    
+    .work-process {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        max-width: 400px;
     }
     
     .process-step {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
-    
-    .step-number {
-        align-self: center;
+        min-height: auto;
     }
 }
 

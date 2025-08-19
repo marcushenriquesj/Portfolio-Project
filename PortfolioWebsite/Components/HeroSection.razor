@@ -12,6 +12,23 @@
                     <MudText Typo="Typo.h2" Class="hero-greeting mb-3">
                         Hello I'm @PortfolioData.Name
                     </MudText>
+                    
+                    <!-- Social Links -->
+                    <div class="hero-social-links mb-4">
+                        @if (PortfolioData.SocialLinks.Count > 0)
+                        {
+                            <a href="@PortfolioData.SocialLinks[0]" target="_blank" class="hero-social-link github" title="GitHub">
+                                <img src="images/githubicon.svg" alt="GitHub" class="hero-social-icon" />
+                            </a>
+                        }
+                        @if (PortfolioData.SocialLinks.Count > 1)
+                        {
+                            <a href="@PortfolioData.SocialLinks[1]" target="_blank" class="hero-social-link linkedin" title="LinkedIn">
+                                <img src="images/linkedin.svg" alt="LinkedIn" class="hero-social-icon" />
+                            </a>
+                        }
+                    </div>
+                    
                     <MudText Typo="Typo.body1" Class="hero-subtitle mb-6">
                        Architecting scalable systems and building responsive applications with C#, Blazor & Azure.
                     </MudText>
@@ -39,17 +56,17 @@
             <MudItem xs="12" md="6" Class="d-flex align-center justify-center">
                 <div class="hero-avatar-container">
                     <div class="skills-background">
-                        <div class="skill-node" style="top: 20%; left: 20%;">
-                            <span>Id</span>
+                        <div class="skill-node" style="top: 20%; left: 20%;" title="Azure">
+                            <img src="images/azure.svg" alt="Azure" class="skill-node-icon" />
                         </div>
-                        <div class="skill-node" style="top: 20%; right: 20%;">
-                            <span>Ps</span>
+                        <div class="skill-node" style="top: 20%; right: 20%;" title="C#">
+                            <img src="images/csharp.svg" alt="C#" class="skill-node-icon" />
                         </div>
-                        <div class="skill-node" style="bottom: 45%; left: 8%;">
-                            <span>Ai</span>
+                        <div class="skill-node" style="bottom: 45%; left: 8%;" title="SQL">
+                            <img src="images/sql.svg" alt="SQL" class="skill-node-icon" />
                         </div>
-                        <div class="skill-node" style="bottom: 45%; right: 8%;">
-                            <span>Xd</span>
+                        <div class="skill-node" style="bottom: 45%; right: 8%;" title="TypeScript">
+                            <img src="images/blazor.svg" alt="TypeScript" class="skill-node-icon" />
                         </div>
                     </div>
                     <div class="avatar-container">

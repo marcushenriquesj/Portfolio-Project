@@ -1,151 +1,189 @@
 @using PortfolioWebsite.Models
+@using PortfolioWebsite.Services
+@inject EmailService EmailService
+@inject ISnackbar Snackbar
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="section-container" id="contact">
-    <MudText Typo="Typo.h3" Class="section-title text-center mb-6 hero-animate">
-        Get In Touch
-    </MudText>
-    
-    <MudGrid>
-        <MudItem xs="12" md="6">
-            <MudPaper Elevation="3" Class="contact-info-card pa-6 hero-animate">
-                <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
-                    Contact Information
-                </MudText>
-                
-                <div class="contact-info-list">
-                    <div class="contact-info-item">
-                        <MudIcon Icon="@Icons.Material.Filled.Email" Color="Color.Primary" Size="Size.Large" />
-                        <div class="contact-details">
-                            <MudText Typo="Typo.h6">Email</MudText>
-                            <MudText Typo="Typo.body1">@PortfolioData.Email</MudText>
-                        </div>
+<div class="contact-section">
+    <div class="contact-header hero-animate">
+        <h1 class="contact-title">Let's Work Together</h1>
+        <p class="contact-subtitle">Ready to bring your ideas to life? Let's discuss your next project and how I can help you achieve your goals.</p>
+    </div>
+
+    <div class="contact-content">
+        <!-- Contact Form Card - Now on Top -->
+        <div class="contact-form-card hero-animate">
+            <div class="form-header">
+                <h2 class="form-title">Send Message</h2>
+                <p class="form-subtitle">Have a project in mind? Fill out the form below and I'll get back to you within 24 hours.</p>
+            </div>
+
+            <EditForm Model="@_contactInfo" OnValidSubmit="HandleValidSubmit" class="contact-form">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="validation-summary" />
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <InputText @bind-Value="_contactInfo.Name" id="name" class="form-input" placeholder="Your full name" />
+                        <ValidationMessage For="@(() => _contactInfo.Name)" class="validation-message" />
                     </div>
-                    
-                    <div class="contact-info-item">
-                        <MudIcon Icon="@Icons.Material.Filled.Phone" Color="Color.Primary" Size="Size.Large" />
-                        <div class="contact-details">
-                            <MudText Typo="Typo.h6">Phone</MudText>
-                            <MudText Typo="Typo.body1">@PortfolioData.Phone</MudText>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-info-item">
-                        <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Primary" Size="Size.Large" />
-                        <div class="contact-details">
-                            <MudText Typo="Typo.h6">Location</MudText>
-                            <MudText Typo="Typo.body1">@PortfolioData.Location</MudText>
-                        </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <InputText @bind-Value="_contactInfo.Email" id="email" type="email" class="form-input" placeholder="your.email@example.com" />
+                        <ValidationMessage For="@(() => _contactInfo.Email)" class="validation-message" />
                     </div>
                 </div>
-                
-                <MudDivider Class="my-4" />
-                
-                <MudText Typo="Typo.h6" Class="mb-3">Follow Me</MudText>
+
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <InputText @bind-Value="_contactInfo.Subject" id="subject" class="form-input" placeholder="Project discussion, collaboration, etc." />
+                    <ValidationMessage For="@(() => _contactInfo.Subject)" class="validation-message" />
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <InputTextArea @bind-Value="_contactInfo.Message" id="message" class="form-textarea" rows="6" placeholder="Tell me about your project, timeline, budget, and any specific requirements..." />
+                    <ValidationMessage For="@(() => _contactInfo.Message)" class="validation-message" />
+                </div>
+
+                <button type="submit" class="submit-button" disabled="@_isSubmitting">
+                    @if (_isSubmitting)
+                    {
+                        <div class="button-spinner"></div>
+                        <span>Sending Message...</span>
+                    }
+                    else
+                    {
+                        <i class="mdi mdi-send"></i>
+                        <span>Send Message</span>
+                    }
+                </button>
+            </EditForm>
+        </div>
+
+        <!-- Get In Touch Card - Now Below -->
+        <div class="contact-info-card hero-animate">
+            <div class="contact-info-header">
+                <h2 class="info-title">Get In Touch</h2>
+                <p class="info-subtitle">I'm passionate about creating innovative solutions and collaborating on exciting projects. Whether you have a specific project in mind or just want to explore possibilities, I'm here to help bring your vision to life.</p>
+            </div>
+
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <div class="method-icon">
+                        <i class="mdi mdi-map-marker"></i>
+                    </div>
+                    <div class="method-details">
+                        <h3>Location</h3>
+                        <p>@PortfolioData.Location</p>
+                        <span class="method-link">Available for Remote Work</span>
+                    </div>
+                </div>
+
+                <div class="contact-method">
+                    <div class="method-icon">
+                        <i class="mdi mdi-clock-outline"></i>
+                    </div>
+                    <div class="method-details">
+                        <h3>Response Time</h3>
+                        <p>Within 3 Business Days</p>
+                        <span class="method-link">Quick & Professional</span>
+                    </div>
+                </div>
+
+                <div class="contact-method">
+                    <div class="method-icon">
+                        <i class="mdi mdi-account-group"></i>
+                    </div>
+                    <div class="method-details">
+                        <h3>Collaboration</h3>
+                        <p>Open to New Opportunities</p>
+                        <span class="method-link">Let's Build Together</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="social-section">
+                <h3 class="social-title">Connect With Me</h3>
+                <p class="social-subtitle">Follow my work and connect with me on professional platforms.</p>
                 <div class="social-links">
                     @if (PortfolioData.SocialLinks.Count > 0)
                     {
-                        <MudIconButton Icon="@Icons.Material.Filled.Code" 
-                                      Color="Color.Primary" 
-                                      Href="@PortfolioData.SocialLinks[0]" 
-                                      Target="_blank" 
-                                      Class="mr-2" />
+                        <a href="@PortfolioData.SocialLinks[0]" target="_blank" class="social-link github">
+                            <img src="images/githubicon.svg" alt="GitHub" class="social-icon" />
+                            <span>GitHub</span>
+                        </a>
                     }
                     @if (PortfolioData.SocialLinks.Count > 1)
                     {
-                        <MudIconButton Icon="@Icons.Material.Filled.Business" 
-                                      Color="Color.Primary" 
-                                      Href="@PortfolioData.SocialLinks[1]" 
-                                      Target="_blank" 
-                                      Class="mr-2" />
+                        <a href="@PortfolioData.SocialLinks[1]" target="_blank" class="social-link linkedin">
+                            <img src="images/linkedin.svg" alt="LinkedIn" class="social-icon" />
+                            <span>LinkedIn</span>
+                        </a>
                     }
                     @if (PortfolioData.SocialLinks.Count > 2)
                     {
-                        <MudIconButton Icon="@Icons.Material.Filled.Share" 
-                                      Color="Color.Primary" 
-                                      Href="@PortfolioData.SocialLinks[2]" 
-                                      Target="_blank" />
+                        <a href="@PortfolioData.SocialLinks[2]" target="_blank" class="social-link portfolio">
+                            <i class="mdi mdi-web"></i>
+                            <span>Portfolio</span>
+                        </a>
                     }
                 </div>
-            </MudPaper>
-        </MudItem>
-        
-        <MudItem xs="12" md="6">
-            <MudPaper Elevation="3" Class="contact-form-card pa-6 hero-animate">
-                <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
-                    Send Message
-                </MudText>
-                
-                <EditForm Model="@_contactInfo" OnValidSubmit="HandleValidSubmit">
-                    <DataAnnotationsValidator />
-                    
-                    <MudTextField @bind-Value="_contactInfo.Name"
-                                 Label="Name"
-                                 Variant="Variant.Outlined"
-                                 Required
-                                 RequiredError="Name is required"
-                                 Class="mb-3" />
-                    
-                    <MudTextField @bind-Value="_contactInfo.Email"
-                                 Label="Email"
-                                 Variant="Variant.Outlined"
-                                 Required
-                                 RequiredError="Email is required"
-                                 InputType="InputType.Email"
-                                 Class="mb-3" />
-                    
-                    <MudTextField @bind-Value="_contactInfo.Subject"
-                                 Label="Subject"
-                                 Variant="Variant.Outlined"
-                                 Required
-                                 RequiredError="Subject is required"
-                                 Class="mb-3" />
-                    
-                    <MudTextField @bind-Value="_contactInfo.Message"
-                                 Label="Message"
-                                 Variant="Variant.Outlined"
-                                 Required
-                                 RequiredError="Message is required"
-                                 Lines="4"
-                                 Class="mb-4" />
-                    
-                    <MudButton ButtonType="ButtonType.Submit"
-                               Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               Size="Size.Large"
-                               StartIcon="@Icons.Material.Filled.Send"
-                               Disabled="@_isSubmitting">
-                        @if (_isSubmitting)
-                        {
-                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
-                            <span>Sending...</span>
-                        }
-                        else
-                        {
-                            <span>Send Message</span>
-                        }
-                    </MudButton>
-                </EditForm>
-            </MudPaper>
-        </MudItem>
-    </MudGrid>
-</MudContainer>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-footer hero-animate">
+        <div class="footer-content">
+            <h3 class="footer-title">Ready to Start Your Project?</h3>
+            <p class="footer-text">
+                Whether you need a full-stack web application, API development, or technical consultation, 
+                I'm here to help bring your vision to life with modern, scalable solutions.
+            </p>
+        </div>
+    </div>
+</div>
 
 @code {
+    /// <summary>
+    /// Portfolio data containing contact information and social links.
+    /// </summary>
     [Parameter] public PortfolioData PortfolioData { get; set; } = new();
     
     private ContactInfo _contactInfo = new();
     private bool _isSubmitting = false;
 
+    /// <summary>
+    /// Handles the contact form submission by sending an email and providing user feedback.
+    /// </summary>
     private async Task HandleValidSubmit()
     {
         _isSubmitting = true;
         
-        // Simulate API call
-        await Task.Delay(2000);
-        
-        // Reset form
-        _contactInfo = new ContactInfo();
-        _isSubmitting = false;
+        try
+        {
+            // Send email using the EmailService
+            var success = await EmailService.SendContactEmailAsync(_contactInfo);
+            
+            if (success)
+            {
+                Snackbar.Add("Message sent successfully! I'll get back to you within 24 hours.", Severity.Success);
+                // Reset form on success
+                _contactInfo = new ContactInfo();
+            }
+            else
+            {
+                Snackbar.Add("Failed to send message. Please try again or contact me directly via email.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"An error occurred: {ex.Message}. Please try again later.", Severity.Error);
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
     }
 }
 
