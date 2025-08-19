@@ -34,12 +34,12 @@ function clean() {
     return del([paths.dist.root]);
 }
 
-// Copy .NET build output
+// Copy .NET build output (if exists)
 function copyDotNetBuild() {
     return gulp.src([
         'bin/**/*',
         'obj/**/*'
-    ], { base: '.' })
+    ], { base: '.', allowEmpty: true })
     .pipe(gulp.dest(paths.dist.root));
 }
 

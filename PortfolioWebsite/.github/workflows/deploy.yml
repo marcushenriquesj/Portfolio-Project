@@ -2,57 +2,58 @@ name: Deploy to Cloudflare Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: PortfolioWebsite/package-lock.json
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.x'
     
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Install dependencies
+      working-directory: PortfolioWebsite
+      run: npm ci
     
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
-    
-    - name: Publish
-      run: dotnet publish -c Release -o ./dist
-    
-    - name: Generate settings.json
+    - name: Build .NET project
+      working-directory: PortfolioWebsite
       run: |
-        cat > dist/wwwroot/settings.json << EOF
-        {
-          "emailjs": {
-            "serviceId": "${{ secrets.EMAILJS_SERVICE_ID }}",
-            "templateId": "${{ secrets.EMAILJS_TEMPLATE_ID }}",
-            "userId": "${{ secrets.EMAILJS_USER_ID }}"
-          },
-          "contact": {
-            "recipientName": "Marcus Henriques",
-            "recipientEmail": "${{ secrets.CONTACT_EMAIL }}"
-          },
-          "app": {
-            "name": "Marcus Henriques Portfolio",
-            "version": "${{ github.sha }}",
-            "environment": "production"
-          }
-        }
-        EOF
+        dotnet restore
+        dotnet build -c Release
+        dotnet publish -c Release -o ./dist
+    
+    - name: Build and optimize assets
+      working-directory: PortfolioWebsite
+      env:
+        EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
+        EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
+        EMAILJS_USER_ID: ${{ secrets.EMAILJS_USER_ID }}
+        CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
+        ENVIRONMENT: production
+        APP_VERSION: ${{ github.sha }}
+      run: npm run build
     
     - name: Deploy to Cloudflare Pages
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
       uses: cloudflare/pages-action@v1
       with:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
-        directory: dist
+        directory: PortfolioWebsite/dist
         gitHubToken: ${{ secrets.GITHUB_TOKEN }}
