@@ -59,11 +59,28 @@ function processCSS() {
     return gulp.src(paths.src.css)
         .pipe(sourcemaps.init())
         .pipe(autoprefixer({
-            cascade: false
+            cascade: false,
+            overrideBrowserslist: ['last 2 versions', '> 1%', 'IE 11']
         }))
         .pipe(cleanCSS({
-            level: 2,
-            format: 'keep-breaks'
+            level: {
+                1: {
+                    all: true,
+                    normalizeUrls: false
+                },
+                2: {
+                    all: true,
+                    mergeMedia: true,
+                    mergeNonAdjacentRules: true,
+                    removeDuplicateFontRules: true,
+                    removeDuplicateMediaBlocks: true,
+                    removeDuplicateRules: true,
+                    removeEmpty: true,
+                    removeUnusedAtRules: true
+                }
+            },
+            format: 'keep-breaks',
+            inline: ['none']
         }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(sourcemaps.write('.'))
@@ -78,7 +95,20 @@ function processJS() {
         .pipe(uglify({
             compress: {
                 drop_console: true,
-                drop_debugger: true
+                drop_debugger: true,
+                dead_code: true,
+                drop_debugger: true,
+                global_defs: {
+                    "@alert": "console.log"
+                },
+                passes: 2
+            },
+            mangle: {
+                toplevel: true,
+                eval: true
+            },
+            output: {
+                comments: false
             }
         }))
         .pipe(rename({ suffix: '.min' }))
@@ -171,6 +201,23 @@ function watch() {
     gulp.watch(paths.src.settings, generateSettings);
 }
 
+// Update HTML to reference minified files
+function updateHTMLReferences() {
+    return gulp.src(paths.dist.html + '/index.html')
+        .pipe(htmlmin({
+            collapseWhitespace: true,
+            removeComments: true,
+            minifyCSS: true,
+            minifyJS: true,
+            removeEmptyAttributes: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            useShortDoctype: true
+        }))
+        .pipe(gulp.dest(paths.dist.html));
+}
+
 // Build task
 const build = gulp.series(
     clean,
@@ -181,7 +228,8 @@ const build = gulp.series(
         optimizeImages,
         processHTML
     ),
-    generateSettings
+    generateSettings,
+    updateHTMLReferences
 );
 
 // Deploy task
