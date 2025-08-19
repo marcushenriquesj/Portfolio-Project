@@ -54,7 +54,7 @@ public class PortfolioDataService
             {
                 Title = "Blazor WASM eBay Mockup",
                 Description = "A comprehensive e-commerce platform built with Blazor WebAssembly, featuring product listings, user authentication, shopping cart functionality, and a modern responsive design. This project demonstrates full-stack development capabilities with .NET technologies.",
-                ImageUrl = "https://via.placeholder.com/400x250/1976d2/ffffff?text=Blazor+eBay+Mockup",
+                ImageUrl = "images/ebay-mock-up-scrnsht.png",
                 LiveDemoUrl = "", // Add live demo URL if available
                 GitHubUrl = "https://github.com/marcushenriquesj/BlazorWASMEbayMockUp",
                 Technologies = new List<string> { "Blazor WebAssembly", ".NET", "C#", "HTML/CSS", "JavaScript", "API Integration" },
@@ -64,7 +64,7 @@ public class PortfolioDataService
             {
                 Title = "Portfolio Website",
                 Description = "A modern, responsive portfolio website built with Blazor WebAssembly and MudBlazor. Features include animated backgrounds, smooth scrolling, interactive components, and a professional design showcasing software engineering expertise.",
-                ImageUrl = "https://via.placeholder.com/400x250/4caf50/ffffff?text=Portfolio+Website",
+                ImageUrl = "images/portfolio-scrnsht.png",
                 LiveDemoUrl = "", // Add live demo URL if available
                 GitHubUrl = "https://github.com/marcushenriquesj/portfolio-website", // Update with actual repo URL
                 Technologies = new List<string> { "Blazor WebAssembly", "MudBlazor", "C#", "CSS3", "JavaScript", "Responsive Design" },

@@ -59,8 +59,9 @@
 /* Project Image */
 .project-image {
     position: relative;
-    height: 250px;
+    height: 280px;
     overflow: hidden;
+    border-radius: 16px 16px 0 0;
 }
 
 .project-image img {
@@ -68,10 +69,17 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    filter: contrast(1.1) brightness(1.05);
 }
 
 .project-card:hover .project-image img {
-    transform: scale(1.05);
+    transform: translateZ(0) scale(1.05);
 }
 
 /* Project Overlay */
