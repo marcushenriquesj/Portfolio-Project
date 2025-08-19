@@ -1,46 +1,41 @@
-@using PortfolioWebsite.Models
+@using Microsoft.AspNetCore.Components
 
-<MudDialog @bind-IsVisible="IsVisible" Options="dialogOptions" Class="skill-dialog">
-    <TitleContent>
+<MudDialog @bind-IsVisible="IsVisible" Class="skill-dialog">
+    <DialogContent>
         <div class="dialog-header">
             <div class="skill-icon-large">
                 <MudIcon Icon="@SkillIcon" Color="Color.Success" />
             </div>
-            <MudText Typo="Typo.h5" Class="dialog-title">@SkillTitle</MudText>
+            <h3 class="dialog-title">@SkillTitle</h3>
         </div>
-    </TitleContent>
-    <DialogContent>
-        <div class="skill-details">
-            <MudText Typo="Typo.body1" Class="skill-overview mb-4">
-                @SkillOverview
-            </MudText>
-            
-            <div class="skills-list">
-                <MudText Typo="Typo.h6" Class="skills-subtitle mb-3">Key Technologies & Skills</MudText>
-                <div class="skills-grid-detailed">
-                    @foreach (var skill in SkillDetails)
-                    {
-                        <div class="skill-item">
-                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Class="skill-check" />
-                            <MudText Typo="Typo.body2" Class="skill-text">@skill</MudText>
-                        </div>
-                    }
-                </div>
-            </div>
-            
-            @if (!string.IsNullOrEmpty(Experience))
+        
+        <div class="skill-overview">
+            @((MarkupString)SkillOverview)
+        </div>
+        
+        <div class="skills-subtitle mt-4 mb-2">Key Skills & Technologies:</div>
+        <div class="skills-grid-detailed">
+            @foreach (var skill in SkillDetails)
             {
-                <div class="experience-section mt-4">
-                    <MudText Typo="Typo.h6" Class="experience-subtitle mb-3">Relevant Experience</MudText>
-                    <MudText Typo="Typo.body2" Class="experience-text">@Experience</MudText>
+                <div class="skill-item">
+                    <div class="skill-check">
+                        <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success" />
+                    </div>
+                    <p class="skill-text">@((MarkupString)skill)</p>
                 </div>
             }
         </div>
+        
+        <div class="experience-section">
+            <div class="experience-subtitle mb-2">Professional Experience:</div>
+            <div class="experience-text">
+                @((MarkupString)Experience)
+            </div>
+        </div>
     </DialogContent>
+    
     <DialogActions>
-        <MudButton OnClick="CloseDialog" Variant="Variant.Text" Color="Color.Primary">
-            Close
-        </MudButton>
+        <MudButton OnClick="CloseDialog" Color="Color.Primary">Close</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -53,17 +48,9 @@
     [Parameter] public List<string> SkillDetails { get; set; } = new();
     [Parameter] public string Experience { get; set; } = "";
 
-    private DialogOptions dialogOptions = new()
-    {
-        CloseOnEscapeKey = true,
-        MaxWidth = MaxWidth.Medium,
-        FullWidth = true,
-        DisableBackdropClick = false
-    };
-
     private async Task CloseDialog()
     {
         IsVisible = false;
-        await IsVisibleChanged.InvokeAsync(false);
+        await IsVisibleChanged.InvokeAsync(IsVisible);
     }
 }

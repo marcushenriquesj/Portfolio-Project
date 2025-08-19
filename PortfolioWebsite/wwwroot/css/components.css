@@ -1,3 +1,228 @@
+/* Skill Dialog Styles */
+.skill-dialog .mud-dialog-container {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(76, 175, 80, 0.2);
+    border-radius: 16px;
+    max-width: 900px;
+    width: 90vw;
+}
+
+.skill-dialog .mud-dialog-title {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.skill-icon-large {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.skill-icon-large .mud-icon-root {
+    font-size: 2rem !important;
+}
+
+.dialog-title {
+    color: white !important;
+    font-weight: 700;
+    margin: 0;
+}
+
+.skill-dialog .mud-dialog-content {
+    background: transparent !important;
+    padding: 1.5rem;
+    color: white;
+}
+
+.skill-overview {
+    color: #E0E0E0 !important;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.skills-subtitle {
+    color: white !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.skills-grid-detailed {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.skill-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(45, 45, 45, 0.6);
+    border-radius: 12px;
+    border: 1px solid rgba(76, 175, 80, 0.15);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.skill-item:hover {
+    background: rgba(45, 45, 45, 0.9);
+    border-color: rgba(76, 175, 80, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.skill-check {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.skill-check .mud-icon-root {
+    font-size: 1.1rem !important;
+}
+
+.skill-text {
+    color: #E0E0E0 !important;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 400;
+}
+
+.skill-text strong {
+    color: #4CAF50 !important;
+    font-weight: 600;
+}
+
+.experience-section {
+    border-top: 1px solid rgba(76, 175, 80, 0.2);
+    padding-top: 1.5rem;
+}
+
+.experience-subtitle {
+    color: white !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.experience-text {
+    color: #E0E0E0 !important;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    background: rgba(45, 45, 45, 0.3);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid #4CAF50;
+}
+
+.skill-dialog .mud-dialog-actions {
+    background: transparent !important;
+    border-top: 1px solid rgba(76, 175, 80, 0.2);
+    padding: 1rem 1.5rem;
+}
+
+.skill-dialog .mud-button {
+    color: #4CAF50 !important;
+    font-weight: 600;
+}
+
+.skill-dialog .mud-button:hover {
+    background: rgba(76, 175, 80, 0.1) !important;
+}
+
+/* Responsive Design for Skill Dialog */
+@media (max-width: 1024px) {
+    .skill-dialog .mud-dialog-container {
+        max-width: 800px;
+        width: 95vw;
+    }
+    
+    .skills-grid-detailed {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .skill-dialog .mud-dialog-container {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        width: calc(100vw - 2rem);
+        max-width: none;
+    }
+    
+    .dialog-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .skill-icon-large {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .skill-icon-large .mud-icon-root {
+        font-size: 1.5rem !important;
+    }
+    
+    .skills-grid-detailed {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .skill-item {
+        padding: 0.875rem 1rem;
+    }
+    
+    .skill-text {
+        font-size: 0.9rem;
+    }
+    
+    .experience-text {
+        font-size: 0.9rem;
+        padding: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .skill-dialog .mud-dialog-title,
+    .skill-dialog .mud-dialog-content,
+    .skill-dialog .mud-dialog-actions {
+        padding: 1rem;
+    }
+    
+    .dialog-title {
+        font-size: 1.25rem !important;
+    }
+    
+    .skill-overview {
+        font-size: 0.9rem;
+    }
+    
+    .skills-subtitle,
+    .experience-subtitle {
+        font-size: 1rem;
+    }
+}
+
 /* Chat Component */
 .chat-container {
     height: 100%;

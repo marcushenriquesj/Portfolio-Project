@@ -40,20 +40,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb250YWN0U2VjdGlvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/ExperienceDetailsDialog.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xFeHBlcmllbmNlRGV0YWlsc0RpYWxvZy5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/ExperienceSection.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xFeHBlcmllbmNlU2VjdGlvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/HeroSection.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xIZXJvU2VjdGlvbi5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/ProjectDetailsDialog.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQcm9qZWN0RGV0YWlsc0RpYWxvZy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/ProjectsSection.razor]

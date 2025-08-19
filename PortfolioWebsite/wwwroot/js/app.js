@@ -1,5 +1,4 @@
-// Portfolio Website JavaScript
-// Handles global functionality and interactions
+// Portfolio Website JavaScript - Global utilities and initialization
 
 // Initialize portfolio functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,10 +9,7 @@ function initializePortfolio() {
     // Add smooth scrolling for anchor links
     addSmoothScrolling();
     
-    // Add intersection observer for animations
-    addScrollAnimations();
-    
-    // Initialize any additional functionality
+    // Setup any additional functionality
     setupEventListeners();
 }
 
@@ -37,29 +33,7 @@ function addSmoothScrolling() {
     });
 }
 
-function addScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('section-fade-in');
-            }
-        });
-    }, observerOptions);
-    
-    // Observe sections for animation
-    const sections = document.querySelectorAll('.section-container');
-    sections.forEach(section => {
-        observer.observe(section);
-    });
-}
-
 function setupEventListeners() {
-    // Add any additional event listeners here
     console.log('Portfolio initialized successfully');
 }
 
@@ -93,6 +67,5 @@ function throttle(func, limit) {
 window.PortfolioUtils = {
     debounce,
     throttle,
-    addSmoothScrolling,
-    addScrollAnimations
+    addSmoothScrolling
 };

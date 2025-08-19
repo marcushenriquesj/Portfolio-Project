@@ -18,7 +18,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddMudServices();
 
 // Register application services
-builder.Services.AddScoped<ChatService>();
 builder.Services.AddScoped<PortfolioDataService>();
 builder.Services.AddScoped<EmailService>();
 

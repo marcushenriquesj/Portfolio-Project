@@ -2,12 +2,12 @@
 (function() {
     'use strict';
 
-    // Default EmailJS configuration (fallback)
+    // Default EmailJS configuration (will be overridden by settings.json)
     let EMAILJS_CONFIG = {
-        serviceId: 'service_td7vveh',
-        templateId: 'template_49mj3c8',
-        userId: 'cby30yyJZtnR9t472',
-        recipientEmail: 'devgurumarcus@gmail.com'
+        serviceId: '',
+        templateId: '',
+        userId: '',
+        recipientEmail: ''
     };
 
     // Load configuration from settings.json
@@ -18,16 +18,16 @@
                 const settings = await response.json();
                 if (settings.emailjs) {
                     EMAILJS_CONFIG = {
-                        serviceId: settings.emailjs.serviceId || EMAILJS_CONFIG.serviceId,
-                        templateId: settings.emailjs.templateId || EMAILJS_CONFIG.templateId,
-                        userId: settings.emailjs.userId || EMAILJS_CONFIG.userId,
-                        recipientEmail: settings.contact?.recipientEmail || EMAILJS_CONFIG.recipientEmail
+                        serviceId: settings.emailjs.serviceId || '',
+                        templateId: settings.emailjs.templateId || '',
+                        userId: settings.emailjs.userId || '',
+                        recipientEmail: settings.contact?.recipientEmail || ''
                     };
                     console.log('✅ EmailJS configuration loaded from settings.json');
                 }
             }
         } catch (error) {
-            console.warn('⚠️ Could not load settings.json, using default configuration:', error);
+            console.warn('⚠️ Could not load settings.json:', error);
         }
     }
 
@@ -36,11 +36,11 @@
         // Load configuration first
         await loadConfiguration();
         
-        if (typeof emailjs !== 'undefined') {
+        if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.userId) {
             emailjs.init(EMAILJS_CONFIG.userId);
-            console.log('✅ EmailJS initialized successfully with config:', EMAILJS_CONFIG);
+            console.log('✅ EmailJS initialized successfully');
         } else {
-            console.warn('⚠️ EmailJS not loaded');
+            console.warn('⚠️ EmailJS not loaded or missing configuration');
         }
     });
 
@@ -49,6 +49,11 @@
         return new Promise((resolve, reject) => {
             if (typeof emailjs === 'undefined') {
                 reject(new Error('EmailJS not loaded'));
+                return;
+            }
+
+            if (!EMAILJS_CONFIG.serviceId || !EMAILJS_CONFIG.templateId) {
+                reject(new Error('EmailJS configuration missing'));
                 return;
             }
 
@@ -76,12 +81,12 @@
             from_email: contactInfo.email,
             subject: contactInfo.subject,
             message: contactInfo.message,
-            name: 'Marcus Henriques', // For the notification email template
-            email: contactInfo.email, // For the auto-reply template
-            to_name: 'Marcus Henriques', // Your name 
-            to_email: EMAILJS_CONFIG.recipientEmail, // Use configured email
+            name: 'Marcus Henriques',
+            email: contactInfo.email,
+            to_name: 'Marcus Henriques',
+            to_email: EMAILJS_CONFIG.recipientEmail,
             reply_to: contactInfo.email,
-            year: new Date().getFullYear() // For the auto-reply template
+            year: new Date().getFullYear()
         };
     };
 

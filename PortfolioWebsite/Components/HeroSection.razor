@@ -3,7 +3,6 @@
 <div class="hero-section" id="hero">
     <div class="hero-container">
         <MudGrid>
-            <!-- Left Column - Text Content -->
             <MudItem xs="12" md="6" Class="d-flex align-center">
                 <div class="hero-content">
                     <MudText Typo="Typo.body2" Class="hero-intro mb-2">
@@ -13,7 +12,6 @@
                         Hello I'm @PortfolioData.Name
                     </MudText>
                     
-                    <!-- Social Links -->
                     <div class="hero-social-links mb-4">
                         @if (PortfolioData.SocialLinks.Count > 0)
                         {
@@ -52,7 +50,6 @@
                 </div>
             </MudItem>
             
-            <!-- Right Column - Avatar and Skills -->
             <MudItem xs="12" md="6" Class="d-flex align-center justify-center">
                 <div class="hero-avatar-container">
                     <div class="skills-background">
@@ -65,8 +62,8 @@
                         <div class="skill-node" style="bottom: 45%; left: 8%;" title="SQL">
                             <img src="images/sql.svg" alt="SQL" class="skill-node-icon" />
                         </div>
-                        <div class="skill-node" style="bottom: 45%; right: 8%;" title="TypeScript">
-                            <img src="images/blazor.svg" alt="TypeScript" class="skill-node-icon" />
+                        <div class="skill-node" style="bottom: 45%; right: 8%;" title="Blazor">
+                            <img src="images/blazor.svg" alt="Blazor" class="skill-node-icon" />
                         </div>
                     </div>
                     <div class="avatar-container">
@@ -76,7 +73,6 @@
             </MudItem>
         </MudGrid>
         
-        <!-- Skills Section -->
         <MudGrid Class="mt-16">
             <MudItem xs="12" md="4" Class="d-flex align-center">
                 <div class="skills-cta">
@@ -132,7 +128,6 @@
     </div>
 </div>
 
-<!-- Skill Details Dialog -->
 <SkillDetailsDialog @bind-IsVisible="isSkillDialogVisible"
                    SkillTitle="@currentSkill.Title"
                    SkillIcon="@currentSkill.Icon"
@@ -157,14 +152,14 @@
             Overview = "Comprehensive expertise in building enterprise-grade applications from frontend to backend, with a focus on modern web technologies and scalable architecture.",
             Details = new List<string>
             {
-                "C# .NET Core & Framework development",
-                "Blazor WebAssembly & Server applications",
-                "React.js & modern JavaScript frameworks",
-                "RESTful APIs & Web Services",
-                "Responsive web design & UI/UX",
-                "Performance optimization & debugging",
-                "Version control with Git & Azure DevOps",
-                "Agile development methodologies"
+                "<strong>C# .NET Core</strong> & Framework development",
+                "<strong>Blazor WebAssembly</strong> & Server applications",
+                "<strong>React.js</strong> & modern JavaScript frameworks",
+                "<strong>RESTful APIs</strong> & Web Services",
+                "<strong>Responsive design</strong> & UI/UX implementation",
+                "<strong>Performance optimization</strong> & debugging",
+                "<strong>Git</strong> & Azure DevOps version control",
+                "<strong>Agile</strong> development methodologies"
             },
             Experience = "Led development of multiple enterprise applications serving 10,000+ users, implemented CI/CD pipelines reducing deployment time, and mentored junior developers in full-stack best practices."
         },
@@ -175,14 +170,14 @@
             Overview = "Design and implementation of scalable cloud-native solutions using Microsoft Azure, with expertise in microservices architecture and DevOps practices.",
             Details = new List<string>
             {
-                "Azure App Services & Functions",
-                "Azure SQL Database & Cosmos DB",
-                "Azure DevOps CI/CD pipelines",
-                "Microservices architecture design",
-                "Containerization with Docker",
-                "Azure Active Directory & security",
-                "Cloud monitoring & logging",
-                "Infrastructure as Code (ARM templates)"
+                "<strong>Azure App Services</strong> & Functions",
+                "<strong>Azure SQL Database</strong> & Cosmos DB",
+                "<strong>Azure DevOps</strong> CI/CD pipelines",
+                "<strong>Microservices</strong> architecture design",
+                "<strong>Docker</strong> containerization",
+                "<strong>Azure Active Directory</strong> & security",
+                "<strong>Cloud monitoring</strong> & logging solutions",
+                "<strong>Infrastructure as Code</strong> with ARM templates"
             },
             Experience = "Architected and deployed cloud solutions for 5+ enterprise clients, implemented microservices reducing system downtime by 80%, and established automated deployment processes saving 40+ hours per release cycle."
         },
@@ -193,13 +188,13 @@
             Overview = "Expert-level database design, optimization, and management with focus on SQL Server and Entity Framework, ensuring data integrity and performance.",
             Details = new List<string>
             {
-                "SQL Server design & optimization",
-                "Entity Framework Core",
-                "Database performance tuning",
-                "Stored procedures & functions",
-                "Data migration & ETL processes",
-                "Database security & access control",
-                "Backup & disaster recovery"
+                "<strong>SQL Server</strong> design & optimization",
+                "<strong>Entity Framework Core</strong> implementation",
+                "<strong>Performance tuning</strong> & query optimization",
+                "<strong>Stored procedures</strong> & functions",
+                "<strong>Data migration</strong> & ETL processes",
+                "<strong>Database security</strong> & access control",
+                "<strong>Backup strategies</strong> & disaster recovery"
             },
             Experience = "Optimized database queries improving performance by 300%, designed schemas for applications handling 1B+ records, and implemented data migration strategies for legacy system modernization."
         },
@@ -210,14 +205,14 @@
             Overview = "Proven leadership in technical teams, driving coding standards, mentoring developers, and delivering high-quality software solutions through collaborative development.",
             Details = new List<string>
             {
-                "Technical team leadership (3-5 overseas developers)",
-                "Code review & quality assurance",
-                "Mentoring junior & mid-level developers",
-                "Agile/Scrum methodology implementation",
-                "Technical documentation & standards",
-                "Project planning & estimation",
-                "Stakeholder communication",
-                "Performance management & feedback"
+                "<strong>Team leadership</strong> of 3-5 overseas developers",
+                "<strong>Code reviews</strong> & quality assurance",
+                "<strong>Mentoring</strong> junior & mid-level developers",
+                "<strong>Agile/Scrum</strong> methodology implementation",
+                "<strong>Technical documentation</strong> & coding standards",
+                "<strong>Project planning</strong> & sprint estimation",
+                "<strong>Stakeholder communication</strong> & reporting",
+                "<strong>Performance management</strong> & career development"
             },
             Experience = "Led development teams of 3-5 overseas engineers across 3 major projects, established coding standards reducing bugs by 45%, and mentored 4+ developers who advanced positions."
         }
@@ -232,12 +227,34 @@
         }
     }
 
+    /// <summary>
+    /// Represents detailed skill information for the skill details dialog.
+    /// </summary>
     public class SkillData
     {
+        /// <summary>
+        /// The title of the skill.
+        /// </summary>
         public string Title { get; set; } = "";
+        
+        /// <summary>
+        /// The Material Design icon identifier.
+        /// </summary>
         public string Icon { get; set; } = "";
+        
+        /// <summary>
+        /// Overview description of the skill.
+        /// </summary>
         public string Overview { get; set; } = "";
+        
+        /// <summary>
+        /// Detailed list of skill competencies.
+        /// </summary>
         public List<string> Details { get; set; } = new();
+        
+        /// <summary>
+        /// Experience description with specific achievements.
+        /// </summary>
         public string Experience { get; set; } = "";
     }
 }

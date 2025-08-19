@@ -2,8 +2,15 @@ using PortfolioWebsite.Models;
 
 namespace PortfolioWebsite.Services;
 
+/// <summary>
+/// Service responsible for providing portfolio data including personal information, skills, projects, and experience.
+/// </summary>
 public class PortfolioDataService
 {
+    /// <summary>
+    /// Gets the complete portfolio data for the application.
+    /// </summary>
+    /// <returns>A <see cref="PortfolioData"/> object containing all portfolio information.</returns>
     public PortfolioData GetPortfolioData()
     {
         return new PortfolioData
@@ -11,7 +18,7 @@ public class PortfolioDataService
             Name = "Marcus Henriques",
             Title = "Full-Stack Developer",
             Subtitle = "Passionate about creating innovative web solutions",
-            About = "I’m Marcus Henriques, a Full-Stack Software Engineer with expertise in building scalable, secure, and efficient solutions. With a focus on modern technologies like C# .NET 8.0, Azure, Blazor, and SQL, I deliver impactful software from front to back. Passionate about clean design, robust systems, and collaborative problem-solving, I strive to create software that drives success.",
+            About = "I'm Marcus Henriques, a Full-Stack Software Engineer with expertise in building scalable, secure, and efficient solutions. With a focus on modern technologies like C# .NET 8.0, Azure, Blazor, and SQL, I deliver impactful software from front to back. Passionate about clean design, robust systems, and collaborative problem-solving, I strive to create software that drives success.",
             Email = "MarcusjHenriques@Gmail.com",
             Phone = "+1 (516) 253-8334",
             Location = "New York, NY",
@@ -26,7 +33,11 @@ public class PortfolioDataService
         };
     }
 
-    private List<Skill> GetSkills()
+    /// <summary>
+    /// Gets the list of technical skills and competencies.
+    /// </summary>
+    /// <returns>A list of <see cref="Skill"/> objects.</returns>
+    private static List<Skill> GetSkills()
     {
         return new List<Skill>
         {
@@ -73,7 +84,11 @@ public class PortfolioDataService
         };
     }
 
-    private List<Experience> GetExperience()
+    /// <summary>
+    /// Gets the list of work experience entries.
+    /// </summary>
+    /// <returns>A list of <see cref="Experience"/> objects.</returns>
+    private static List<Experience> GetExperience()
     {
         return new List<Experience>
         {
