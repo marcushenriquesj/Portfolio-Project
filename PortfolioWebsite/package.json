@@ -4,10 +4,11 @@
   "description": "Marcus Henriques Portfolio Website",
   "scripts": {
     "build": "gulp build",
+    "buildForPages": "gulp buildForPages",
     "clean": "gulp clean",
     "watch": "gulp watch",
     "deploy": "gulp build && gulp deploy",
-    "build:github-pages": "gulp build"
+    "build:github-pages": "gulp buildForPages"
   },
   "devDependencies": {
     "browser-sync": "^2.27.7",

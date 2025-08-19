@@ -1,4 +1,4 @@
-name: Deploy static content to Pages
+name: Deploy Blazor WebAssembly to Pages
 
 on:
   push:
@@ -41,14 +41,23 @@ jobs:
         working-directory: PortfolioWebsite
         run: npm ci
         
-      - name: Build Blazor application
+      - name: Build Blazor WebAssembly application
         working-directory: PortfolioWebsite
         env:
           EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
           EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
           EMAILJS_USER_ID: ${{ secrets.EMAILJS_USER_ID }}
           CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
-        run: npm run build
+        run: npm run buildForPages
+
+      - name: Verify Blazor build output
+        run: |
+          echo "Checking build output..."
+          ls -la PortfolioWebsite/dist/wwwroot/
+          echo "Checking for Blazor framework files..."
+          ls -la PortfolioWebsite/dist/wwwroot/_framework/
+          echo "Checking for MudBlazor content..."
+          ls -la PortfolioWebsite/dist/wwwroot/_content/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

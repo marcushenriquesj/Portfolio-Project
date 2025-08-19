@@ -252,6 +252,13 @@ const build = gulp.series(
     generateSettings
 );
 
+// Build task for GitHub Pages (preserves Blazor output)
+const buildForPages = gulp.series(
+    clean,
+    buildBlazor,
+    generateSettings
+);
+
 // Deploy task
 function deploy() {
     console.log('🚀 Deployment package ready in dist/ directory');
@@ -262,6 +269,7 @@ function deploy() {
 // Export tasks
 exports.clean = clean;
 exports.build = build;
+exports.buildForPages = buildForPages;
 exports.watch = gulp.series(build, watch);
 exports.deploy = gulp.series(build, deploy);
 exports.default = build;
