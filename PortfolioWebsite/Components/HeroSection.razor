@@ -36,14 +36,14 @@
                                   Color="Color.Warning" 
                                   Size="Size.Large" 
                                   Class="contact-btn"
-                                  OnClick="@(() => Navigation.NavigateTo("/contact"))">
+                                  OnClick="@(() => Navigation.NavigateTo("contact"))">
                             Contact Me
                         </MudButton>
                         <MudButton Variant="Variant.Outlined" 
                                   Color="Color.Primary" 
                                   Size="Size.Large" 
                                   Class="about-btn"
-                                  OnClick="@(() => Navigation.NavigateTo("/about"))">
+                                  OnClick="@(() => Navigation.NavigateTo("about"))">
                             About Me
                         </MudButton>
                     </div>
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                     <div class="avatar-container">
-                        <img src="/images/my-avatar.png" alt="@PortfolioData.Name" class="hero-avatar" />
+                         <img src="images/my-avatar.png" alt="@PortfolioData.Name" class="hero-avatar" />
                     </div>
                 </div>
             </MudItem>

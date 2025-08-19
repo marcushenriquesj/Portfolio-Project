@@ -48,7 +48,13 @@ jobs:
           EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
           EMAILJS_USER_ID: ${{ secrets.EMAILJS_USER_ID }}
           CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL }}
-        run: npm run buildForPages
+        run: |
+          echo "Building with EmailJS configuration..."
+          echo "Service ID: $EMAILJS_SERVICE_ID"
+          echo "Template ID: $EMAILJS_TEMPLATE_ID"
+          echo "User ID: $EMAILJS_USER_ID"
+          echo "Contact Email: $CONTACT_EMAIL"
+          npm run buildForPages
 
       - name: Verify Blazor build output
         run: |
@@ -66,6 +72,9 @@ jobs:
           echo ""
           echo "=== Checking for 404.html ==="
           ls -la PortfolioWebsite/dist/wwwroot/404.html
+          echo ""
+          echo "=== Checking settings.json content ==="
+          cat PortfolioWebsite/dist/wwwroot/settings.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
