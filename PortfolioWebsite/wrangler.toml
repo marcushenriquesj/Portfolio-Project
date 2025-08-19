@@ -1,0 +1,10 @@
+# wrangler.toml (wrangler v3.88.0^)
+name = "marcus-henriques-portfolio"
+compatibility_date = "2025-08-19"
+
+[assets]
+directory = "./dist/wwwroot"
+not_found_handling = "single-page-application"
+
+[observability.logs]
+enabled = false

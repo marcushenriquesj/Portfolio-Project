@@ -1,0 +1,8 @@
+# GitHub Pages configuration for Blazor WebAssembly
+# This file ensures proper routing for SPA
+
+# Enable GitHub Pages
+# The site will be available at: https://yourusername.github.io/your-repo-name/
+
+# For Blazor WASM, we need to handle client-side routing
+# This configuration ensures that all routes fall back to index.html

@@ -8,6 +8,7 @@ const concat = require('gulp-concat');
 const htmlmin = require('gulp-htmlmin');
 const imagemin = require('gulp-imagemin');
 const jsonEditor = require('gulp-json-editor');
+const replace = require('gulp-replace');
 const del = require('del');
 const browserSync = require('browser-sync').create();
 
@@ -43,15 +44,16 @@ function copyDotNetBuild() {
     .pipe(gulp.dest(paths.dist.root));
 }
 
-// Copy static assets
+// Copy static assets (excluding files that will be processed separately)
 function copyStaticAssets() {
     return gulp.src([
         'wwwroot/**/*',
         '!wwwroot/css/**/*.css',
         '!wwwroot/js/**/*.js',
-        '!wwwroot/images/**/*'
-    ])
-    .pipe(gulp.dest(paths.dist.root));
+        '!wwwroot/images/**/*',
+        '!wwwroot/index.html'
+    ], { base: 'wwwroot' })
+    .pipe(gulp.dest(paths.dist.html));
 }
 
 // Process CSS files
@@ -218,18 +220,36 @@ function updateHTMLReferences() {
         .pipe(gulp.dest(paths.dist.html));
 }
 
+// Replace file references with minified versions
+function replaceFileReferences() {
+    return gulp.src(paths.dist.html + '/index.html')
+        .pipe(replace('.css', '.min.css'))
+        .pipe(replace('.js', '.min.js'))
+        .pipe(gulp.dest(paths.dist.html));
+}
+
+// Build .NET Blazor application for GitHub Pages
+function buildBlazor() {
+    return new Promise((resolve, reject) => {
+        const { execSync } = require('child_process');
+        try {
+            console.log('Building Blazor WebAssembly application for GitHub Pages...');
+            // Build for GitHub Pages (public path will be /repo-name/)
+            execSync('dotnet publish -c Release -o ./dist', { stdio: 'inherit' });
+            console.log('Blazor build completed successfully');
+            resolve();
+        } catch (error) {
+            console.error('Blazor build failed:', error.message);
+            reject(error);
+        }
+    });
+}
+
 // Build task
 const build = gulp.series(
     clean,
-    gulp.parallel(
-        copyStaticAssets,
-        processCSS,
-        processJS,
-        optimizeImages,
-        processHTML
-    ),
-    generateSettings,
-    updateHTMLReferences
+    buildBlazor,
+    generateSettings
 );
 
 // Deploy task
