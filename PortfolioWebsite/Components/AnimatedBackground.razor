@@ -1,17 +1,19 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 
-<div class="animated-background-container @(DarkMode ? "dark-mode" : "light-mode")">
+<div class="animated-background-container dark-mode">
     <canvas @ref="CanvasRef" id="animated-background-canvas" width="1920" height="1080"></canvas>
 </div>
 
 @code {
     private ElementReference CanvasRef;
-    private bool IsDarkMode = false;
     private bool IsInitialized = false;
     
-    [Parameter] public bool DarkMode { get; set; } = false;
-    
+    /// <summary>
+    /// Initializes the background animation when the component is first rendered.
+    /// </summary>
+    /// <param name="firstRender">True if this is the first render of the component.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -20,20 +22,15 @@
         }
     }
     
-    protected override async Task OnParametersSetAsync()
-    {
-        if (IsInitialized && DarkMode != IsDarkMode)
-        {
-            IsDarkMode = DarkMode;
-            await UpdateTheme();
-        }
-    }
-    
+    /// <summary>
+    /// Initializes the background animation using JavaScript.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     private async Task InitializeBackground()
     {
         try
         {
-            await JSRuntime.InvokeVoidAsync("initializeBackground", CanvasRef, IsDarkMode);
+            await JSRuntime.InvokeVoidAsync("initializeBackground", CanvasRef);
             IsInitialized = true;
         }
         catch (Exception)
@@ -43,21 +40,12 @@
         }
     }
     
-    private async Task UpdateTheme()
-    {
-        if (IsInitialized)
-        {
-            try
-            {
-                await JSRuntime.InvokeVoidAsync("updateBackgroundTheme", CanvasRef, IsDarkMode);
-            }
-            catch (Exception)
-            {
-                // Theme update failed - this is non-critical
-            }
-        }
-    }
-    
+    /// <summary>
+    /// Triggers a ripple effect at the specified coordinates.
+    /// </summary>
+    /// <param name="x">The X coordinate for the ripple effect.</param>
+    /// <param name="y">The Y coordinate for the ripple effect.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public async Task TriggerRipple(double x, double y)
     {
         if (IsInitialized)

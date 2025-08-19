@@ -42,48 +42,32 @@ public class PortfolioDataService
         };
     }
 
-    private List<Project> GetProjects()
+    /// <summary>
+    /// Gets the list of projects for the portfolio.
+    /// </summary>
+    /// <returns>A list of <see cref="Project"/> objects.</returns>
+    private static List<Project> GetProjects()
     {
         return new List<Project>
         {
             new()
             {
-                Title = "E-Commerce Platform",
-                Description = "A full-stack e-commerce platform built with Blazor WebAssembly and .NET 8. Features include user authentication, product management, shopping cart, and payment integration.",
-                ImageUrl = "https://via.placeholder.com/400x250/1976d2/ffffff?text=E-Commerce",
-                LiveDemoUrl = "https://demo-ecommerce.example.com",
-                GitHubUrl = "https://github.com/johndoe/ecommerce-platform",
-                Technologies = new List<string> { "Blazor", ".NET 8", "SQL Server", "Azure", "Stripe" },
+                Title = "Blazor WASM eBay Mockup",
+                Description = "A comprehensive e-commerce platform built with Blazor WebAssembly, featuring product listings, user authentication, shopping cart functionality, and a modern responsive design. This project demonstrates full-stack development capabilities with .NET technologies.",
+                ImageUrl = "https://via.placeholder.com/400x250/1976d2/ffffff?text=Blazor+eBay+Mockup",
+                LiveDemoUrl = "", // Add live demo URL if available
+                GitHubUrl = "https://github.com/marcushenriquesj/BlazorWASMEbayMockUp",
+                Technologies = new List<string> { "Blazor WebAssembly", ".NET", "C#", "HTML/CSS", "JavaScript", "API Integration" },
                 Category = "Full Stack"
-            },
-            new()
-            {
-                Title = "Task Management App",
-                Description = "A collaborative task management application with real-time updates, team collaboration, and project tracking features.",
-                ImageUrl = "https://via.placeholder.com/400x250/4caf50/ffffff?text=Task+Manager",
-                LiveDemoUrl = "https://demo-taskmanager.example.com",
-                GitHubUrl = "https://github.com/johndoe/task-manager",
-                Technologies = new List<string> { "React", "Node.js", "MongoDB", "Socket.io", "JWT" },
-                Category = "Full Stack"
-            },
-            new()
-            {
-                Title = "Weather Dashboard",
-                Description = "A responsive weather dashboard that displays current weather conditions and forecasts using multiple weather APIs.",
-                ImageUrl = "https://via.placeholder.com/400x250/ff9800/ffffff?text=Weather+App",
-                LiveDemoUrl = "https://demo-weather.example.com",
-                GitHubUrl = "https://github.com/johndoe/weather-dashboard",
-                Technologies = new List<string> { "Blazor", "C#", "Weather API", "Chart.js", "CSS3" },
-                Category = "Frontend"
             },
             new()
             {
                 Title = "Portfolio Website",
-                Description = "A modern, responsive portfolio website built with Blazor WebAssembly and MudBlazor for Material Design.",
-                ImageUrl = "https://via.placeholder.com/400x250/9c27b0/ffffff?text=Portfolio",
-                LiveDemoUrl = "https://demo-portfolio.example.com",
-                GitHubUrl = "https://github.com/johndoe/portfolio",
-                Technologies = new List<string> { "Blazor", "MudBlazor", "C#", "CSS3", "JavaScript" },
+                Description = "A modern, responsive portfolio website built with Blazor WebAssembly and MudBlazor. Features include animated backgrounds, smooth scrolling, interactive components, and a professional design showcasing software engineering expertise.",
+                ImageUrl = "https://via.placeholder.com/400x250/4caf50/ffffff?text=Portfolio+Website",
+                LiveDemoUrl = "", // Add live demo URL if available
+                GitHubUrl = "https://github.com/marcushenriquesj/portfolio-website", // Update with actual repo URL
+                Technologies = new List<string> { "Blazor WebAssembly", "MudBlazor", "C#", "CSS3", "JavaScript", "Responsive Design" },
                 Category = "Frontend"
             }
         };

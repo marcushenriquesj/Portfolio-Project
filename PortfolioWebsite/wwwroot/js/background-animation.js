@@ -3,12 +3,11 @@
 // Based on fluid dynamics and natural wave simulation
 
 class BackgroundAnimation {
-    constructor(canvas, isDarkMode = false) {
+    constructor(canvas) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.width = canvas.width;
         this.height = canvas.height;
-        this.isDarkMode = isDarkMode;
         this.time = 0;
         this.animationId = null;
         
@@ -168,9 +167,7 @@ class BackgroundAnimation {
         return (grad_x * x + grad_y * y) * 0.5;
     }
     
-    updateTheme(isDarkMode) {
-        this.isDarkMode = isDarkMode;
-    }
+  
     
     // Calculate diagonal wave effect with Perlin noise for non-linear movement
     calculateWaveEffect(dot) {
@@ -353,7 +350,7 @@ class BackgroundAnimation {
     }
     
     drawDots() {
-        const palette = this.isDarkMode ? this.colorPalettes.dark : this.colorPalettes.light;
+        const palette = this.colorPalettes.dark;
         
         this.dots.forEach(dot => {
             const color = palette[dot.colorIndex];
@@ -364,16 +361,11 @@ class BackgroundAnimation {
                 dot.x, dot.y, 0,
                 dot.x, dot.y, dot.radius * 1.5
             );
+             
+            gradient.addColorStop(0, `rgba(${color.r + 30}, ${color.g + 30}, ${color.b + 30}, ${opacity})`);
+            gradient.addColorStop(0.6, `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity * 0.7})`);
+            gradient.addColorStop(1, `rgba(${color.r - 15}, ${color.g - 15}, ${color.b - 15}, 0)`);
             
-            if (this.isDarkMode) {
-                gradient.addColorStop(0, `rgba(${color.r + 30}, ${color.g + 30}, ${color.b + 30}, ${opacity})`);
-                gradient.addColorStop(0.6, `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity * 0.7})`);
-                gradient.addColorStop(1, `rgba(${color.r - 15}, ${color.g - 15}, ${color.b - 15}, 0)`);
-            } else {
-                gradient.addColorStop(0, `rgba(${color.r + 20}, ${color.g + 20}, ${color.b + 20}, ${opacity})`);
-                gradient.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity * 0.6})`);
-                gradient.addColorStop(1, `rgba(${color.r - 10}, ${color.g - 10}, ${color.b - 10}, 0)`);
-            }
             
             this.ctx.fillStyle = gradient;
             this.ctx.beginPath();
@@ -393,14 +385,9 @@ class BackgroundAnimation {
 const backgroundAnimations = new Map();
 
 // Blazor interop functions
-window.initializeBackground = function(canvas, isDarkMode) {
-    const animation = new BackgroundAnimation(canvas, isDarkMode);
+window.initializeBackground = function(canvas) {
+    const animation = new BackgroundAnimation(canvas);
     backgroundAnimations.set(canvas, animation);
 };
 
-window.updateBackgroundTheme = function(canvas, isDarkMode) {
-    const animation = backgroundAnimations.get(canvas);
-    if (animation) {
-        animation.updateTheme(isDarkMode);
-    }
-};
+

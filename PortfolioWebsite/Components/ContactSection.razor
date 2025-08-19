@@ -1,13 +1,13 @@
 @using PortfolioWebsite.Models
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="section-container" id="contact">
-    <MudText Typo="Typo.h3" Class="section-title text-center mb-6">
+    <MudText Typo="Typo.h3" Class="section-title text-center mb-6 hero-animate">
         Get In Touch
     </MudText>
     
     <MudGrid>
         <MudItem xs="12" md="6">
-            <MudPaper Elevation="3" Class="contact-info-card pa-6">
+            <MudPaper Elevation="3" Class="contact-info-card pa-6 hero-animate">
                 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
                     Contact Information
                 </MudText>
@@ -70,7 +70,7 @@
         </MudItem>
         
         <MudItem xs="12" md="6">
-            <MudPaper Elevation="3" Class="contact-form-card pa-6">
+            <MudPaper Elevation="3" Class="contact-form-card pa-6 hero-animate">
                 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">
                     Send Message
                 </MudText>
@@ -108,12 +108,12 @@
                                  Lines="4"
                                  Class="mb-4" />
                     
-                    <MudButton Variant="Variant.Filled"
-                              Color="Color.Primary"
-                              ButtonType="ButtonType.Submit"
-                              Disabled="@_isSubmitting"
-                              StartIcon="@(_isSubmitting ? Icons.Material.Filled.HourglassEmpty : Icons.Material.Filled.Send)"
-                              Class="w-100">
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Size="Size.Large"
+                               StartIcon="@Icons.Material.Filled.Send"
+                               Disabled="@_isSubmitting">
                         @if (_isSubmitting)
                         {
                             <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
@@ -133,8 +133,6 @@
 @code {
     [Parameter] public PortfolioData PortfolioData { get; set; } = new();
     
-    [Inject] private ISnackbar Snackbar { get; set; } = default!;
-    
     private ContactInfo _contactInfo = new();
     private bool _isSubmitting = false;
 
@@ -142,24 +140,12 @@
     {
         _isSubmitting = true;
         
-        try
-        {
-            // Simulate form submission
-            await Task.Delay(2000);
-            
-            Snackbar.Add("Message sent successfully! I'll get back to you soon.", Severity.Success);
-            
-            // Reset form
-            _contactInfo = new ContactInfo();
-        }
-        catch (Exception)
-        {
-            Snackbar.Add("Failed to send message. Please try again.", Severity.Error);
-        }
-        finally
-        {
-            _isSubmitting = false;
-        }
+        // Simulate API call
+        await Task.Delay(2000);
+        
+        // Reset form
+        _contactInfo = new ContactInfo();
+        _isSubmitting = false;
     }
 }
 

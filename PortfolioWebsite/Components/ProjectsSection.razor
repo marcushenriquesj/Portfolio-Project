@@ -1,136 +1,78 @@
 @using PortfolioWebsite.Models
+@using PortfolioWebsite.Services
+@inject PortfolioDataService PortfolioDataService
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="section-container" id="projects">
-    <MudText Typo="Typo.h3" Class="section-title text-center mb-6">
-        Featured Projects
-    </MudText>
-    
-    <MudGrid>
-        @foreach (var project in Projects)
+<div class="projects-section">
+    <div class="projects-header hero-animate">
+        <h1 class="projects-title">Featured Projects</h1>
+        <p class="projects-subtitle">Showcasing my software engineering expertise through innovative solutions</p>
+    </div>
+
+    <div class="projects-grid">
+        @foreach (var project in _projects)
         {
-            <MudItem xs="12" md="6" lg="4">
-                <MudCard Class="project-card" Elevation="3">
-                    <MudCardMedia Image="@project.ImageUrl" Height="200" />
-                    
-                    <MudCardContent>
-                        <MudText Typo="Typo.h6" Color="Color.Primary" Class="mb-2">
-                            @project.Title
-                        </MudText>
-                        
-                        <MudText Typo="Typo.body2" Class="mb-3">
-                            @project.Description
-                        </MudText>
-                        
-                        <div class="project-technologies mb-3">
-                            @foreach (var tech in project.Technologies.Take(3))
+            <div class="project-card hero-animate" style="animation-delay: @(0.2 + (_projects.IndexOf(project) * 0.1))s">
+                <div class="project-image">
+                    <img src="@project.ImageUrl" alt="@project.Title" />
+                    <div class="project-overlay">
+                        <div class="project-links">
+                            @if (!string.IsNullOrEmpty(project.GitHubUrl))
                             {
-                                <MudChip Color="Color.Primary" Size="Size.Small" Class="mr-1 mb-1">
-                                    @tech
-                                </MudChip>
+                                <a href="@project.GitHubUrl" target="_blank" class="project-link github-link">
+                                    <i class="mdi mdi-github"></i>
+                                    <span>View Code</span>
+                                </a>
                             }
-                            @if (project.Technologies.Count > 3)
+                            @if (!string.IsNullOrEmpty(project.LiveDemoUrl))
                             {
-                                <MudChip Color="Color.Secondary" Size="Size.Small">
-                                    +@(project.Technologies.Count - 3) more
-                                </MudChip>
+                                <a href="@project.LiveDemoUrl" target="_blank" class="project-link demo-link">
+                                    <i class="mdi mdi-play-circle"></i>
+                                    <span>Live Demo</span>
+                                </a>
                             }
                         </div>
-                        
-                        <MudChip Color="Color.Info" Size="Size.Small" Class="mb-3">
-                            @project.Category
-                        </MudChip>
-                    </MudCardContent>
+                    </div>
+                </div>
+
+                <div class="project-content">
+                    <div class="project-category">@project.Category</div>
+                    <h3 class="project-title">@project.Title</h3>
+                    <p class="project-description">@project.Description</p>
                     
-                    <MudCardActions>
-                        @if (!string.IsNullOrEmpty(project.LiveDemoUrl))
+                    <div class="project-technologies">
+                        @foreach (var tech in project.Technologies.Take(4))
                         {
-                            <MudButton Variant="Variant.Filled" 
-                                      Color="Color.Primary" 
-                                      Size="Size.Small"
-                                      Href="@project.LiveDemoUrl"
-                                      Target="_blank"
-                                      StartIcon="@Icons.Material.Filled.PlayArrow">
-                                Live Demo
-                            </MudButton>
+                            <span class="tech-tag">@tech</span>
                         }
-                        
-                        @if (!string.IsNullOrEmpty(project.GitHubUrl))
+                        @if (project.Technologies.Count > 4)
                         {
-                            <MudButton Variant="Variant.Outlined" 
-                                      Color="Color.Primary" 
-                                      Size="Size.Small"
-                                      Href="@project.GitHubUrl"
-                                      Target="_blank"
-                                      StartIcon="@Icons.Material.Filled.Code">
-                                View Code
-                            </MudButton>
+                            <span class="tech-tag more-tag">+@(project.Technologies.Count - 4) more</span>
                         }
-                        
-                        <MudSpacer />
-                        
-                        <MudIconButton Icon="@Icons.Material.Filled.Info" 
-                                      Color="Color.Primary" 
-                                      Size="Size.Small"
-                                      OnClick="@(() => ShowProjectDetails(project))" />
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
+                    </div>
+                </div>
+            </div>
         }
-    </MudGrid>
-    
-    <!-- Project Categories Filter -->
-    <MudContainer Class="mt-6">
-        <MudText Typo="Typo.h6" Class="mb-3 text-center">Filter by Category</MudText>
-        <div class="filter-container">
-            <MudChip Color="@(_selectedCategory == "All" ? Color.Primary : Color.Default)"
-                    OnClick="@(() => FilterProjects("All"))"
-                    Class="mr-2 mb-2">
-                All
-            </MudChip>
-            
-            @foreach (var category in Projects.Select(p => p.Category).Distinct())
-            {
-                <MudChip Color="@(_selectedCategory == category ? Color.Primary : Color.Default)"
-                        OnClick="@(() => FilterProjects(category))"
-                        Class="mr-2 mb-2">
-                    @category
-                </MudChip>
-            }
+    </div>
+
+    <div class="projects-footer hero-animate" style="animation-delay: 0.6s">
+        <p class="projects-footer-text">
+            More projects coming soon! I'm constantly working on new ideas and technologies.
+        </p>
+        <div class="github-cta">
+            <a href="https://github.com/marcushenriquesj" target="_blank" class="github-button">
+                <i class="mdi mdi-github"></i>
+                <span>View All Projects on GitHub</span>
+            </a>
         </div>
-    </MudContainer>
-</MudContainer>
+    </div>
+</div>
 
 @code {
-    [Parameter] public List<Project> Projects { get; set; } = new();
-    
-    [Inject] private IDialogService DialogService { get; set; } = default!;
-    
-    private string _selectedCategory = "All";
-    private List<Project> _filteredProjects = new();
+    private List<Project> _projects = new();
 
     protected override void OnInitialized()
     {
-        _filteredProjects = Projects;
-    }
-
-    private void FilterProjects(string category)
-    {
-        _selectedCategory = category;
-        _filteredProjects = category == "All" 
-            ? Projects 
-            : Projects.Where(p => p.Category == category).ToList();
-        StateHasChanged();
-    }
-
-    private async Task ShowProjectDetails(Project project)
-    {
-        var parameters = new DialogParameters
-        {
-            ["Project"] = project
-        };
-        
-        var dialog = await DialogService.ShowAsync<ProjectDetailsDialog>("Project Details", parameters);
-        var result = await dialog.Result;
+        _projects = PortfolioDataService.GetPortfolioData().Projects;
     }
 }
 

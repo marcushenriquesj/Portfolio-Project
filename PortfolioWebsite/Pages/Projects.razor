@@ -5,12 +5,8 @@
 
 <PageTitle>Projects - @_portfolioData.Name</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
-    <BreadcrumbNav CurrentPage="Projects" />
-    <div class="portfolio-container">
-        <ProjectsSection Projects="@_portfolioData.Projects" />
-    </div>
-</MudContainer>
+<BreadcrumbNav CurrentPage="Projects" />
+<ProjectsSection />
 
 @code {
     private PortfolioData _portfolioData = new();

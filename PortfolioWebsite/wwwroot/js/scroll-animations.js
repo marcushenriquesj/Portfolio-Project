@@ -8,13 +8,14 @@ function initializeScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('animate');
+                // Add animated class to prevent re-animation
+                entry.target.classList.add('animated');
             }
         });
     }, observerOptions);
 
-    // Observe all elements with animation classes
-    const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .slide-in-up');
+    // Observe all elements with animation classes (both old and new)
+    const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .slide-in-up, .hero-animate');
     animatedElements.forEach(el => {
         observer.observe(el);
     });

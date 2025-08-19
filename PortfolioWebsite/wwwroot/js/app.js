@@ -60,26 +60,7 @@ function addScrollAnimations() {
 
 function setupEventListeners() {
     // Add any additional event listeners here
-    
-    // Handle theme toggle ripple effect
-    const themeToggle = document.querySelector('[data-theme-toggle]');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            // Trigger ripple effect on theme toggle
-            const canvas = document.getElementById('animated-background-canvas');
-            if (canvas) {
-                const rect = canvas.getBoundingClientRect();
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                // This will be handled by the background animation
-                canvas.dispatchEvent(new MouseEvent('click', {
-                    clientX: rect.left + centerX,
-                    clientY: rect.top + centerY
-                }));
-            }
-        });
-    }
+    console.log('Portfolio initialized successfully');
 }
 
 // Utility functions

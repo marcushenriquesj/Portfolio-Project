@@ -4,12 +4,12 @@
 @using Microsoft.AspNetCore.Components
 @inherits LayoutComponentBase
 
-<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+<MudThemeProvider IsDarkMode="true" Theme="_theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <!-- Animated Background -->
-<AnimatedBackground @ref="AnimatedBackgroundRef" DarkMode="@_isDarkMode" />
+<AnimatedBackground @ref="AnimatedBackgroundRef" />
 
 <!-- Global Navigation Header -->
 <div class="nav-header">
@@ -31,10 +31,8 @@
             <a href="projects" class="nav-link-text">PROJECTS</a>
             <a href="contact" class="nav-link-text">CONTACT</a>
         </div>
-        
     </div>
 </div>
-
 
 <!-- Main Content Area -->
 <main class="main-content">
@@ -42,32 +40,44 @@
 </main>
 
 @code {
-    private bool _isDarkMode;
     private MudTheme _theme = new();
     private PortfolioData _portfolioData = new();
-    private AnimatedBackground AnimatedBackgroundRef;
+    private AnimatedBackground AnimatedBackgroundRef = default!;
 
     [Inject] private PortfolioDataService PortfolioDataService { get; set; } = default!;
-    [Inject] private ThemeService ThemeService { get; set; } = default!;
     [Inject] private NavigationManager Navigation { get; set; } = default!;
 
+    /// <summary>
+    /// Initializes the layout component by loading portfolio data and setting up the dark theme.
+    /// </summary>
     protected override void OnInitialized()
     {
-        _isDarkMode = ThemeService.IsDarkMode;
         _portfolioData = PortfolioDataService.GetPortfolioData();
-        _theme = ThemeService.GetCurrentTheme();
-        ThemeService.OnThemeChanged += OnThemeChanged;
+        _theme = GetDarkTheme();
     }
 
-    private void OnThemeChanged()
+    /// <summary>
+    /// Gets the dark theme configuration for MudBlazor.
+    /// </summary>
+    /// <returns>A <see cref="MudTheme"/> object for dark mode.</returns>
+    private static MudTheme GetDarkTheme()
     {
-        _isDarkMode = ThemeService.IsDarkMode;
-        _theme = ThemeService.GetCurrentTheme();
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        ThemeService.OnThemeChanged -= OnThemeChanged;
+        return new MudTheme()
+        {
+            Palette = new PaletteDark()
+            {
+                Primary = "#4CAF50",
+                Secondary = "#FFC107",
+                AppbarBackground = "#1A1A1A",
+                Background = "#1A1A1A",
+                Surface = "#2D2D2D",
+                DrawerBackground = "#2D2D2D",
+                DrawerText = "rgba(255,255,255, 0.87)",
+                Success = "#4CAF50",
+                Error = "#f44336",
+                Warning = "#FFC107",
+                Info = "#2196f3"
+            }
+        };
     }
 }
