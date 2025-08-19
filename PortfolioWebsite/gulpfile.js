@@ -245,6 +245,12 @@ function buildBlazor() {
     });
 }
 
+// Ensure .nojekyll file is copied to dist
+function copyNojekyll() {
+    return gulp.src('wwwroot/.nojekyll')
+        .pipe(gulp.dest('dist/wwwroot'));
+}
+
 // Build task
 const build = gulp.series(
     clean,
@@ -256,7 +262,8 @@ const build = gulp.series(
 const buildForPages = gulp.series(
     clean,
     buildBlazor,
-    generateSettings
+    generateSettings,
+    copyNojekyll
 );
 
 // Deploy task
