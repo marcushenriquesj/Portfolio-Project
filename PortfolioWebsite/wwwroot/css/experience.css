@@ -35,13 +35,12 @@
 
 .timeline-title {
     font-size: 3rem;
-    font-weight: 800;
-    color: white;
-    letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+    font-weight: 700;
+    background: linear-gradient(135deg, #4CAF50 0%, #00CED1 50%, #4CAF50 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
+    letter-spacing: -0.02em;
 }
 
 .timeline-underline {
@@ -369,6 +368,11 @@
 }
 
 @media (max-width: 768px) {
+    .experience-container {
+        padding: 0 1rem;
+        padding-top: calc(.5rem); /* Account for navbar height + extra padding */
+    }
+    
     .timeline-title {
         font-size: 2.5rem;
     }
@@ -397,28 +401,64 @@
     }
     
     .timeline-container::before {
-        left: 20px;
+        left: 50%; /* Center the timeline line */
+        transform: translateX(-50%);
+        z-index: 1; /* Ensure line is behind items */
     }
     
     .timeline-item {
-        margin-left: 50px;
+        margin-left: 0; /* Remove left margin */
         margin-bottom: 5rem;
         min-height: 200px;
+        justify-content: center; /* Center the content */
+        z-index: 2; /* Ensure items are above the line */
+    }
+    
+    .timeline-item:first-child {
+        margin-top: 0rem; /* Reduced from 6rem to 2rem */
     }
     
     .timeline-marker {
-        left: 20px;
+        left: 50%; /* Center the marker */
+        transform: translate(-50%, -50%);
         width: 50px;
         height: 50px;
+        z-index: 3; /* Ensure marker is above everything */
     }
     
     .marker-dot {
         width: 16px;
         height: 16px;
+        z-index: 3;
+        opacity: 0; /* Hide the marker dot completely */
+    }
+    
+    .marker-line {
+        opacity: 0; /* Hide the marker line completely */
     }
     
     .timeline-content {
-        padding: 0 0 0 2rem !important;
+        position: relative !important; /* Change to relative positioning */
+        width: 90% !important; /* Make content wider */
+        max-width: 500px !important;
+        padding: 0 !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        top: auto !important;
+        z-index: 2; /* Ensure content is above the line */
+        background: rgba(25, 25, 25, 0.95); /* Solid background to completely hide line */
+        border-radius: 24px;
+        padding: 1rem !important; /* Add padding to create space around card */
+    }
+    
+    .experience-card {
+        width: 100%;
+        margin: 0 auto;
+        background: rgba(25, 25, 25, 0.95); /* Solid background to completely hide line */
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 2px solid rgba(76, 175, 80, 0.2); /* Stronger border for better definition */
     }
     
     .achievements-list {
@@ -438,10 +478,15 @@
 @media (max-width: 480px) {
     .experience-container {
         padding: 0 1rem;
+        padding-top: calc(80px + 1.5rem); /* Slightly less padding for smaller screens */
     }
     
     .experience-card {
         padding: 1.25rem;
+        background: rgba(25, 25, 25, 0.95); /* Solid background to completely hide line */
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 2px solid rgba(76, 175, 80, 0.2); /* Stronger border for better definition */
     }
     
     .achievements-list li {
@@ -457,28 +502,55 @@
     }
     
     .timeline-container::before {
-        left: 15px;
+        left: 50%; /* Keep timeline centered */
+        transform: translateX(-50%);
+        z-index: 1; /* Ensure line is behind items */
     }
     
     .timeline-item {
-        margin-left: 40px;
+        margin-left: 0; /* Keep centered */
         margin-bottom: 4rem;
         min-height: 180px;
+        justify-content: center; /* Keep centered */
+        z-index: 2; /* Ensure items are above the line */
+    }
+    
+    .timeline-item:first-child {
+        margin-top: 1.5rem; /* Further reduced for smaller screens */
     }
     
     .timeline-marker {
-        left: 15px;
+        left: 50%; /* Keep marker centered */
+        transform: translate(-50%, -50%);
         width: 40px;
         height: 40px;
+        z-index: 3; /* Ensure marker is above everything */
     }
     
     .marker-dot {
         width: 14px;
         height: 14px;
+        z-index: 3;
+        opacity: 0; /* Hide the marker dot completely */
+    }
+    
+    .marker-line {
+        opacity: 0; /* Hide the marker line completely */
     }
     
     .timeline-content {
-        padding: 0 0 0 1.5rem !important;
+        position: relative !important; /* Keep relative positioning */
+        width: 95% !important; /* Slightly wider for smaller screens */
+        max-width: 450px !important;
+        padding: 0 !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        top: auto !important;
+        z-index: 2; /* Ensure content is above the line */
+        background: rgba(25, 25, 25, 0.95); /* Solid background to completely hide line */
+        border-radius: 20px;
+        padding: 0.75rem !important; /* Add padding to create space around card */
     }
     
     .achievements-list {

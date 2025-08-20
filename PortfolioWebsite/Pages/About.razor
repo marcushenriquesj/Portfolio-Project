@@ -7,6 +7,33 @@
 <PageTitle>About @_portfolioData.Name</PageTitle>
 
 <div class="about-page">
+    <!-- Mobile Header - Hidden on Desktop -->
+    <div class="mobile-about-header">
+        <div class="mobile-intro-content">
+            <h1 class="mobile-intro-name">@_portfolioData.Name</h1>
+            <h2 class="mobile-intro-title">Full Stack Developer</h2>
+            <p class="mobile-intro-description">
+                I build accessible, pixel-perfect digital experiences for the web.
+            </p>
+        </div>
+        
+        <!-- Mobile Horizontal Navigation -->
+        <nav class="mobile-about-nav">
+            <a class="mobile-nav-item @(_activeSection == "about-me" ? "active" : "")" @onclick="() => ScrollToAboutMe()" @onclick:preventDefault="true">
+                ABOUT
+            </a>
+            <a class="mobile-nav-item @(_activeSection == "my-story" ? "active" : "")" @onclick="() => ScrollToMyStory()" @onclick:preventDefault="true">
+                MY STORY
+            </a>
+            <a class="mobile-nav-item @(_activeSection == "random-facts" ? "active" : "")" @onclick="() => ScrollToRandomFacts()" @onclick:preventDefault="true">
+                RANDOM FACTS
+            </a>
+            <a class="mobile-nav-item @(_activeSection == "how-i-work" ? "active" : "")" @onclick="() => ScrollToHowIWork()" @onclick:preventDefault="true">
+                HOW I WORK
+            </a>
+        </nav>
+    </div>
+
     <!-- Fixed Left Navigation -->
     <div class="about-sidebar">
         <div class="sidebar-content">
@@ -138,8 +165,10 @@
                 <h2 class="section-title hero-animate">Random Facts</h2>
                 <div class="facts-grid">
                     <div class="fact-card hero-animate">
-                        <MudIcon Icon="@Icons.Material.Filled.Coffee" Class="fact-icon" />
-                        <h3>Coffee Enthusiast</h3>
+                        <div class="fact-header">
+                            <MudIcon Icon="@Icons.Material.Filled.Coffee" Class="fact-icon" />
+                            <h3>Coffee Enthusiast</h3>
+                        </div>
                         <p>I can't start my day without a good cup of coffee. It's my daily ritual and source of inspiration.</p>
                         <div class="fact-details">
                             <span class="fact-tag">☕ Daily Ritual</span>
@@ -147,17 +176,21 @@
                         </div>
                     </div>
                     <div class="fact-card hero-animate">
-                        <MudIcon Icon="@Icons.Material.Filled.MusicNote" Class="fact-icon" />
-                        <h3>Music Lover</h3>
-                        <p>I listen to music while coding - it helps me focus and get into the flow state.</p>
+                        <div class="fact-header">
+                            <MudIcon Icon="@Icons.Material.Filled.MusicNote" Class="fact-icon" />
+                            <h3>Music Lover</h3>
+                        </div>
+                        <p>I listen to all types of music while coding - it helps me focus on the task at hand and get into the flow state.</p>
                         <div class="fact-details">
                             <span class="fact-tag">🎵 Focus Music</span>
                             <span class="fact-tag">🧠 Flow State</span>
                         </div>
                     </div>
                     <div class="fact-card hero-animate">
-                        <MudIcon Icon="@Icons.Material.Filled.Book" Class="fact-icon" />
-                        <h3>Book Collector</h3>
+                        <div class="fact-header">
+                            <MudIcon Icon="@Icons.Material.Filled.Book" Class="fact-icon" />
+                            <h3>Book Collector</h3>
+                        </div>
                         <p>I have a growing collection of technical books and always try to read something new each month.</p>
                         <div class="fact-details">
                             <span class="fact-tag">📚 Tech Books</span>
@@ -165,8 +198,10 @@
                         </div>
                     </div>
                     <div class="fact-card hero-animate">
-                        <MudIcon Icon="@Icons.Material.Filled.Pets" Class="fact-icon" />
-                        <h3>Pet Person</h3>
+                        <div class="fact-header">
+                            <MudIcon Icon="@Icons.Material.Filled.Pets" Class="fact-icon" />
+                            <h3>Pet Person</h3>
+                        </div>
                         <p>I have a cat that likes to sit on my keyboard while I'm trying to code. It's both annoying and adorable.</p>
                         <div class="fact-details">
                             <span class="fact-tag">🐱 Coding Buddy</span>

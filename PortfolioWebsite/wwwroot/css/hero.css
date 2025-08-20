@@ -225,10 +225,30 @@
     z-index: 3;
 }
 
-.skill-node:nth-child(1) { animation-delay: 0s; }
-.skill-node:nth-child(2) { animation-delay: 0.5s; }
-.skill-node:nth-child(3) { animation-delay: 1s; }
-.skill-node:nth-child(4) { animation-delay: 1.5s; }
+/* Skill Node Positioning - Desktop */
+.skill-node-azure {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.skill-node-csharp {
+    top: 20%;
+    right: 20%;
+    animation-delay: 0.5s;
+}
+
+.skill-node-sql {
+    bottom: 45%;
+    left: 8%;
+    animation-delay: 1s;
+}
+
+.skill-node-blazor {
+    bottom: 45%;
+    right: 8%;
+    animation-delay: 1.5s;
+}
 
 .skill-node-icon {
     width: 32px;
@@ -382,6 +402,40 @@
     font-weight: 400;
 }
 
+/* Grid Order Classes for Mobile Layout */
+.order-1 {
+    order: 1;
+}
+
+.order-2 {
+    order: 2;
+}
+
+@media (min-width: 768px) {
+    .order-md-1 {
+        order: 1;
+    }
+    
+    .order-md-2 {
+        order: 2;
+    }
+}
+
+/* Responsive margin classes */
+.mt-8 {
+    margin-top: 2rem;
+}
+
+.mt-md-16 {
+    margin-top: 4rem;
+}
+
+@media (min-width: 768px) {
+    .mt-md-16 {
+        margin-top: 4rem;
+    }
+}
+
 /* Animations */
 @keyframes pulse {
     0%, 100% {
@@ -411,19 +465,24 @@
 }
 
 @media (max-width: 768px) {
+    /* Hide background code image on mobile */
+    .hero-section::before {
+        display: none;
+    }
+    
     .hero-greeting {
         font-size: 2rem !important;
     }
     
     .hero-avatar-container {
-        width: 300px;
-        height: 300px;
-        margin: 2rem auto;
+        width: 350px;
+        height: 350px;
+        margin: 1.5rem auto;
     }
     
     .avatar-container {
-        width: 220px;
-        height: 220px;
+        width: 250px;
+        height: 250px;
     }
     
     .skill-node {
@@ -433,10 +492,32 @@
         z-index: 3;
     }
     
+    /* Position skill nodes on the edge of the avatar circle */
+    .skill-node-azure {
+        top: 15% !important;
+        left: 17% !important;
+    }
+    
+    .skill-node-csharp {
+        top: 15% !important;
+        right: 17% !important;
+    }
+    
+    .skill-node-sql {
+        bottom: 45% !important;
+        left: 8% !important;
+    }
+    
+    .skill-node-blazor {
+        bottom: 45% !important;
+        right: 8% !important;
+    }
+    
     .hero-actions {
         flex-direction: column;
         gap: 0.75rem;
-        align-items: flex-start;
+        align-items: center;
+        justify-content: center;
     }
     
     .contact-btn,
@@ -446,23 +527,40 @@
         justify-content: center;
     }
     
+    .hero-content {
+        text-align: center;
+    }
+    
+    .hero-social-links {
+        justify-content: center;
+    }
+    
+    /* Reduce gaps for skills section */
+    .skills-cta {
+        padding: 1rem;
+        text-align: center;
+    }
+    
     .skills-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1rem;
         padding: 0;
+        margin-top: 1rem;
     }
     
     .skill-card {
-        padding: 1.5rem;
+        padding: 1.25rem;
     }
     
     .skills-title {
         font-size: 1.75rem;
+        margin-bottom: 0.5rem;
     }
     
     .skill-icon {
         width: 50px;
         height: 50px;
+        margin-bottom: 1rem;
     }
     
     .skill-icon .mud-icon-root {
@@ -479,8 +577,56 @@
 }
 
 @media (max-width: 480px) {
+    .hero-greeting {
+        font-size: 1.75rem !important;
+    }
+    
+    .hero-avatar-container {
+        width: 280px;
+        height: 280px;
+        margin: 1rem auto;
+    }
+    
+    .avatar-container {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .skill-node {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .skill-node-icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    /* Position skill nodes on the edge of the avatar circle for small screens */
+    .skill-node-azure {
+        top: 5% !important;
+        left: 5% !important;
+    }
+    
+    .skill-node-csharp {
+        top: 5% !important;
+        right: 5% !important;
+    }
+    
+    .skill-node-sql {
+        bottom: 5% !important;
+        left: 5% !important;
+    }
+    
+    .skill-node-blazor {
+        bottom: 5% !important;
+        right: 5% !important;
+    }
+    
     .hero-actions {
         gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
     }
     
     .contact-btn,
@@ -490,19 +636,38 @@
         max-width: 200px;
     }
     
-    .skills-cta {
-        padding: 1rem;
+    .hero-content {
         text-align: center;
     }
     
+    .hero-social-links {
+        justify-content: center;
+    }
+    
+    /* Reduce gaps for skills section */
+    .skills-cta {
+        padding: 0.75rem;
+        text-align: center;
+    }
+    
+    .skills-grid {
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+    }
+    
     .skill-card {
-        padding: 1.25rem;
+        padding: 1rem;
+    }
+    
+    .skills-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
     }
     
     .skill-icon {
         width: 45px;
         height: 45px;
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
     }
     
     .skill-icon .mud-icon-root {

@@ -8,7 +8,8 @@
     "clean": "gulp clean",
     "watch": "gulp watch",
     "deploy": "gulp build && gulp deploy",
-    "build:github-pages": "gulp buildForPages"
+    "build:github-pages": "gulp buildForPages",
+    "dev": "echo 'For local development, use: dotnet run' && echo 'The CSS and JS files are served directly from wwwroot/'"
   },
   "devDependencies": {
     "browser-sync": "^2.27.7",
