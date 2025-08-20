@@ -32,10 +32,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBbmltYXRlZEJhY2tncm91bmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/BreadcrumbNav.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xCcmVhZGNydW1iTmF2LnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/SRC/Repo/Portfolio Project/PortfolioWebsite/Components/ContactSection.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb250YWN0U2VjdGlvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

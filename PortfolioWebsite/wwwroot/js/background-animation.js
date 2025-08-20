@@ -1,6 +1,8 @@
-// Fluid TV Static Background Animation with Smooth Wave Patterns
-// Enhanced with acceleration-based physics and gradient colors
-// Based on fluid dynamics and natural wave simulation
+/**
+ * Background Animation Class
+ * Creates an animated background with fluid dots and wave patterns
+ * Optimized for mobile devices with reduced dot count for performance
+ */
 
 class BackgroundAnimation {
     constructor(canvas) {

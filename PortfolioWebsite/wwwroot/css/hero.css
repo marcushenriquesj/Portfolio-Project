@@ -539,6 +539,21 @@
     .skills-cta {
         padding: 1rem;
         text-align: center;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+    
+    .skills-intro {
+        text-align: center !important;
+        width: 100% !important;
+    }
+    
+    .skills-title {
+        text-align: center !important;
+        width: 100% !important;
     }
     
     .skills-grid {
@@ -648,6 +663,21 @@
     .skills-cta {
         padding: 0.75rem;
         text-align: center;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+    
+    .skills-intro {
+        text-align: center !important;
+        width: 100% !important;
+    }
+    
+    .skills-title {
+        text-align: center !important;
+        width: 100% !important;
     }
     
     .skills-grid {

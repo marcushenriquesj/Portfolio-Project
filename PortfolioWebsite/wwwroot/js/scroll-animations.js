@@ -1,4 +1,7 @@
-// Scroll Animation Handler
+/**
+ * Scroll Animation Handler
+ * Manages scroll-triggered animations and scroll spy functionality
+ */
 function initializeScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
