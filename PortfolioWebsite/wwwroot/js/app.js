@@ -1,4 +1,7 @@
-// Portfolio Website JavaScript - Global utilities and initialization
+/**
+ * Portfolio Website JavaScript - Global utilities and initialization
+ * Provides smooth scrolling, event handling, and utility functions
+ */
 
 // Initialize portfolio functionality
 document.addEventListener('DOMContentLoaded', function() {

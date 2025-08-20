@@ -1,6 +1,8 @@
-// Fluid TV Static Background Animation with Smooth Wave Patterns
-// Enhanced with acceleration-based physics and gradient colors
-// Based on fluid dynamics and natural wave simulation
+/**
+ * Background Animation Class
+ * Creates an animated background with fluid dots and wave patterns
+ * Optimized for mobile devices with reduced dot count for performance
+ */
 
 class BackgroundAnimation {
     constructor(canvas) {
@@ -13,9 +15,12 @@ class BackgroundAnimation {
         
         // Fluid dots configuration
         this.dots = [];
-        this.dotCount = 1500; // Increased for more density
+        
+        // Detect mobile devices and reduce dot count for better performance
+        const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        this.dotCount = isMobile ? 500 : 1500; // Reduced for mobile devices
         this.minDistance = 4; // Closer spacing for better coverage
-        this.maxDots = 2000; // Increased max dots
+        this.maxDots = isMobile ? 600 : 2000; // Reduced max dots for mobile
         this.maxSpeed = 0.2; // Slower for smoother movement
         
         // Dot size variation

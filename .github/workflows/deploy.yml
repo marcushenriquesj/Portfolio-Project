@@ -67,6 +67,12 @@ jobs:
           echo "=== Checking for MudBlazor content ==="
           ls -la PortfolioWebsite/dist/wwwroot/_content/
           echo ""
+          echo "=== Checking for CSS files ==="
+          ls -la PortfolioWebsite/dist/wwwroot/css/
+          echo ""
+          echo "=== Checking for JS files ==="
+          ls -la PortfolioWebsite/dist/wwwroot/js/
+          echo ""
           echo "=== Checking for .nojekyll file ==="
           ls -la PortfolioWebsite/dist/wwwroot/.nojekyll
           echo ""

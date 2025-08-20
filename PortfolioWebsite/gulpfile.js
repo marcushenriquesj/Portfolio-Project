@@ -56,6 +56,18 @@ function copyStaticAssets() {
     .pipe(gulp.dest(paths.dist.html));
 }
 
+// Copy CSS files (unprocessed for GitHub Pages)
+function copyCSS() {
+    return gulp.src(paths.src.css)
+        .pipe(gulp.dest(paths.dist.css));
+}
+
+// Copy JavaScript files (unprocessed for GitHub Pages)
+function copyJS() {
+    return gulp.src(paths.src.js)
+        .pipe(gulp.dest(paths.dist.js));
+}
+
 // Process CSS files
 function processCSS() {
     return gulp.src(paths.src.css)
@@ -98,25 +110,16 @@ function processJS() {
             compress: {
                 drop_console: true,
                 drop_debugger: true,
-                dead_code: true,
-                drop_debugger: true,
-                global_defs: {
-                    "@alert": "console.log"
-                },
-                passes: 2
+                pure_funcs: ['console.log', 'console.info', 'console.debug']
             },
-            mangle: {
-                toplevel: true,
-                eval: true
-            },
+            mangle: true,
             output: {
                 comments: false
             }
         }))
         .pipe(rename({ suffix: '.min' }))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(paths.dist.js))
-        .pipe(browserSync.stream());
+        .pipe(gulp.dest(paths.dist.js));
 }
 
 // Optimize images
@@ -136,51 +139,57 @@ function optimizeImages() {
         .pipe(gulp.dest(paths.dist.images));
 }
 
-// Process HTML
+// Generate settings.json from environment variables
+function generateSettings() {
+    const settings = {
+        emailjs: {
+            serviceId: process.env.EMAILJS_SERVICE_ID || '',
+            templateId: process.env.EMAILJS_TEMPLATE_ID || '',
+            userId: process.env.EMAILJS_USER_ID || ''
+        },
+        contact: {
+            recipientName: 'Marcus Henriques',
+            recipientEmail: process.env.CONTACT_EMAIL || ''
+        },
+        app: {
+            name: 'Marcus Henriques Portfolio',
+            version: '1.0.0',
+            environment: 'production'
+        }
+    };
+
+    return gulp.src(paths.src.settings)
+        .pipe(jsonEditor(settings))
+        .pipe(rename('settings.json'))
+        .pipe(gulp.dest(paths.dist.html));
+}
+
+// Process HTML for deployment (update base href for GitHub Pages)
+function processHTMLForDeployment() {
+    return gulp.src(paths.src.html)
+        .pipe(replace('<base href="/" />', '<base href="/Portfolio-Project/" />'))
+        .pipe(htmlmin({
+            collapseWhitespace: true,
+            removeComments: true,
+            minifyCSS: false,
+            minifyJS: false
+        }))
+        .pipe(gulp.dest(paths.dist.html));
+}
+
+// Process 404.html for deployment (update redirect path for GitHub Pages)
+function process404ForDeployment() {
+    return gulp.src('wwwroot/404.html')
+        .pipe(replace("window.location.href = '/';", "window.location.href = '/Portfolio-Project/';"))
+        .pipe(gulp.dest(paths.dist.html));
+}
+
+// Process HTML for local development
 function processHTML() {
     return gulp.src(paths.src.html)
         .pipe(htmlmin({
             collapseWhitespace: true,
             removeComments: true,
-            minifyCSS: true,
-            minifyJS: true
-        }))
-        .pipe(gulp.dest(paths.dist.html))
-        .pipe(browserSync.stream());
-}
-
-// Generate settings.json from template
-function generateSettings() {
-    return gulp.src(paths.src.settings)
-        .pipe(jsonEditor(function(json) {
-            // Replace placeholders with environment variables or defaults
-            return {
-                emailjs: {
-                    serviceId: process.env.EMAILJS_SERVICE_ID || '{{EMAILJS_SERVICE_ID}}',
-                    templateId: process.env.EMAILJS_TEMPLATE_ID || '{{EMAILJS_TEMPLATE_ID}}',
-                    userId: process.env.EMAILJS_USER_ID || '{{EMAILJS_USER_ID}}'
-                },
-                contact: {
-                    recipientName: "Marcus Henriques",
-                    recipientEmail: process.env.CONTACT_EMAIL || '{{CONTACT_EMAIL}}'
-                },
-                app: {
-                    name: "Marcus Henriques Portfolio",
-                    version: process.env.APP_VERSION || "1.0.0",
-                    environment: process.env.ENVIRONMENT || "production"
-                }
-            };
-        }))
-        .pipe(rename('settings.json'))
-        .pipe(gulp.dest(paths.dist.html));
-}
-
-// Update HTML to reference minified files
-function updateHTMLReferences() {
-    return gulp.src(paths.dist.html + '/index.html')
-        .pipe(htmlmin({
-            collapseWhitespace: false,
-            removeComments: false,
             minifyCSS: false,
             minifyJS: false
         }))
@@ -251,17 +260,25 @@ function copyNojekyll() {
         .pipe(gulp.dest('dist/wwwroot'));
 }
 
-// Build task
+// Build task for local development (doesn't interfere with dotnet run)
 const build = gulp.series(
     clean,
-    buildBlazor,
+    copyStaticAssets,
+    processCSS,
+    processJS,
+    optimizeImages,
+    processHTML,
     generateSettings
 );
 
-// Build task for GitHub Pages (preserves Blazor output)
+// Build task for GitHub Pages (preserves Blazor output and copies assets)
 const buildForPages = gulp.series(
     clean,
     buildBlazor,
+    copyCSS,
+    copyJS,
+    processHTMLForDeployment,
+    process404ForDeployment,
     generateSettings,
     copyNojekyll
 );

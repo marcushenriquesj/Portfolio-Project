@@ -270,6 +270,7 @@
 @media (max-width: 768px) {
     .projects-section {
         padding: 1rem;
+        padding-top: calc(2rem); /* Account for navbar height + extra padding */
     }
     
     .projects-title {
@@ -304,6 +305,10 @@
 }
 
 @media (max-width: 480px) {
+    .projects-section {
+        padding-top: calc(80px + .5rem); /* Slightly less padding for smaller screens */
+    }
+    
     .projects-title {
         font-size: 2rem;
     }

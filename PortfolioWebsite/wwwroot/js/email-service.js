@@ -1,4 +1,7 @@
-// EmailJS Configuration and Functions
+/**
+ * EmailJS Configuration and Functions
+ * Handles email sending via EmailJS with fallback simulation for development
+ */
 (function() {
     'use strict';
 

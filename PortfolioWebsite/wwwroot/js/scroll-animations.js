@@ -1,4 +1,7 @@
-// Scroll Animation Handler
+/**
+ * Scroll Animation Handler
+ * Manages scroll-triggered animations and scroll spy functionality
+ */
 function initializeScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
@@ -24,16 +27,44 @@ function initializeScrollAnimations() {
 function initializeScrollSpy(dotNetHelper) {
     const sections = ['about-me', 'my-story', 'random-facts', 'how-i-work'];
     
+    // Function to get appropriate rootMargin based on screen size
+    function getRootMargin() {
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            // Account for mobile header height (120px) and some buffer
+            return '-20% 0px -40% 0px';
+        } else {
+            // Desktop margin
+            return '-30% 0px -30% 0px';
+        }
+    }
+    
+    // Function to get appropriate threshold based on screen size
+    function getThreshold() {
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            // Multiple thresholds for mobile to catch sections at different visibility levels
+            return [0.1, 0.2, 0.3, 0.4];
+        } else {
+            // Desktop threshold
+            return 0.4;
+        }
+    }
+    
     const observerOptions = {
-        threshold: 0.4,
-        rootMargin: '-30% 0px -30% 0px'
+        threshold: getThreshold(),
+        rootMargin: getRootMargin()
     };
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+            const sectionId = entry.target.id;
+            const isMobile = window.innerWidth <= 768;
+            console.log(`Scroll spy: Section ${sectionId} - isIntersecting: ${entry.isIntersecting}, intersectionRatio: ${entry.intersectionRatio.toFixed(2)}, isMobile: ${isMobile}`);
+            
             if (entry.isIntersecting) {
-                const sectionId = entry.target.id;
                 if (sections.includes(sectionId)) {
+                    console.log(`Scroll spy: Section ${sectionId} is now active`);
                     dotNetHelper.invokeMethodAsync('OnSectionChange', sectionId);
                 }
             }
@@ -47,6 +78,50 @@ function initializeScrollSpy(dotNetHelper) {
             observer.observe(element);
         }
     });
+    
+    // Reinitialize observer on window resize to adjust for mobile/desktop
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            console.log(`Resize detected: Reinitializing scroll spy for ${window.innerWidth <= 768 ? 'mobile' : 'desktop'} layout`);
+            
+            // Disconnect current observer
+            observer.disconnect();
+            
+            // Update rootMargin and threshold
+            observerOptions.rootMargin = getRootMargin();
+            observerOptions.threshold = getThreshold();
+            console.log(`New rootMargin: ${observerOptions.rootMargin}, New threshold: ${observerOptions.threshold}`);
+            
+            // Recreate observer with new options
+            const newObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const sectionId = entry.target.id;
+                    const isMobile = window.innerWidth <= 768;
+                    console.log(`Scroll spy (resize): Section ${sectionId} - isIntersecting: ${entry.isIntersecting}, intersectionRatio: ${entry.intersectionRatio.toFixed(2)}, isMobile: ${isMobile}`);
+                    
+                    if (entry.isIntersecting) {
+                        if (sections.includes(sectionId)) {
+                            console.log(`Scroll spy: Section ${sectionId} is now active (resize handler)`);
+                            dotNetHelper.invokeMethodAsync('OnSectionChange', sectionId);
+                        }
+                    }
+                });
+            }, observerOptions);
+            
+            // Re-observe all sections
+            sections.forEach(sectionId => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    newObserver.observe(element);
+                }
+            });
+            
+            // Replace the observer reference
+            Object.assign(observer, newObserver);
+        }, 250);
+    });
 }
 
 // Smooth scroll to section
@@ -57,8 +132,12 @@ function scrollToSection(sectionId) {
         if (element) {
             const viewportHeight = window.innerHeight;
             const elementHeight = element.offsetHeight;
-            const navHeight = 80;
-            const offset = navHeight + 20;
+            const isMobile = window.innerWidth <= 768;
+            
+            // Account for mobile header height
+            const navHeight = isMobile ? 120 : 80;
+            const mobileHeaderHeight = isMobile ? 60 : 0; // Additional mobile header height
+            const offset = navHeight + mobileHeaderHeight + 20;
             
             const offsetTop = element.offsetTop;
             const targetPosition = Math.max(0, offsetTop - (viewportHeight / 2) + (elementHeight / 2) - offset);

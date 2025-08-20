@@ -17,6 +17,32 @@ npm install
 dotnet restore
 ```
 
+## 🖥️ Local Development
+
+For local development, the CSS and JS files are served directly from the `wwwroot/` directory. **No Gulp build is required for local development.**
+
+```bash
+# Start the development server
+dotnet run
+
+# The app will be available at:
+# http://localhost:5000 or https://localhost:5001
+# (or another port if those are in use)
+```
+
+### Local Development Notes:
+- ✅ **CSS files** are served from `wwwroot/css/`
+- ✅ **JS files** are served from `wwwroot/js/`
+- ✅ **Images** are served from `wwwroot/images/`
+- ✅ **No build process required** - just run `dotnet run`
+- ✅ **Hot reload** works automatically with Blazor
+
+### If you see 404 errors:
+1. Make sure you're not running any Gulp build commands
+2. Ensure the `dist/` directory is cleaned up (if it exists)
+3. Run `dotnet clean && dotnet build` to refresh the build
+4. Check that CSS and JS files exist in `wwwroot/` directories
+
 ## 📋 Deployment Checklist
 
 ✅ **Ready for Cloudflare Pages deployment** - See [DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md) for complete setup guide.
@@ -41,10 +67,20 @@ dotnet restore
 ## 🔧 Development Commands
 
 ```bash
-npm run build    # Build for production
-npm run watch    # Watch for changes
-npm run clean    # Clean build output
-dotnet run       # Start development server
+# Local Development (no build required)
+dotnet run
+
+# Build for production
+npm run buildForPages
+
+# Watch for changes (for Gulp-based builds)
+npm run watch
+
+# Clean build output
+npm run clean
+
+# Deploy to GitHub Pages
+npm run build:github-pages
 ```
 
 ## 🚀 Features
@@ -98,7 +134,6 @@ dotnet restore
 
 # Create .env file with your EmailJS credentials
 cp .env.example .env
-# Edit .env with your actual values
 ```
 
 ### 4. Configure EmailJS
